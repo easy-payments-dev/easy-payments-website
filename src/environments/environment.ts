@@ -5,6 +5,8 @@
 export const environment = {
   production: false,
   siteName: 'Easy Payments',
+  /** Official visual wordmark casing from the Easy Payments logo. */
+  wordmark: 'easy payments',
   tagline: 'PAYMENTS MADE SIMPLE',
   githubUrl: 'https://github.com/easy-payments-dev',
   githubWebsiteUrl: 'https://github.com/easy-payments-dev/easy-payments-website',

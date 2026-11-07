@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { BRAND_ASSETS } from '../../core/brand/brand-assets';
 import { FRAMEWORKS, getLatestPublishedAngularVersion } from '../../data/frameworks';
 import {
   PAYMENT_METHODS,
@@ -14,6 +13,10 @@ import { EpButton } from '../../shared/ui/button/button';
 import { EpCard } from '../../shared/ui/card/card';
 import { EpCodeBlock } from '../../shared/ui/code-block/code-block';
 import { EpContainer } from '../../shared/ui/container/container';
+import {
+  EpImageLightbox,
+  LightboxImage,
+} from '../../shared/ui/image-lightbox/image-lightbox';
 import { EpSectionHeading } from '../../shared/ui/section-heading/section-heading';
 
 @Component({
@@ -27,14 +30,13 @@ import { EpSectionHeading } from '../../shared/ui/section-heading/section-headin
     EpCard,
     EpAlert,
     EpCodeBlock,
+    EpImageLightbox,
   ],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
 })
 export class HomePage {
-  protected readonly siteName = environment.siteName;
   protected readonly tagline = environment.tagline;
-  protected readonly logoLockup = BRAND_ASSETS.logoLockup;
   protected readonly githubUrl = environment.githubUrl;
   protected readonly githubAngularUrl = environment.githubAngularUrl;
   protected readonly githubWebsiteUrl = environment.githubWebsiteUrl;
@@ -102,28 +104,56 @@ export class HomePage {
     },
   ] as const;
 
-  protected readonly screenshots = [
-    {
-      src: 'screenshots/checkout-desktop.png',
-      alt: 'Easy Payments full checkout on desktop showing payment method selection in light mode',
-      caption: 'Desktop · Full Checkout',
-    },
+  protected readonly featuredShot = {
+    src: 'screenshots/checkout-desktop.png',
+    alt: 'Easy Payments full checkout on desktop showing payment method selection in light mode',
+    caption: 'Desktop',
+    frame: 'landscape' as const,
+  };
+
+  protected readonly galleryShots = [
     {
       src: 'screenshots/checkout-mobile.png',
       alt: 'Easy Payments full checkout on a mobile viewport with stacked payment methods',
-      caption: 'Mobile · Full Checkout',
+      caption: 'Mobile',
+      frame: 'portrait' as const,
     },
     {
       src: 'screenshots/checkout-dark.png',
       alt: 'Easy Payments checkout in dark appearance with Card selected',
-      caption: 'Dark appearance',
+      caption: 'Dark',
+      frame: 'landscape' as const,
+    },
+    {
+      src: 'screenshots/checkout-light.png',
+      alt: 'Easy Payments checkout in light appearance',
+      caption: 'Light',
+      frame: 'landscape' as const,
     },
     {
       src: 'screenshots/checkout-methods.png',
       alt: 'Easy Payments checkout highlighting payment method order and DEMO labels',
-      caption: 'Method selection',
+      caption: 'Methods',
+      frame: 'landscape' as const,
     },
   ] as const;
+
+  protected readonly lightboxOpen = signal(false);
+  protected readonly lightboxImage = signal<LightboxImage | null>(null);
+  private lightboxTrigger: HTMLElement | null = null;
+
+  protected openLightbox(event: Event, shot: LightboxImage): void {
+    this.lightboxTrigger = event.currentTarget as HTMLElement;
+    this.lightboxImage.set(shot);
+    this.lightboxOpen.set(true);
+  }
+
+  protected closeLightbox(): void {
+    this.lightboxOpen.set(false);
+    this.lightboxImage.set(null);
+    this.lightboxTrigger?.focus();
+    this.lightboxTrigger = null;
+  }
 
   protected badgeVariant(status: ReleaseStatus): EpBadgeVariant {
     switch (status) {

@@ -9,11 +9,15 @@ describe('BRAND_ASSETS', () => {
     expect(BRAND_ASSETS.favicon32).toBe('favicon-32x32.png');
   });
 
-  it('references optimized Easy Payments mark and lockup paths', () => {
-    expect(BRAND_ASSETS.mark64).toBe('brand/mark-64.png');
-    expect(BRAND_ASSETS.mark128).toBe('brand/mark-128.png');
-    expect(BRAND_ASSETS.logoLockup).toBe('brand/logo-lockup-640.png');
-    expect(BRAND_ASSETS.ogImage).toBe('og-image.png');
+  it('references official lockup derivatives for light and dark headers', () => {
+    expect(BRAND_ASSETS.headerLockupLight).toBe('brand/header-lockup-light.png');
+    expect(BRAND_ASSETS.headerLockupDark).toBe('brand/header-lockup-dark.png');
+    expect(BRAND_ASSETS.headerLockupLight2x).toBe(
+      'brand/header-lockup-light@2x.png',
+    );
+    expect(BRAND_ASSETS.headerLockupDark2x).toBe(
+      'brand/header-lockup-dark@2x.png',
+    );
   });
 
   it('keeps all asset paths root-relative without leading slash', () => {

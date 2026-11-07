@@ -1,18 +1,16 @@
 <header class="site-header">
   <div class="site-header__bar ep-container">
-    <a class="brand" routerLink="/" (click)="closeMobile()" aria-label="Easy Payments home">
+    <a class="brand" routerLink="/" (click)="closeMobile()" aria-label="easy payments home">
       <img
-        class="brand__mark"
-        [src]="brandMark"
-        width="32"
-        height="32"
-        alt=""
+        class="brand__lockup"
+        [src]="lockupSrc()"
+        [attr.srcset]="lockupSrcset()"
+        sizes="(min-width: 768px) 272px, 248px"
+        width="272"
+        height="53"
+        alt="easy payments"
         decoding="async"
       />
-      <span class="brand__text">
-        <span class="brand__name">{{ siteName }}</span>
-        <span class="brand__tagline">{{ tagline }}</span>
-      </span>
     </a>
 
     <nav class="nav nav--desktop" aria-label="Primary">
@@ -78,49 +76,52 @@
     class="nav-mobile"
     [ngClass]="{ 'is-open': mobileOpen() }"
     [attr.aria-hidden]="!mobileOpen()"
+    [attr.inert]="mobileOpen() ? null : ''"
   >
-    <div class="ep-container nav-mobile__theme">
-      <p class="nav-mobile__theme-label">Theme</p>
-      <div class="theme-switcher theme-switcher--mobile" role="group" aria-label="Color theme">
-        @for (option of themeOptions; track option.value) {
-          <button
-            type="button"
-            class="theme-switcher__option"
-            [ngClass]="{ 'is-active': isTheme(option.value) }"
-            [attr.aria-pressed]="isTheme(option.value)"
-            (click)="setTheme(option.value)"
-          >
-            {{ option.label }}
-          </button>
-        }
+    <div class="nav-mobile__panel">
+      <div class="ep-container nav-mobile__theme">
+        <p class="nav-mobile__theme-label">Theme</p>
+        <div class="theme-switcher theme-switcher--mobile" role="group" aria-label="Color theme">
+          @for (option of themeOptions; track option.value) {
+            <button
+              type="button"
+              class="theme-switcher__option"
+              [ngClass]="{ 'is-active': isTheme(option.value) }"
+              [attr.aria-pressed]="isTheme(option.value)"
+              (click)="setTheme(option.value)"
+            >
+              {{ option.label }}
+            </button>
+          }
+        </div>
       </div>
-    </div>
 
-    <nav class="nav nav--mobile ep-container" aria-label="Mobile">
-      @for (item of navItems; track item.label) {
-        @if (item.path) {
-          <a
-            class="nav__link"
-            [routerLink]="item.path"
-            routerLinkActive="nav__link--active"
-            [routerLinkActiveOptions]="{ exact: item.exact === true }"
-            (click)="closeMobile()"
-          >
-            {{ item.label }}
-          </a>
-        } @else if (item.externalUrl) {
-          <a
-            class="nav__link nav__link--external"
-            [href]="item.externalUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            (click)="closeMobile()"
-          >
-            {{ item.label }}
-            <span class="sr-only">(opens in a new tab)</span>
-          </a>
+      <nav class="nav nav--mobile ep-container" aria-label="Mobile">
+        @for (item of navItems; track item.label) {
+          @if (item.path) {
+            <a
+              class="nav__link"
+              [routerLink]="item.path"
+              routerLinkActive="nav__link--active"
+              [routerLinkActiveOptions]="{ exact: item.exact === true }"
+              (click)="closeMobile()"
+            >
+              {{ item.label }}
+            </a>
+          } @else if (item.externalUrl) {
+            <a
+              class="nav__link nav__link--external"
+              [href]="item.externalUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              (click)="closeMobile()"
+            >
+              {{ item.label }}
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          }
         }
-      }
-    </nav>
+      </nav>
+    </div>
   </div>
 </header>

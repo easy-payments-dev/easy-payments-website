@@ -1,0 +1,27 @@
+@if (open() && image(); as shot) {
+  <div
+    class="ep-lightbox"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="dialogId"
+    (click)="onBackdropClick($event)"
+  >
+    <div class="ep-lightbox__panel" (click)="$event.stopPropagation()">
+      <div class="ep-lightbox__toolbar">
+        <p class="ep-lightbox__caption" [id]="dialogId">
+          {{ shot.caption || shot.alt }}
+        </p>
+        <button
+          #closeButton
+          type="button"
+          class="ep-lightbox__close"
+          (click)="close()"
+          aria-label="Close image preview"
+        >
+          Close
+        </button>
+      </div>
+      <img class="ep-lightbox__image" [src]="shot.src" [alt]="shot.alt" />
+    </div>
+  </div>
+}

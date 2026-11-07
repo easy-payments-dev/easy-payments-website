@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   HostListener,
+  computed,
   inject,
   signal,
   viewChild,
@@ -33,14 +34,23 @@ export class SiteHeader {
   private readonly router = inject(Router);
   private readonly menuToggle = viewChild<ElementRef<HTMLButtonElement>>('menuToggle');
 
-  protected readonly siteName = environment.siteName;
-  protected readonly tagline = environment.tagline;
   protected readonly githubUrl = environment.githubUrl;
-  protected readonly brandMark = BRAND_ASSETS.mark64;
   protected readonly themeOptions = THEME_OPTIONS;
   protected readonly themePreference = this.themeService.preference;
   protected readonly resolvedTheme = this.themeService.resolvedTheme;
   protected readonly mobileOpen = signal(false);
+
+  protected readonly lockupSrc = computed(() =>
+    this.resolvedTheme() === 'dark'
+      ? BRAND_ASSETS.headerLockupDark
+      : BRAND_ASSETS.headerLockupLight,
+  );
+
+  protected readonly lockupSrcset = computed(() =>
+    this.resolvedTheme() === 'dark'
+      ? `${BRAND_ASSETS.headerLockupDark} 1x, ${BRAND_ASSETS.headerLockupDark2x} 2x`
+      : `${BRAND_ASSETS.headerLockupLight} 1x, ${BRAND_ASSETS.headerLockupLight2x} 2x`,
+  );
 
   protected readonly navItems: readonly NavItem[] = [
     { label: 'Frameworks', path: '/frameworks' },

@@ -1,0 +1,58 @@
+.ep-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: var(--ep-space-4);
+  background: var(--ep-bg-overlay);
+  backdrop-filter: blur(4px);
+}
+
+.ep-lightbox__panel {
+  display: grid;
+  gap: var(--ep-space-3);
+  width: min(100%, 56rem);
+  max-height: min(92vh, 52rem);
+  padding: var(--ep-space-4);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-lg);
+  background: var(--ep-bg-elevated);
+  box-shadow: var(--ep-shadow-md);
+}
+
+.ep-lightbox__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ep-space-3);
+}
+
+.ep-lightbox__caption {
+  margin: 0;
+  font-size: var(--ep-text-sm);
+  font-weight: var(--ep-font-semibold);
+  color: var(--ep-text);
+  max-width: none;
+}
+
+.ep-lightbox__close {
+  min-height: 2.25rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--ep-border-strong);
+  border-radius: var(--ep-radius-sm);
+  background: var(--ep-bg-muted);
+  color: var(--ep-text);
+  font-size: var(--ep-text-sm);
+  font-weight: var(--ep-font-semibold);
+  cursor: pointer;
+}
+
+.ep-lightbox__image {
+  width: 100%;
+  max-height: min(78vh, 44rem);
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--ep-radius-md);
+  background: var(--ep-bg-subtle);
+}

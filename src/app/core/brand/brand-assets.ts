@@ -6,6 +6,11 @@ export const BRAND_ASSETS = {
   mark64: 'brand/mark-64.png',
   mark128: 'brand/mark-128.png',
   logoLockup: 'brand/logo-lockup-640.png',
+  /** Official lockup extracted from source logo (transparent). */
+  headerLockupLight: 'brand/header-lockup-light.png',
+  headerLockupLight2x: 'brand/header-lockup-light@2x.png',
+  headerLockupDark: 'brand/header-lockup-dark.png',
+  headerLockupDark2x: 'brand/header-lockup-dark@2x.png',
   faviconIco: 'favicon.ico',
   faviconSvg: 'favicon.svg',
   favicon16: 'favicon-16x16.png',

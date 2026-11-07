@@ -4,14 +4,6 @@
     <ep-container>
       <div class="hero__grid">
         <div class="hero__copy">
-          <img
-            class="hero__logo"
-            [src]="logoLockup"
-            width="280"
-            height="93"
-            alt="Easy Payments"
-            decoding="async"
-          />
           <p class="hero__tagline">{{ tagline }}</p>
           <h1 id="hero-title">Multi-provider checkout for modern web apps</h1>
           <p class="hero__lede">
@@ -165,20 +157,57 @@
         titleId="screenshots-title"
         eyebrow="Product"
         title="Real checkout screenshots"
-        description="Captured from the Easy Payments Angular demo. These are not mocked marketing illustrations."
+        description="Captured from the Easy Payments Angular demo. Click any preview to enlarge."
         [headingLevel]="2"
       />
 
-      <ul class="shot-grid">
-        @for (shot of screenshots; track shot.src) {
-          <li>
-            <figure class="shot">
-              <img [src]="shot.src" [alt]="shot.alt" loading="lazy" decoding="async" />
-              <figcaption>{{ shot.caption }}</figcaption>
-            </figure>
-          </li>
-        }
-      </ul>
+      <div class="shot-gallery">
+        <button
+          type="button"
+          class="shot-card shot-card--featured"
+          (click)="openLightbox($event, featuredShot)"
+          [attr.aria-label]="'Enlarge screenshot: ' + featuredShot.caption"
+        >
+          <span class="shot-card__frame shot-card__frame--landscape">
+            <img
+              [src]="featuredShot.src"
+              [alt]="featuredShot.alt"
+              loading="lazy"
+              decoding="async"
+            />
+          </span>
+          <span class="shot-card__label">{{ featuredShot.caption }}</span>
+        </button>
+
+        <ul class="shot-gallery__thumbs">
+          @for (shot of galleryShots; track shot.src) {
+            <li>
+              <button
+                type="button"
+                class="shot-card"
+                [class.shot-card--portrait]="shot.frame === 'portrait'"
+                (click)="openLightbox($event, shot)"
+                [attr.aria-label]="'Enlarge screenshot: ' + shot.caption"
+              >
+                <span
+                  class="shot-card__frame"
+                  [class.shot-card__frame--portrait]="shot.frame === 'portrait'"
+                  [class.shot-card__frame--landscape]="shot.frame === 'landscape'"
+                >
+                  <img [src]="shot.src" [alt]="shot.alt" loading="lazy" decoding="async" />
+                </span>
+                <span class="shot-card__label">{{ shot.caption }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <ep-image-lightbox
+        [open]="lightboxOpen()"
+        [image]="lightboxImage()"
+        (closed)="closeLightbox()"
+      />
     </ep-container>
   </section>
 

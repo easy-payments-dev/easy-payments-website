@@ -1,9 +1,15 @@
 @use '../../../../styles/breakpoints' as bp;
 
-.site-header {
+/* Sticky must live on the host: app-shell is flex, and an inner sticky
+   element cannot escape a short flex-item containing block. */
+:host {
   position: sticky;
   top: 0;
   z-index: 40;
+  display: block;
+}
+
+.site-header {
   backdrop-filter: blur(14px);
   background: var(--ep-header-bg);
   border-bottom: 1px solid var(--ep-border);
@@ -19,7 +25,6 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
   min-width: 0;
   text-decoration: none;
   color: inherit;
@@ -29,38 +34,13 @@
   color: inherit;
 }
 
-.brand__mark {
-  width: 2rem;
-  height: 2rem;
-  flex: 0 0 auto;
-  border-radius: 0.55rem;
-  box-shadow: var(--ep-shadow-xs);
-}
-
-.brand__text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  line-height: 1.1;
-}
-
-.brand__name {
-  font-family: var(--ep-font-display);
-  font-size: 1.05rem;
-  font-weight: var(--ep-font-bold);
-  letter-spacing: var(--ep-tracking-tight);
-  color: var(--ep-navy);
-}
-
-.brand__tagline {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.68rem;
-  font-weight: var(--ep-font-semibold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ep-text-muted);
+.brand__lockup {
+  display: block;
+  width: auto;
+  height: 2.15rem;
+  max-width: min(100%, 15.5rem);
+  object-fit: contain;
+  object-position: left center;
 }
 
 .nav--desktop {
@@ -216,6 +196,11 @@
   border-bottom-color: var(--ep-border);
 }
 
+.nav-mobile__panel {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .nav-mobile__theme,
 .nav--mobile {
   overflow: hidden;
@@ -260,6 +245,11 @@
 @include bp.md {
   .theme-switcher {
     display: inline-flex;
+  }
+
+  .brand__lockup {
+    height: 2.35rem;
+    max-width: min(100%, 17rem);
   }
 }
 

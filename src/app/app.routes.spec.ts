@@ -17,4 +17,16 @@ describe('app routes', () => {
       expect(typeof route.loadComponent).toBe('function');
     }
   });
+
+  it('uses lowercase easy payments branding in document titles', () => {
+    expect(routes.find((route) => route.path === '')?.title).toBe(
+      'easy payments | Payments Made Simple',
+    );
+    expect(routes.find((route) => route.path === 'frameworks')?.title).toBe(
+      'Frameworks | easy payments',
+    );
+    expect(routes.find((route) => route.path === 'docs/angular')?.title).toBe(
+      'Documentation | easy payments',
+    );
+  });
 });

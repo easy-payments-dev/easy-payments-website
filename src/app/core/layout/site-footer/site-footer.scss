@@ -16,30 +16,14 @@
 .site-footer__brand {
   display: flex;
   align-items: center;
-  gap: var(--ep-space-3);
 }
 
-.site-footer__mark {
-  border-radius: 0.6rem;
-}
-
-.site-footer__name {
-  margin: 0;
-  font-family: var(--ep-font-display);
-  font-size: var(--ep-text-lg);
-  font-weight: var(--ep-font-bold);
-  color: #fff;
-  max-width: none;
-}
-
-.site-footer__tagline {
-  margin: 0.3rem 0 0;
-  font-size: var(--ep-text-xs);
-  font-weight: var(--ep-font-semibold);
-  letter-spacing: var(--ep-tracking-wider);
-  text-transform: uppercase;
-  color: var(--ep-footer-muted);
-  max-width: none;
+.site-footer__lockup {
+  width: auto;
+  height: 2.5rem;
+  max-width: min(100%, 16rem);
+  object-fit: contain;
+  object-position: left center;
 }
 
 .site-footer__columns {

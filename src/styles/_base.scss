@@ -6,6 +6,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--ep-header-height) + 0.75rem);
 }
 
 body {

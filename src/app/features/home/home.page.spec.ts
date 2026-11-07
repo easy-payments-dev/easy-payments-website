@@ -34,6 +34,16 @@ describe('HomePage', () => {
     expect(hrefs).toContain(environment.githubUrl);
   });
 
+  it('keeps the checkout screenshot and omits a redundant hero logo card', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const heroImages = Array.from(el.querySelectorAll('.hero img')).map((img) =>
+      img.getAttribute('src'),
+    );
+    expect(el.querySelector('.hero__logo')).toBeNull();
+    expect(heroImages).toEqual(['screenshots/checkout-desktop.png']);
+    expect(heroImages).not.toContain('brand/logo-lockup-640.png');
+  });
+
   it('presents Angular as available and other frameworks as coming soon', () => {
     const el = fixture.nativeElement as HTMLElement;
     expect(el.textContent).toContain('Angular');
@@ -73,14 +83,31 @@ describe('HomePage', () => {
     expect(hrefs).toContain(environment.npmAngularUrl);
   });
 
-  it('uses real checkout screenshot assets', () => {
+  it('renders a compact screenshot gallery with featured and supporting previews', () => {
     const el = fixture.nativeElement as HTMLElement;
-    const images = Array.from(el.querySelectorAll('img')).map((img) =>
-      img.getAttribute('src'),
+    expect(el.querySelector('.shot-gallery')).toBeTruthy();
+    expect(el.querySelector('.shot-card--featured')).toBeTruthy();
+    expect(el.querySelectorAll('.shot-gallery__thumbs .shot-card').length).toBe(
+      4,
     );
-    expect(images).toContain('screenshots/checkout-desktop.png');
-    expect(images).toContain('screenshots/checkout-mobile.png');
-    expect(images).toContain('screenshots/checkout-dark.png');
-    expect(images).toContain('screenshots/checkout-methods.png');
+  });
+
+  it('opens and closes the screenshot lightbox', async () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const featured = el.querySelector(
+      '.shot-card--featured',
+    ) as HTMLButtonElement;
+    featured.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(el.querySelector('[role="dialog"]')).toBeTruthy();
+    expect(document.body.style.overflow).toBe('hidden');
+
+    const close = el.querySelector('.ep-lightbox__close') as HTMLButtonElement;
+    close.click();
+    fixture.detectChanges();
+    expect(el.querySelector('[role="dialog"]')).toBeNull();
   });
 });
