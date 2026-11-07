@@ -48,5 +48,8 @@ describe('app routes', () => {
       routes.find((route) => route.path === 'docs/:framework/:version/:slug')
         ?.title,
     ).toBe('Documentation | easy payments');
+    expect(routes.find((route) => route.path === 'playground')?.title).toBe(
+      'Playground | Angular checkout simulation | easy payments',
+    );
   });
 });
