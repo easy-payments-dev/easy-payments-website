@@ -1,16 +1,32 @@
 <section class="ep-page home">
-  <div class="ep-container home__inner">
-    <p class="ep-eyebrow">Official ecosystem website</p>
-    <h1>{{ siteName }}</h1>
-    <p class="home__tagline">{{ tagline }}</p>
-    <p class="ep-lede">
-      Foundation placeholder for the Easy Payments marketing site. The full landing experience arrives in a later
-      milestone. Angular library documentation currently tracks published version {{ latestAngular }}.
-    </p>
+  <ep-container width="narrow">
+    <img
+      class="home__logo"
+      [src]="logoLockup"
+      width="320"
+      height="107"
+      alt="Easy Payments — Payments Made Simple"
+      decoding="async"
+    />
+
+    <ep-section-heading
+      eyebrow="Official ecosystem website"
+      [title]="siteName"
+      [description]="description"
+    >
+      <p class="home__tagline">{{ tagline }}</p>
+    </ep-section-heading>
 
     <div class="home__actions">
-      <a class="ep-btn ep-btn--primary" routerLink="/frameworks">Explore frameworks</a>
-      <a class="ep-btn ep-btn--ghost" routerLink="/docs/angular">Read documentation</a>
+      <ep-button variant="primary" routerLink="/frameworks">Explore frameworks</ep-button>
+      <ep-button variant="outline" routerLink="/docs/angular">Read documentation</ep-button>
     </div>
-  </div>
+
+    <div class="home__panel">
+      <ep-alert variant="info" title="Design system preview">
+        Shared buttons, alerts, and code presentation are ready for the landing page and docs engine.
+      </ep-alert>
+      <ep-code-block language="bash" label="Install" [code]="installExample" />
+    </div>
+  </ep-container>
 </section>

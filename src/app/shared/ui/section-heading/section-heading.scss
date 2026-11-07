@@ -1,0 +1,27 @@
+.ep-section-heading {
+  display: grid;
+  gap: var(--ep-space-3);
+  margin-bottom: var(--ep-space-7);
+  max-width: 44rem;
+}
+
+.ep-section-heading__eyebrow {
+  margin: 0;
+  font-size: var(--ep-text-xs);
+  font-weight: var(--ep-font-semibold);
+  letter-spacing: var(--ep-tracking-wider);
+  text-transform: uppercase;
+  color: var(--ep-accent);
+  max-width: none;
+}
+
+.ep-section-heading__title {
+  margin: 0;
+}
+
+.ep-section-heading__description {
+  margin: 0;
+  font-size: var(--ep-text-lg);
+  line-height: var(--ep-leading-relaxed);
+  color: var(--ep-text-muted);
+}

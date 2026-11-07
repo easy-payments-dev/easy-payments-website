@@ -1,0 +1,40 @@
+.ep-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.6rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--ep-radius-sm);
+  font-size: var(--ep-text-xs);
+  font-weight: var(--ep-font-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ep-badge__dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ep-badge--available {
+  color: var(--ep-status-available);
+  background: var(--ep-status-available-bg);
+}
+
+.ep-badge--coming-soon {
+  color: var(--ep-status-soon);
+  background: var(--ep-status-soon-bg);
+}
+
+.ep-badge--release-candidate {
+  color: var(--ep-status-rc);
+  background: var(--ep-status-rc-bg);
+}
+
+.ep-badge--info {
+  color: var(--ep-status-info);
+  background: var(--ep-status-info-bg);
+}

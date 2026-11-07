@@ -1,0 +1,10 @@
+<div [ngClass]="classes()" [attr.role]="role()">
+  <div class="ep-alert__content">
+    @if (title()) {
+      <p class="ep-alert__title">{{ title() }}</p>
+    }
+    <div class="ep-alert__body">
+      <ng-content />
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import {
   Injectable,
   PLATFORM_ID,
@@ -12,11 +12,15 @@ import {
   ThemePreference,
 } from './theme.types';
 
+const THEME_COLOR_LIGHT = '#F5F8FA';
+const THEME_COLOR_DARK = '#0A1219';
+const THEME_COLOR_BRAND = '#0A7EA4';
+
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly mediaQuery =
-    '(prefers-color-scheme: dark)';
+  private readonly document = inject(DOCUMENT);
+  private readonly mediaQuery = '(prefers-color-scheme: dark)';
   private media: MediaQueryList | null = null;
 
   private readonly preferenceSignal = signal<ThemePreference>('system');
@@ -73,8 +77,40 @@ export class ThemeService {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    document.documentElement.dataset['theme'] = this.resolvedTheme();
-    document.documentElement.style.colorScheme = this.resolvedTheme();
+
+    const resolved = this.resolvedTheme();
+    const root = this.document.documentElement;
+    root.dataset['theme'] = resolved;
+    root.style.colorScheme = resolved;
+    this.syncThemeColorMeta(resolved);
+  }
+
+  private syncThemeColorMeta(resolved: ResolvedTheme): void {
+    const color = resolved === 'dark' ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
+    const metas = this.document.querySelectorAll('meta[name="theme-color"]');
+    if (!metas.length) {
+      const meta = this.document.createElement('meta');
+      meta.setAttribute('name', 'theme-color');
+      meta.setAttribute('content', color);
+      meta.dataset['epTheme'] = 'dynamic';
+      this.document.head.appendChild(meta);
+      return;
+    }
+
+    metas.forEach((meta) => {
+      const media = meta.getAttribute('media');
+      if (!media) {
+        meta.setAttribute('content', color);
+      }
+    });
+
+    // Keep brand accent meta in sync for supporting browsers.
+    const brandMeta = this.document.querySelector(
+      'meta[name="theme-color"][data-ep-brand="true"]',
+    );
+    if (brandMeta) {
+      brandMeta.setAttribute('content', THEME_COLOR_BRAND);
+    }
   }
 
   private readStoredPreference(): ThemePreference {

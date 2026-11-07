@@ -1,0 +1,15 @@
+<div class="ep-code-block">
+  <div class="ep-code-block__toolbar">
+    <span class="ep-code-block__lang">{{ label() || language() }}</span>
+    <button
+      type="button"
+      class="ep-code-block__copy"
+      (click)="copy()"
+      [attr.aria-label]="copied() ? 'Copied to clipboard' : 'Copy code to clipboard'"
+    >
+      {{ copied() ? 'Copied' : 'Copy' }}
+    </button>
+  </div>
+  <pre class="ep-code-block__pre" tabindex="0"><code [attr.data-language]="language()">{{ code() }}</code></pre>
+  <span class="sr-only" aria-live="polite">{{ copied() ? 'Code copied to clipboard' : '' }}</span>
+</div>

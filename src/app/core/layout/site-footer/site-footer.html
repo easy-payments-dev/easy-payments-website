@@ -1,21 +1,46 @@
 <footer class="site-footer">
   <div class="ep-container site-footer__inner">
     <div class="site-footer__brand">
-      <p class="site-footer__name">{{ siteName }}</p>
-      <p class="site-footer__tagline">{{ tagline }}</p>
+      <img
+        class="site-footer__mark"
+        [src]="brandMark"
+        width="36"
+        height="36"
+        alt=""
+        decoding="async"
+      />
+      <div>
+        <p class="site-footer__name">{{ siteName }}</p>
+        <p class="site-footer__tagline">{{ tagline }}</p>
+      </div>
     </div>
 
-    <nav class="site-footer__nav" aria-label="Footer">
-      <a routerLink="/">Home</a>
-      <a routerLink="/frameworks">Frameworks</a>
-      <a routerLink="/docs/angular">Documentation</a>
-      <a routerLink="/security">Security</a>
-      <a routerLink="/playground">Playground</a>
-      <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </nav>
+    <div class="site-footer__columns">
+      <nav class="site-footer__nav" aria-label="Footer product">
+        <p class="site-footer__heading">Product</p>
+        <a routerLink="/frameworks">Frameworks</a>
+        <a routerLink="/docs/angular">Documentation</a>
+        <a routerLink="/playground">Playground</a>
+      </nav>
+
+      <nav class="site-footer__nav" aria-label="Footer trust">
+        <p class="site-footer__heading">Trust</p>
+        <a routerLink="/security">Security</a>
+        <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">
+          GitHub organization
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+        <span class="site-footer__meta">{{ license }} license</span>
+      </nav>
+    </div>
+
+    <p class="site-footer__statement">
+      Easy Payments is an open-source integration library ecosystem for developers. It is not a payment processor and
+      does not move money, hold funds, or replace Stripe, PayPal, or other providers.
+    </p>
 
     <p class="site-footer__copy">
-      © {{ year }} {{ siteName }}. Official ecosystem website. No payment processing on this site.
+      © {{ year }} {{ siteName }}. Official ecosystem website.
     </p>
   </div>
 </footer>

@@ -1,37 +1,81 @@
 <section class="ep-page docs">
-  <div class="ep-container">
-    <p class="ep-eyebrow">Documentation</p>
-    <h1>Angular</h1>
-    <p class="ep-lede">
-      Documentation content will be imported in a later milestone. Until then, this page points to the latest
-      <strong>published</strong> Angular library version.
-    </p>
+  <ep-container>
+    <ep-alert variant="info" title="Documentation foundation">
+      This page demonstrates the reusable docs UI. Markdown ingestion, search indexing, and historical version
+      rendering arrive in a later milestone.
+    </ep-alert>
 
-    <div class="docs-panel">
-      <h2>Current published version</h2>
-      <p class="docs-panel__version">{{ latestPublished }}</p>
-      <p>
-        Angular <strong>1.2.0</strong> is a release candidate and is <strong>not</strong> treated as published on this
-        site.
-      </p>
+    <ep-docs-toolbar
+      [frameworks]="frameworkOptions"
+      [versions]="versionOptions"
+      [selectedFramework]="selectedFramework()"
+      [selectedVersion]="selectedVersion()"
+      (frameworkChange)="onFrameworkChange($event)"
+      (versionChange)="onVersionChange($event)"
+    />
 
-      @if (angular; as fw) {
-        <ul class="version-list">
-          @for (version of fw.versions; track version.version) {
-            <li>
-              <span>v{{ version.version }}</span>
-              <span class="ep-status ep-status--{{ version.status }}">
-                {{ version.status === 'release-candidate' ? 'Release candidate' : version.status }}
-              </span>
-            </li>
+    <ep-docs-shell>
+      <ep-docs-sidebar docsSidebar [groups]="navGroups" />
+
+      <div docsMain class="docs-main">
+        <ep-docs-page-header
+          eyebrow="Angular documentation"
+          title="Overview"
+          [description]="pageDescription"
+          badgeLabel="UI foundation"
+          badgeVariant="info"
+        />
+
+        <section id="published-version" class="docs-section">
+          <h2>Current published version</h2>
+          <p class="docs-version">{{ latestPublished }}</p>
+          <ep-alert variant="warning" title="Release candidate">
+            Angular <strong>1.2.0</strong> is a release candidate and is <strong>not</strong> presented as published.
+          </ep-alert>
+        </section>
+
+        <section id="version-status" class="docs-section">
+          <h2>Version status</h2>
+          @if (angular; as fw) {
+            <ul class="version-list">
+              @for (version of fw.versions; track version.version) {
+                <li>
+                  <span>v{{ version.version }}</span>
+                  @if (version.status === 'published') {
+                    <ep-badge variant="available">Published</ep-badge>
+                  } @else if (version.status === 'release-candidate') {
+                    <ep-badge variant="release-candidate">Release candidate</ep-badge>
+                  } @else {
+                    <ep-badge variant="coming-soon">Coming soon</ep-badge>
+                  }
+                </li>
+              }
+            </ul>
           }
-        </ul>
-      }
-    </div>
+        </section>
 
-    <p>
-      Looking for security guidance?
-      <a routerLink="/security">Read the security overview</a>.
-    </p>
-  </div>
+        <section id="example" class="docs-section">
+          <h2>Example surface</h2>
+          <ep-tabs ariaLabel="Documentation examples">
+            <ep-tab-panel id="typescript" label="TypeScript">
+              <ep-code-block language="typescript" label="TypeScript" [code]="exampleCode" />
+            </ep-tab-panel>
+            <ep-tab-panel id="notes" label="Notes">
+              <p>
+                Code blocks, tabs, and copy actions are available for the future docs engine. No live provider
+                integration runs on this website.
+              </p>
+            </ep-tab-panel>
+          </ep-tabs>
+        </section>
+
+        <ep-docs-pager
+          [previous]="{ label: 'Introduction', href: '/docs/angular' }"
+          [next]="{ label: 'Security overview', href: '/security' }"
+        />
+      </div>
+
+      <ep-docs-toc docsToc [items]="tocItems" />
+    </ep-docs-shell>
+  </ep-container>
 </section>

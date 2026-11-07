@@ -1,35 +1,41 @@
 <section class="ep-page frameworks">
-  <div class="ep-container">
-    <p class="ep-eyebrow">Integrations</p>
-    <h1>Frameworks</h1>
-    <p class="ep-lede">
-      Easy Payments starts with Angular. React, Vue, and Svelte adapters are planned and listed here as Coming Soon.
-    </p>
+  <ep-container>
+    <ep-section-heading
+      eyebrow="Integrations"
+      title="Frameworks"
+      description="Easy Payments starts with Angular. React, Vue, and Svelte adapters are planned and listed here as Coming Soon."
+    />
 
     <ul class="framework-list">
       @for (framework of frameworks; track framework.id) {
-        <li class="framework-item">
-          <div class="framework-item__head">
-            <h2>{{ framework.name }}</h2>
-            <span [class]="statusClass(framework.status)">{{ statusLabel(framework.status) }}</span>
-          </div>
+        <li>
+          <ep-card variant="framework">
+            <div class="framework-card__head">
+              <h2>{{ framework.name }}</h2>
+              <ep-badge [variant]="badgeVariant(framework.status)">
+                {{ statusLabel(framework.status) }}
+              </ep-badge>
+            </div>
 
-          @if (framework.status === 'published') {
-            <p>
-              Latest published version
-              <strong>{{ framework.latestPublished }}</strong>.
-              @if (framework.packageName) {
-                Package: <code>{{ framework.packageName }}</code>.
+            @if (framework.status === 'published') {
+              <p>
+                Latest published version
+                <strong>{{ framework.latestPublished }}</strong>.
+                @if (framework.packageName) {
+                  Package: <code>{{ framework.packageName }}</code>.
+                }
+              </p>
+              @if (framework.docsPath) {
+                <ep-button variant="outline" size="sm" [routerLink]="framework.docsPath">
+                  View documentation
+                </ep-button>
               }
-            </p>
-            @if (framework.docsPath) {
-              <a class="ep-btn ep-btn--ghost" [routerLink]="framework.docsPath">View documentation</a>
+            } @else {
+              <p>Not available yet. This framework will appear here when a published release is ready.</p>
             }
-          } @else {
-            <p>Not available yet. This framework will appear here when a published release is ready.</p>
-          }
+          </ep-card>
         </li>
       }
     </ul>
-  </div>
+  </ep-container>
 </section>

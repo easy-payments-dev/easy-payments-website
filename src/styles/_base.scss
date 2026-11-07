@@ -13,18 +13,22 @@ body {
   min-height: 100vh;
   font-family: var(--ep-font-sans);
   font-size: var(--ep-text-base);
+  font-weight: var(--ep-font-regular);
   line-height: var(--ep-leading-normal);
   color: var(--ep-text);
-  background:
-    radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--ep-brand-turquoise) 18%, transparent), transparent 60%),
-    radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--ep-brand-accent) 16%, transparent), transparent 55%),
-    linear-gradient(180deg, var(--ep-bg) 0%, var(--ep-bg-muted) 100%);
-  background-attachment: fixed;
+  background-color: var(--ep-bg);
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ep-brand-turquoise) 7%, var(--ep-bg)) 0%,
+      var(--ep-bg) 18rem
+    );
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-img {
+img,
+svg {
   max-width: 100%;
   display: block;
 }
@@ -56,10 +60,10 @@ h3,
 h4 {
   margin: 0 0 var(--ep-space-3);
   font-family: var(--ep-font-display);
-  font-weight: 700;
+  font-weight: var(--ep-font-bold);
   line-height: var(--ep-leading-tight);
   color: var(--ep-navy);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ep-tracking-tight);
 }
 
 h1 {
@@ -85,8 +89,24 @@ p:last-child {
 }
 
 button,
-select {
+select,
+input {
   font: inherit;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--ep-font-mono);
+}
+
+code {
+  font-size: 0.92em;
+  padding: 0.12em 0.35em;
+  border-radius: var(--ep-radius-xs);
+  background: var(--ep-bg-muted);
+  color: var(--ep-text);
 }
 
 .sr-only {
@@ -101,107 +121,8 @@ select {
   border: 0;
 }
 
-.ep-container {
-  width: min(100% - 2rem, var(--ep-content-max));
-  margin-inline: auto;
-}
-
 .ep-page {
-  padding-block: var(--ep-space-7);
-  animation: ep-fade-up 420ms ease both;
-}
-
-.ep-eyebrow {
-  display: inline-block;
-  margin-bottom: var(--ep-space-3);
-  font-size: var(--ep-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ep-accent);
-}
-
-.ep-lede {
-  font-size: var(--ep-text-lg);
-  color: var(--ep-text-muted);
-}
-
-.ep-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: var(--ep-text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.ep-status--published {
-  color: var(--ep-status-published);
-}
-
-.ep-status--release-candidate {
-  color: var(--ep-status-rc);
-}
-
-.ep-status--coming-soon {
-  color: var(--ep-status-soon);
-}
-
-.ep-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 2.75rem;
-  padding: 0.65rem 1.2rem;
-  border: 1px solid transparent;
-  border-radius: var(--ep-radius-md);
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    background-color var(--ep-transition-fast),
-    color var(--ep-transition-fast),
-    border-color var(--ep-transition-fast),
-    transform var(--ep-transition-fast);
-}
-
-.ep-btn:hover {
-  text-decoration: none;
-}
-
-.ep-btn--primary {
-  background: var(--ep-accent);
-  color: #fff;
-}
-
-.ep-btn--primary:hover {
-  background: var(--ep-accent-hover);
-  color: #fff;
-}
-
-.ep-btn--ghost {
-  background: transparent;
-  border-color: var(--ep-border-strong);
-  color: var(--ep-text);
-}
-
-.ep-btn--ghost:hover {
-  border-color: var(--ep-accent);
-  color: var(--ep-accent);
-}
-
-@keyframes ep-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(0.6rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  padding-block: var(--ep-space-9);
 }
 
 @media (prefers-reduced-motion: reduce) {

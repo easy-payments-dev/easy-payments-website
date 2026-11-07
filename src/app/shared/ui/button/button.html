@@ -1,0 +1,42 @@
+@if (routerLink(); as link) {
+  <a
+    [routerLink]="link"
+    [ngClass]="classes()"
+    [attr.aria-disabled]="isDisabled() ? true : null"
+    [attr.tabindex]="isDisabled() ? -1 : null"
+  >
+    @if (loading()) {
+      <span class="ep-button__spinner" aria-hidden="true"></span>
+      <span class="sr-only">Loading</span>
+    }
+    <span class="ep-button__label"><ng-content /></span>
+  </a>
+} @else if (href(); as url) {
+  <a
+    [href]="url"
+    [ngClass]="classes()"
+    [attr.target]="external() ? '_blank' : null"
+    [attr.rel]="external() ? 'noopener noreferrer' : null"
+    [attr.aria-disabled]="isDisabled() ? true : null"
+    [attr.tabindex]="isDisabled() ? -1 : null"
+  >
+    @if (loading()) {
+      <span class="ep-button__spinner" aria-hidden="true"></span>
+      <span class="sr-only">Loading</span>
+    }
+    <span class="ep-button__label"><ng-content /></span>
+  </a>
+} @else {
+  <button
+    [type]="type()"
+    [ngClass]="classes()"
+    [disabled]="isDisabled()"
+    [attr.aria-busy]="loading() ? true : null"
+  >
+    @if (loading()) {
+      <span class="ep-button__spinner" aria-hidden="true"></span>
+      <span class="sr-only">Loading</span>
+    }
+    <span class="ep-button__label"><ng-content /></span>
+  </button>
+}

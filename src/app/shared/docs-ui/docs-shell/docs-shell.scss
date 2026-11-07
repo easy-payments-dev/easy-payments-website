@@ -1,0 +1,39 @@
+@use '../../../../styles/breakpoints' as bp;
+
+.ep-docs-shell {
+  display: grid;
+  gap: var(--ep-space-7);
+  align-items: start;
+}
+
+.ep-docs-shell__sidebar,
+.ep-docs-shell__toc {
+  min-width: 0;
+}
+
+.ep-docs-shell__main {
+  min-width: 0;
+}
+
+@include bp.lg {
+  .ep-docs-shell {
+    grid-template-columns: var(--ep-docs-sidebar-width) minmax(0, 1fr);
+  }
+
+  .ep-docs-shell__toc {
+    display: none;
+  }
+}
+
+@include bp.xl {
+  .ep-docs-shell {
+    grid-template-columns:
+      var(--ep-docs-sidebar-width)
+      minmax(0, 1fr)
+      var(--ep-docs-toc-width);
+  }
+
+  .ep-docs-shell__toc {
+    display: block;
+  }
+}

@@ -1,10 +1,17 @@
 <header class="site-header">
-  <div class="ep-container site-header__inner">
+  <div class="site-header__bar ep-container">
     <a class="brand" routerLink="/" (click)="closeMobile()" aria-label="Easy Payments home">
-      <span class="brand__mark" aria-hidden="true"></span>
+      <img
+        class="brand__mark"
+        [src]="brandMark"
+        width="32"
+        height="32"
+        alt=""
+        decoding="async"
+      />
       <span class="brand__text">
         <span class="brand__name">{{ siteName }}</span>
-        <span class="brand__tagline">Payments made simple</span>
+        <span class="brand__tagline">{{ tagline }}</span>
       </span>
     </a>
 
@@ -20,28 +27,40 @@
             {{ item.label }}
           </a>
         } @else if (item.externalUrl) {
-          <a class="nav__link" [href]="item.externalUrl" target="_blank" rel="noopener noreferrer">
+          <a
+            class="nav__link nav__link--external"
+            [href]="item.externalUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {{ item.label }}
+            <span class="sr-only">(opens in a new tab)</span>
           </a>
         }
       }
     </nav>
 
     <div class="site-header__actions">
-      <label class="theme-select">
-        <span class="sr-only">Theme</span>
-        <select
-          [value]="themePreference()"
-          (change)="onThemeChange($event)"
-          aria-label="Color theme"
-        >
-          @for (option of themeOptions; track option.value) {
-            <option [value]="option.value">{{ option.label }}</option>
-          }
-        </select>
-      </label>
+      <div
+        class="theme-switcher"
+        role="group"
+        [attr.aria-label]="'Color theme, currently ' + themePreference()"
+      >
+        @for (option of themeOptions; track option.value) {
+          <button
+            type="button"
+            class="theme-switcher__option"
+            [ngClass]="{ 'is-active': isTheme(option.value) }"
+            [attr.aria-pressed]="isTheme(option.value)"
+            (click)="setTheme(option.value)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
 
       <button
+        #menuToggle
         type="button"
         class="menu-toggle"
         [attr.aria-expanded]="mobileOpen()"
@@ -60,6 +79,23 @@
     [ngClass]="{ 'is-open': mobileOpen() }"
     [attr.aria-hidden]="!mobileOpen()"
   >
+    <div class="ep-container nav-mobile__theme">
+      <p class="nav-mobile__theme-label">Theme</p>
+      <div class="theme-switcher theme-switcher--mobile" role="group" aria-label="Color theme">
+        @for (option of themeOptions; track option.value) {
+          <button
+            type="button"
+            class="theme-switcher__option"
+            [ngClass]="{ 'is-active': isTheme(option.value) }"
+            [attr.aria-pressed]="isTheme(option.value)"
+            (click)="setTheme(option.value)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
+    </div>
+
     <nav class="nav nav--mobile ep-container" aria-label="Mobile">
       @for (item of navItems; track item.label) {
         @if (item.path) {
@@ -74,13 +110,14 @@
           </a>
         } @else if (item.externalUrl) {
           <a
-            class="nav__link"
+            class="nav__link nav__link--external"
             [href]="item.externalUrl"
             target="_blank"
             rel="noopener noreferrer"
             (click)="closeMobile()"
           >
             {{ item.label }}
+            <span class="sr-only">(opens in a new tab)</span>
           </a>
         }
       }

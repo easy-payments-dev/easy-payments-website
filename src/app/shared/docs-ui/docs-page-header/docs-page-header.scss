@@ -1,0 +1,34 @@
+.ep-docs-page-header {
+  display: grid;
+  gap: var(--ep-space-3);
+  margin-bottom: var(--ep-space-6);
+  padding-bottom: var(--ep-space-5);
+  border-bottom: 1px solid var(--ep-border);
+}
+
+.ep-docs-page-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ep-space-3);
+}
+
+.ep-docs-page-header__eyebrow {
+  margin: 0;
+  font-size: var(--ep-text-xs);
+  font-weight: var(--ep-font-semibold);
+  letter-spacing: var(--ep-tracking-wider);
+  text-transform: uppercase;
+  color: var(--ep-accent);
+  max-width: none;
+}
+
+.ep-docs-page-header__title {
+  margin: 0;
+}
+
+.ep-docs-page-header__description {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--ep-text-muted);
+}

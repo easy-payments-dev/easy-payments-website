@@ -1,43 +1,48 @@
-.docs-panel {
-  margin-block: var(--ep-space-6);
-  padding: var(--ep-space-5);
-  border: 1px solid var(--ep-border);
-  border-radius: var(--ep-radius-lg);
-  background: var(--ep-bg-elevated);
-  max-width: 40rem;
+.docs-main {
+  min-width: 0;
 }
 
-.docs-panel h2 {
-  margin-bottom: var(--ep-space-2);
-  font-size: var(--ep-text-lg);
+.docs-section {
+  margin-bottom: var(--ep-space-7);
 }
 
-.docs-panel__version {
+.docs-section h2 {
+  margin-bottom: var(--ep-space-3);
+  font-size: var(--ep-text-xl);
+}
+
+.docs-version {
   margin: 0 0 var(--ep-space-4);
   font-family: var(--ep-font-display);
   font-size: var(--ep-text-2xl);
-  font-weight: 700;
+  font-weight: var(--ep-font-bold);
   color: var(--ep-accent);
   max-width: none;
 }
 
 .version-list {
   list-style: none;
-  margin: var(--ep-space-4) 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
   gap: 0.65rem;
+  max-width: 28rem;
 }
 
 .version-list li {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  padding-block: 0.35rem;
+  padding-block: 0.45rem;
   border-bottom: 1px solid var(--ep-border);
   font-size: var(--ep-text-sm);
 }
 
 .version-list li:last-child {
   border-bottom: 0;
+}
+
+ep-alert + ep-docs-toolbar {
+  display: block;
+  margin-top: var(--ep-space-5);
 }

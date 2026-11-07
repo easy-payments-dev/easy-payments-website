@@ -1,13 +1,14 @@
 <section class="ep-page not-found">
-  <div class="ep-container not-found__inner">
-    <p class="ep-eyebrow">{{ siteName }}</p>
-    <h1>Page not found</h1>
-    <p class="ep-lede">
-      That route is not part of the Easy Payments website yet. Head home or jump into frameworks and documentation.
-    </p>
-    <div class="not-found__actions">
-      <a class="ep-btn ep-btn--primary" routerLink="/">Back home</a>
-      <a class="ep-btn ep-btn--ghost" routerLink="/frameworks">Frameworks</a>
-    </div>
-  </div>
+  <ep-container width="narrow">
+    <ep-empty-state
+      [eyebrow]="siteName"
+      title="Page not found"
+      description="That route is not part of the Easy Payments website yet. Head home or jump into frameworks and documentation."
+      badgeLabel="404"
+      badgeVariant="info"
+    >
+      <ep-button variant="primary" routerLink="/">Back home</ep-button>
+      <ep-button variant="outline" routerLink="/frameworks">Frameworks</ep-button>
+    </ep-empty-state>
+  </ep-container>
 </section>

@@ -1,0 +1,11 @@
+<div class="ep-empty-state">
+  @if (eyebrow()) {
+    <p class="ep-empty-state__eyebrow">{{ eyebrow() }}</p>
+  }
+  <ep-badge [variant]="badgeVariant()">{{ badgeLabel() }}</ep-badge>
+  <h1 class="ep-empty-state__title">{{ title() }}</h1>
+  <p class="ep-empty-state__description">{{ description() }}</p>
+  <div class="ep-empty-state__actions">
+    <ng-content />
+  </div>
+</div>

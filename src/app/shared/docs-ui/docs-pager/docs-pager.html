@@ -1,0 +1,17 @@
+<nav class="ep-docs-pager" aria-label="Documentation pagination">
+  @if (previous(); as prev) {
+    <a class="ep-docs-pager__link ep-docs-pager__link--prev" [href]="prev.href">
+      <span class="ep-docs-pager__direction">Previous</span>
+      <span class="ep-docs-pager__label">{{ prev.label }}</span>
+    </a>
+  } @else {
+    <span></span>
+  }
+
+  @if (next(); as nxt) {
+    <a class="ep-docs-pager__link ep-docs-pager__link--next" [href]="nxt.href">
+      <span class="ep-docs-pager__direction">Next</span>
+      <span class="ep-docs-pager__label">{{ nxt.label }}</span>
+    </a>
+  }
+</nav>

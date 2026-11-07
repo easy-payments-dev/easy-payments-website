@@ -1,0 +1,36 @@
+.ep-tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-md);
+  background: var(--ep-bg-subtle);
+}
+
+.ep-tabs__tab {
+  min-height: 2.25rem;
+  padding: 0.4rem 0.85rem;
+  border: 0;
+  border-radius: var(--ep-radius-sm);
+  background: transparent;
+  color: var(--ep-text-muted);
+  font-size: var(--ep-text-sm);
+  font-weight: var(--ep-font-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--ep-transition-fast),
+    color var(--ep-transition-fast);
+}
+
+.ep-tabs__tab:hover {
+  color: var(--ep-navy);
+  background: var(--ep-bg-elevated);
+}
+
+.ep-tabs__tab--active {
+  color: var(--ep-navy);
+  background: var(--ep-bg-elevated);
+  box-shadow: var(--ep-shadow-xs);
+  font-weight: var(--ep-font-semibold);
+}

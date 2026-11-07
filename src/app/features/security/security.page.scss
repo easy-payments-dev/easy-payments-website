@@ -3,31 +3,19 @@
   margin: var(--ep-space-6) 0;
   padding: 0;
   display: grid;
-  gap: var(--ep-space-5);
-  max-width: 44rem;
+  gap: var(--ep-space-4);
 }
 
 .security-list h2 {
-  margin-bottom: var(--ep-space-2);
+  margin: 0;
   font-size: var(--ep-text-lg);
 }
 
 .security-links {
-  max-width: 44rem;
   padding-top: var(--ep-space-4);
   border-top: 1px solid var(--ep-border);
 }
 
 .security-links h2 {
   font-size: var(--ep-text-lg);
-}
-
-.security-links ul {
-  margin: 0;
-  padding-left: 1.2rem;
-  color: var(--ep-text-muted);
-}
-
-.security-links li + li {
-  margin-top: 0.5rem;
 }

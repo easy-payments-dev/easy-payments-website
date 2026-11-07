@@ -1,0 +1,14 @@
+<header class="ep-docs-page-header">
+  <div class="ep-docs-page-header__meta">
+    @if (eyebrow()) {
+      <p class="ep-docs-page-header__eyebrow">{{ eyebrow() }}</p>
+    }
+    @if (badgeLabel()) {
+      <ep-badge [variant]="badgeVariant()">{{ badgeLabel() }}</ep-badge>
+    }
+  </div>
+  <h1 class="ep-docs-page-header__title">{{ title() }}</h1>
+  @if (description()) {
+    <p class="ep-docs-page-header__description">{{ description() }}</p>
+  }
+</header>

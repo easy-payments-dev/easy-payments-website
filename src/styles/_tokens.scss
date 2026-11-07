@@ -1,45 +1,90 @@
 :root {
   /* Brand */
   --ep-brand-accent: #0a7ea4;
+  --ep-brand-accent-deep: #086987;
   --ep-brand-navy: #0b1f33;
   --ep-brand-turquoise: #1aa6b7;
+  --ep-brand-turquoise-soft: #d7f1f4;
 
   /* Typography */
   --ep-font-sans: 'Outfit', 'Segoe UI', sans-serif;
   --ep-font-display: 'Syne', 'Outfit', sans-serif;
+  --ep-font-mono: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
 
-  --ep-text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
-  --ep-text-sm: clamp(0.875rem, 0.82rem + 0.25vw, 0.9375rem);
-  --ep-text-base: clamp(1rem, 0.95rem + 0.3vw, 1.0625rem);
-  --ep-text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
-  --ep-text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
-  --ep-text-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
-  --ep-text-3xl: clamp(2.25rem, 1.7rem + 2vw, 3.25rem);
+  --ep-font-regular: 400;
+  --ep-font-medium: 500;
+  --ep-font-semibold: 600;
+  --ep-font-bold: 700;
+  --ep-font-extrabold: 800;
+
+  --ep-text-xs: 0.75rem;
+  --ep-text-sm: 0.875rem;
+  --ep-text-base: 1rem;
+  --ep-text-lg: 1.125rem;
+  --ep-text-xl: 1.375rem;
+  --ep-text-2xl: clamp(1.625rem, 1.35rem + 1vw, 2.125rem);
+  --ep-text-3xl: clamp(2rem, 1.55rem + 1.8vw, 2.875rem);
+  --ep-text-4xl: clamp(2.375rem, 1.7rem + 2.4vw, 3.5rem);
 
   --ep-leading-tight: 1.15;
   --ep-leading-snug: 1.35;
   --ep-leading-normal: 1.6;
+  --ep-leading-relaxed: 1.75;
 
-  /* Space */
+  --ep-tracking-tight: -0.02em;
+  --ep-tracking-normal: 0;
+  --ep-tracking-wide: 0.08em;
+  --ep-tracking-wider: 0.14em;
+
+  /* Spacing scale */
+  --ep-space-0: 0;
   --ep-space-1: 0.25rem;
   --ep-space-2: 0.5rem;
   --ep-space-3: 0.75rem;
   --ep-space-4: 1rem;
-  --ep-space-5: 1.5rem;
-  --ep-space-6: 2rem;
-  --ep-space-7: 3rem;
-  --ep-space-8: 4.5rem;
+  --ep-space-5: 1.25rem;
+  --ep-space-6: 1.5rem;
+  --ep-space-7: 2rem;
+  --ep-space-8: 2.5rem;
+  --ep-space-9: 3rem;
+  --ep-space-10: 4rem;
+  --ep-space-12: 5rem;
 
+  /* Radius */
+  --ep-radius-xs: 0.25rem;
   --ep-radius-sm: 0.375rem;
-  --ep-radius-md: 0.625rem;
-  --ep-radius-lg: 1rem;
+  --ep-radius-md: 0.5rem;
+  --ep-radius-lg: 0.75rem;
+  --ep-radius-xl: 1rem;
 
-  --ep-header-height: 4rem;
+  /* Layout */
+  --ep-header-height: 4.25rem;
   --ep-content-max: 72rem;
+  --ep-content-narrow: 48rem;
+  --ep-docs-sidebar-width: 16.5rem;
+  --ep-docs-toc-width: 14rem;
   --ep-measure: 42rem;
 
-  --ep-focus-ring: 0 0 0 3px color-mix(in srgb, var(--ep-brand-accent) 45%, transparent);
+  /* Breakpoint references (for documentation; media queries use literals) */
+  --ep-bp-sm: 640px;
+  --ep-bp-md: 768px;
+  --ep-bp-lg: 960px;
+  --ep-bp-xl: 1200px;
 
-  --ep-transition-fast: 150ms ease;
-  --ep-transition: 220ms ease;
+  /* Motion */
+  --ep-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ep-duration-fast: 120ms;
+  --ep-duration: 200ms;
+  --ep-duration-slow: 320ms;
+  --ep-transition-fast: var(--ep-duration-fast) var(--ep-ease);
+  --ep-transition: var(--ep-duration) var(--ep-ease);
+  --ep-transition-slow: var(--ep-duration-slow) var(--ep-ease);
+
+  /* Focus */
+  --ep-focus-ring: 0 0 0 2px var(--ep-bg-elevated), 0 0 0 4px var(--ep-accent);
+
+  /* Control sizes */
+  --ep-control-height-sm: 2rem;
+  --ep-control-height: 2.5rem;
+  --ep-control-height-lg: 2.875rem;
 }

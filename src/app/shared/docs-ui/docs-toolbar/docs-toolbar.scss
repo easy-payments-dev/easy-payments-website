@@ -1,0 +1,66 @@
+@use '../../../../styles/breakpoints' as bp;
+
+.ep-docs-toolbar {
+  display: grid;
+  gap: var(--ep-space-3);
+  margin-bottom: var(--ep-space-5);
+}
+
+.ep-docs-toolbar__field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ep-docs-toolbar__label {
+  font-size: var(--ep-text-xs);
+  font-weight: var(--ep-font-semibold);
+  letter-spacing: var(--ep-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ep-text-subtle);
+}
+
+.ep-docs-toolbar select,
+.ep-docs-toolbar__search {
+  min-height: var(--ep-control-height);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-md);
+  background: var(--ep-bg-elevated);
+  color: var(--ep-text);
+}
+
+.ep-docs-toolbar select {
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+
+.ep-docs-toolbar__search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ep-space-3);
+  padding: 0.4rem 0.75rem;
+  color: var(--ep-text-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.ep-docs-toolbar__search:hover {
+  border-color: var(--ep-border-strong);
+  color: var(--ep-text);
+}
+
+.ep-docs-toolbar__search kbd {
+  font-family: var(--ep-font-mono);
+  font-size: 0.72rem;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-xs);
+  background: var(--ep-bg-muted);
+}
+
+@include bp.md {
+  .ep-docs-toolbar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(12rem, 1.4fr);
+    align-items: end;
+  }
+}

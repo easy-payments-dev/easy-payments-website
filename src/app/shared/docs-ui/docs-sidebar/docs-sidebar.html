@@ -1,0 +1,25 @@
+<nav class="ep-docs-sidebar" [attr.aria-label]="ariaLabel()">
+  @for (group of groups(); track group.title) {
+    <div class="ep-docs-sidebar__group">
+      <p class="ep-docs-sidebar__group-title">{{ group.title }}</p>
+      <ul class="ep-docs-sidebar__list">
+        @for (item of group.items; track item.id) {
+          <li>
+            <button
+              type="button"
+              class="ep-docs-sidebar__link"
+              [ngClass]="{
+                'ep-docs-sidebar__link--active': item.active,
+                'ep-docs-sidebar__link--disabled': item.disabled
+              }"
+              [disabled]="item.disabled === true"
+              [attr.aria-current]="item.active ? 'page' : null"
+            >
+              {{ item.label }}
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</nav>

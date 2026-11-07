@@ -1,0 +1,26 @@
+<div class="ep-tabs">
+  <div
+    class="ep-tabs__list"
+    role="tablist"
+    [attr.aria-label]="ariaLabel()"
+    (keydown)="onKeydown($event)"
+  >
+    @for (panel of panels(); track panel.id()) {
+      <button
+        type="button"
+        role="tab"
+        class="ep-tabs__tab"
+        [ngClass]="{ 'ep-tabs__tab--active': isActive(panel.id()) }"
+        [id]="'tab-' + panel.id()"
+        [attr.aria-selected]="isActive(panel.id())"
+        [attr.aria-controls]="'panel-' + panel.id()"
+        [attr.tabindex]="isActive(panel.id()) ? 0 : -1"
+        (click)="select(panel.id())"
+      >
+        {{ panel.label() }}
+      </button>
+    }
+  </div>
+
+  <ng-content />
+</div>

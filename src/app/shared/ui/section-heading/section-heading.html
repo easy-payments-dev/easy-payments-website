@@ -1,0 +1,23 @@
+<header class="ep-section-heading">
+  @if (eyebrow()) {
+    <p class="ep-section-heading__eyebrow">{{ eyebrow() }}</p>
+  }
+
+  @switch (headingLevel()) {
+    @case (2) {
+      <h2 class="ep-section-heading__title">{{ title() }}</h2>
+    }
+    @case (3) {
+      <h3 class="ep-section-heading__title">{{ title() }}</h3>
+    }
+    @default {
+      <h1 class="ep-section-heading__title">{{ title() }}</h1>
+    }
+  }
+
+  @if (description()) {
+    <p class="ep-section-heading__description">{{ description() }}</p>
+  }
+
+  <ng-content />
+</header>
