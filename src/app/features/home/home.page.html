@@ -1,32 +1,351 @@
-<section class="ep-page home">
-  <ep-container width="narrow">
-    <img
-      class="home__logo"
-      [src]="logoLockup"
-      width="320"
-      height="107"
-      alt="Easy Payments — Payments Made Simple"
-      decoding="async"
-    />
+<div class="home">
+  <!-- 1. Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <ep-container>
+      <div class="hero__grid">
+        <div class="hero__copy">
+          <img
+            class="hero__logo"
+            [src]="logoLockup"
+            width="280"
+            height="93"
+            alt="Easy Payments"
+            decoding="async"
+          />
+          <p class="hero__tagline">{{ tagline }}</p>
+          <h1 id="hero-title">Multi-provider checkout for modern web apps</h1>
+          <p class="hero__lede">
+            Easy Payments is an open-source integration library ecosystem. Start with Angular today — React, Vue, and
+            Svelte are on the roadmap — and connect your own Stripe, PayPal, and wallet merchant accounts with one
+            consistent developer experience.
+          </p>
+          <div class="hero__actions">
+            <ep-button variant="primary" size="lg" routerLink="/docs/angular">Get Started</ep-button>
+            <ep-button variant="outline" size="lg" [href]="githubUrl" [external]="true">GitHub</ep-button>
+          </div>
+          <p class="hero__meta">
+            Latest published Angular library:
+            <strong>{{ latestAngular }}</strong>
+            · Package
+            <code>{{ packageName }}</code>
+          </p>
+        </div>
 
-    <ep-section-heading
-      eyebrow="Official ecosystem website"
-      [title]="siteName"
-      [description]="description"
-    >
-      <p class="home__tagline">{{ tagline }}</p>
-    </ep-section-heading>
+        <figure class="hero__media">
+          <img
+            src="screenshots/checkout-desktop.png"
+            width="960"
+            height="720"
+            alt="Easy Payments Angular checkout on desktop with Card, PayPal, Apple Pay, Google Pay, Klarna, and Affirm options labeled DEMO"
+            decoding="async"
+            fetchpriority="high"
+          />
+          <figcaption>Real Easy Payments checkout screenshot · demo mode, no live charges</figcaption>
+        </figure>
+      </div>
+    </ep-container>
+  </section>
 
-    <div class="home__actions">
-      <ep-button variant="primary" routerLink="/frameworks">Explore frameworks</ep-button>
-      <ep-button variant="outline" routerLink="/docs/angular">Read documentation</ep-button>
-    </div>
+  <!-- 2. Frameworks -->
+  <section class="section" id="frameworks" aria-labelledby="frameworks-title">
+    <ep-container>
+      <ep-section-heading
+        titleId="frameworks-title"
+        eyebrow="Ecosystem"
+        title="Choose your framework"
+        description="Easy Payments is framework-aware. Angular is available now. React, Vue, and Svelte adapters are Coming Soon."
+        [headingLevel]="2"
+      />
 
-    <div class="home__panel">
-      <ep-alert variant="info" title="Design system preview">
-        Shared buttons, alerts, and code presentation are ready for the landing page and docs engine.
+      <ul class="framework-grid">
+        @for (framework of frameworks; track framework.id) {
+          <li>
+            <ep-card variant="framework">
+              <div class="framework-card__head">
+                <h3>{{ framework.name }}</h3>
+                <ep-badge [variant]="badgeVariant(framework.status)">
+                  {{ statusLabel(framework.status) }}
+                </ep-badge>
+              </div>
+
+              @if (framework.status === 'published') {
+                <p>
+                  Latest published version <strong>{{ framework.latestPublished }}</strong>.
+                  Package <code>{{ framework.packageName }}</code>.
+                </p>
+                <ep-button variant="primary" size="sm" routerLink="/docs/angular">
+                  Angular docs (v{{ latestAngular }})
+                </ep-button>
+              } @else {
+                <p>Not released yet. No package install and no documentation route until a published release exists.</p>
+              }
+            </ep-card>
+          </li>
+        }
+      </ul>
+    </ep-container>
+  </section>
+
+  <!-- 3. Benefits -->
+  <section class="section section--muted" id="benefits" aria-labelledby="benefits-title">
+    <ep-container>
+      <ep-section-heading
+        titleId="benefits-title"
+        eyebrow="Why Easy Payments"
+        title="Built for developers who own the checkout"
+        description="Claims below reflect capabilities of the current published Angular library. Preview-only features are labeled elsewhere."
+        [headingLevel]="2"
+      />
+
+      <ul class="benefit-list">
+        @for (benefit of benefits; track benefit.title) {
+          <li class="benefit-item">
+            <h3>{{ benefit.title }}</h3>
+            <p>{{ benefit.body }}</p>
+          </li>
+        }
+      </ul>
+    </ep-container>
+  </section>
+
+  <!-- 4. Payment methods -->
+  <section class="section" id="payment-methods" aria-labelledby="methods-title">
+    <ep-container>
+      <ep-section-heading
+        titleId="methods-title"
+        eyebrow="Providers"
+        title="Supported payment methods"
+        description="Marks identify supported options. Availability depends on your merchant accounts, provider configuration, and TEST/Sandbox environments."
+        [headingLevel]="2"
+      />
+
+      <ep-alert variant="warning" title="Configuration and sandbox limitations">
+        These methods are not universally production-ready out of the box. Each provider needs credentials, domain
+        verification where required, and a secure backend. Demo screenshots show DEMO labels — no real payment is
+        processed on this website.
       </ep-alert>
-      <ep-code-block language="bash" label="Install" [code]="installExample" />
-    </div>
-  </ep-container>
-</section>
+
+      <ul class="method-grid">
+        @for (method of paymentMethods; track method.id) {
+          <li class="method-card">
+            <div class="method-card__mark" aria-hidden="true">
+              @if (method.markSrc) {
+                <img [src]="method.markSrc" [alt]="" loading="lazy" decoding="async" />
+              } @else {
+                <span class="method-card__generic">Card</span>
+              }
+            </div>
+            <div class="method-card__body">
+              <div class="method-card__head">
+                <h3>{{ method.name }}</h3>
+                <ep-badge variant="info">{{ availabilityLabel(method.availability) }}</ep-badge>
+              </div>
+              <p class="method-card__provider">via {{ method.provider }}</p>
+              <p>{{ method.summary }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <p class="method-footnote">
+        Not supported:
+        @for (name of unsupportedMethods; track name) {
+          <strong>{{ name }}</strong>
+        }
+        . Third-party logos remain the property of their respective owners — see
+        <code>payment-marks/SOURCES.md</code>.
+      </p>
+    </ep-container>
+  </section>
+
+  <!-- 5. Screenshots -->
+  <section class="section section--muted" id="screenshots" aria-labelledby="screenshots-title">
+    <ep-container>
+      <ep-section-heading
+        titleId="screenshots-title"
+        eyebrow="Product"
+        title="Real checkout screenshots"
+        description="Captured from the Easy Payments Angular demo. These are not mocked marketing illustrations."
+        [headingLevel]="2"
+      />
+
+      <ul class="shot-grid">
+        @for (shot of screenshots; track shot.src) {
+          <li>
+            <figure class="shot">
+              <img [src]="shot.src" [alt]="shot.alt" loading="lazy" decoding="async" />
+              <figcaption>{{ shot.caption }}</figcaption>
+            </figure>
+          </li>
+        }
+      </ul>
+    </ep-container>
+  </section>
+
+  <!-- 6. Checkout experiences -->
+  <section class="section" id="experiences" aria-labelledby="experiences-title">
+    <ep-container>
+      <ep-section-heading
+        titleId="experiences-title"
+        eyebrow="Integration modes"
+        title="Checkout experiences"
+        description="Full Checkout ships in the published Angular library. Buttons Only and Headless are preview features for Angular v1.2.0."
+        [headingLevel]="2"
+      />
+
+      <ul class="experience-grid">
+        @for (experience of experiences; track experience.name) {
+          <li>
+            <ep-card variant="feature">
+              <div class="experience-card__head">
+                <h3>{{ experience.name }}</h3>
+                @if (experience.status === 'available') {
+                  <ep-badge variant="available">Available</ep-badge>
+                } @else {
+                  <ep-badge variant="release-candidate">Coming in Angular v1.2.0</ep-badge>
+                }
+              </div>
+              <p class="experience-card__note">{{ experience.versionNote }}</p>
+              <p>{{ experience.body }}</p>
+            </ep-card>
+          </li>
+        }
+      </ul>
+
+      <ep-alert variant="info" title="Version honesty">
+        Do not treat Buttons Only or Headless as available in npm {{ latestAngular }}. Those modes are part of the
+        unpublished Angular 1.2.0 release candidate.
+      </ep-alert>
+    </ep-container>
+  </section>
+
+  <!-- 7. Installation -->
+  <section class="section section--muted" id="install" aria-labelledby="install-title">
+    <ep-container width="narrow">
+      <ep-section-heading
+        titleId="install-title"
+        eyebrow="Get started"
+        title="Install the published Angular library"
+        description="Use the current npm package. This example does not reference unreleased APIs."
+        [headingLevel]="2"
+      />
+
+      <ep-code-block language="bash" label="npm" [code]="installCommand" />
+
+      <div class="install-actions">
+        <ep-button variant="primary" routerLink="/docs/angular">Read Angular docs (v{{ latestAngular }})</ep-button>
+        <ep-button variant="ghost" [href]="npmAngularUrl" [external]="true">View on npm</ep-button>
+      </div>
+    </ep-container>
+  </section>
+
+  <!-- 8 + 9. Docs & playground -->
+  <section class="section" id="docs" aria-labelledby="docs-title">
+    <ep-container>
+      <div class="split">
+        <div>
+          <ep-section-heading
+            titleId="docs-title"
+            eyebrow="Documentation"
+            title="Find the right guide"
+            description="Documentation currently tracks the latest published Angular version. Framework and version selectors in the docs UI preview disabled unpublished options."
+            [headingLevel]="2"
+          />
+          <ul class="link-list">
+            <li><a routerLink="/docs/angular">Angular documentation (v{{ latestAngular }})</a></li>
+            <li><a routerLink="/frameworks">Framework availability</a></li>
+            <li><a routerLink="/security">Security overview</a></li>
+          </ul>
+        </div>
+
+        <div class="playground-panel">
+          <ep-badge variant="coming-soon">Coming soon</ep-badge>
+          <h3>Try it safely — playground preview</h3>
+          <p>
+            A mock-mode playground is planned so developers can explore checkout UI without live charges. It is not
+            implemented yet and will never accept real card data on this website.
+          </p>
+          <ep-button variant="outline" routerLink="/playground">Playground status</ep-button>
+        </div>
+      </div>
+    </ep-container>
+  </section>
+
+  <!-- 10. Open source -->
+  <section class="section section--muted" id="opensource" aria-labelledby="opensource-title">
+    <ep-container>
+      <ep-section-heading
+        titleId="opensource-title"
+        eyebrow="Open source"
+        title="Built in the open"
+        description="Easy Payments is an MIT-licensed ecosystem. Inspect the libraries, follow the organization, and contribute."
+        [headingLevel]="2"
+      />
+
+      <ul class="oss-grid">
+        <li>
+          <h3>GitHub organization</h3>
+          <p>Source of truth for framework libraries and ecosystem planning.</p>
+          <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">easy-payments-dev</a>
+        </li>
+        <li>
+          <h3>Angular library</h3>
+          <p>Published package repository for <code>{{ packageName }}</code>.</p>
+          <a [href]="githubAngularUrl" target="_blank" rel="noopener noreferrer">easy-payments-angular</a>
+        </li>
+        <li>
+          <h3>Website repository</h3>
+          <p>This marketing and documentation site.</p>
+          <a [href]="githubWebsiteUrl" target="_blank" rel="noopener noreferrer">easy-payments-website</a>
+        </li>
+        <li>
+          <h3>{{ license }} license</h3>
+          <p>Use, modify, and distribute under the MIT license terms published with each package.</p>
+        </li>
+      </ul>
+    </ep-container>
+  </section>
+
+  <!-- 11. Security / trust -->
+  <section class="section" id="trust" aria-labelledby="trust-title">
+    <ep-container width="narrow">
+      <ep-section-heading
+        titleId="trust-title"
+        eyebrow="Production trust"
+        title="Integration library — not a payment processor"
+        description="Easy Payments helps your application talk to your provider accounts. It does not move money, hold funds, or replace Stripe, PayPal, or wallet providers."
+        [headingLevel]="2"
+      />
+
+      <ep-alert variant="security" title="Backend verification required">
+        Payment completion and fulfillment require secure backend verification, server-side pricing, webhook handling,
+        and provider credentials that never belong in the browser or on this website.
+      </ep-alert>
+
+      <div class="trust-actions">
+        <ep-button variant="outline" routerLink="/security">Security overview</ep-button>
+        <ep-button variant="ghost" [href]="securityDocsUrl" [external]="true">
+          Angular security docs
+        </ep-button>
+      </div>
+    </ep-container>
+  </section>
+
+  <!-- 12. Final CTA -->
+  <section class="final-cta" aria-labelledby="final-cta-title">
+    <ep-container width="narrow">
+      <p class="final-cta__eyebrow">Ready when you are</p>
+      <h2 id="final-cta-title">Start with Angular {{ latestAngular }}</h2>
+      <p>
+        Install the published package, read the docs, and keep provider secrets on your backend. Preview modes stay
+        clearly labeled until npm publishes them.
+      </p>
+      <div class="final-cta__actions">
+        <ep-button variant="primary" size="lg" routerLink="/docs/angular">Get Started</ep-button>
+        <ep-button variant="secondary" size="lg" [href]="githubAngularUrl" [external]="true">
+          Angular on GitHub
+        </ep-button>
+      </div>
+    </ep-container>
+  </section>
+</div>

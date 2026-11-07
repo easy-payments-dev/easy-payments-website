@@ -5,13 +5,13 @@
 
   @switch (headingLevel()) {
     @case (2) {
-      <h2 class="ep-section-heading__title">{{ title() }}</h2>
+      <h2 class="ep-section-heading__title" [attr.id]="titleId() || null">{{ title() }}</h2>
     }
     @case (3) {
-      <h3 class="ep-section-heading__title">{{ title() }}</h3>
+      <h3 class="ep-section-heading__title" [attr.id]="titleId() || null">{{ title() }}</h3>
     }
     @default {
-      <h1 class="ep-section-heading__title">{{ title() }}</h1>
+      <h1 class="ep-section-heading__title" [attr.id]="titleId() || null">{{ title() }}</h1>
     }
   }
 

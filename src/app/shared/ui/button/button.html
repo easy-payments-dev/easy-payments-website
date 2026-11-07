@@ -1,3 +1,7 @@
+<ng-template #projected>
+  <ng-content />
+</ng-template>
+
 @if (routerLink(); as link) {
   <a
     [routerLink]="link"
@@ -9,7 +13,9 @@
       <span class="ep-button__spinner" aria-hidden="true"></span>
       <span class="sr-only">Loading</span>
     }
-    <span class="ep-button__label"><ng-content /></span>
+    <span class="ep-button__label">
+      <ng-container [ngTemplateOutlet]="projected" />
+    </span>
   </a>
 } @else if (href(); as url) {
   <a
@@ -24,7 +30,9 @@
       <span class="ep-button__spinner" aria-hidden="true"></span>
       <span class="sr-only">Loading</span>
     }
-    <span class="ep-button__label"><ng-content /></span>
+    <span class="ep-button__label">
+      <ng-container [ngTemplateOutlet]="projected" />
+    </span>
   </a>
 } @else {
   <button
@@ -37,6 +45,8 @@
       <span class="ep-button__spinner" aria-hidden="true"></span>
       <span class="sr-only">Loading</span>
     }
-    <span class="ep-button__label"><ng-content /></span>
+    <span class="ep-button__label">
+      <ng-container [ngTemplateOutlet]="projected" />
+    </span>
   </button>
 }

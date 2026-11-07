@@ -10,4 +10,5 @@ export class EpSectionHeading {
   readonly title = input.required<string>();
   readonly description = input<string | undefined>(undefined);
   readonly headingLevel = input<1 | 2 | 3>(1);
+  readonly titleId = input<string | undefined>(undefined);
 }

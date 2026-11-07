@@ -13,6 +13,7 @@ export class SiteFooter {
   protected readonly siteName = environment.siteName;
   protected readonly tagline = environment.tagline;
   protected readonly githubUrl = environment.githubUrl;
+  protected readonly githubAngularUrl = environment.githubAngularUrl;
   protected readonly license = environment.license;
   protected readonly brandMark = BRAND_ASSETS.mark64;
   protected readonly year = new Date().getFullYear();

@@ -25,4 +25,8 @@ describe('framework version metadata', () => {
   it('exposes four framework entries', () => {
     expect(FRAMEWORKS).toHaveLength(4);
   });
+
+  it('uses the published Angular npm package name', () => {
+    expect(getFramework('angular')?.packageName).toBe('@easy-payments/angular');
+  });
 });

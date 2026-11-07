@@ -9,7 +9,7 @@ export const FRAMEWORKS: readonly FrameworkMeta[] = [
     id: 'angular',
     name: 'Angular',
     status: 'published',
-    packageName: 'easy-payments',
+    packageName: '@easy-payments/angular',
     latestPublished: '1.1.0',
     docsPath: '/docs/angular',
     versions: [

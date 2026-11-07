@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -7,7 +7,7 @@ export type EpButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ep-button',
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, NgTemplateOutlet, RouterLink],
   templateUrl: './button.html',
   styleUrl: './button.scss',
 })
