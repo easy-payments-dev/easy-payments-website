@@ -1,0 +1,37 @@
+<section class="ep-page docs">
+  <div class="ep-container">
+    <p class="ep-eyebrow">Documentation</p>
+    <h1>Angular</h1>
+    <p class="ep-lede">
+      Documentation content will be imported in a later milestone. Until then, this page points to the latest
+      <strong>published</strong> Angular library version.
+    </p>
+
+    <div class="docs-panel">
+      <h2>Current published version</h2>
+      <p class="docs-panel__version">{{ latestPublished }}</p>
+      <p>
+        Angular <strong>1.2.0</strong> is a release candidate and is <strong>not</strong> treated as published on this
+        site.
+      </p>
+
+      @if (angular; as fw) {
+        <ul class="version-list">
+          @for (version of fw.versions; track version.version) {
+            <li>
+              <span>v{{ version.version }}</span>
+              <span class="ep-status ep-status--{{ version.status }}">
+                {{ version.status === 'release-candidate' ? 'Release candidate' : version.status }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <p>
+      Looking for security guidance?
+      <a routerLink="/security">Read the security overview</a>.
+    </p>
+  </div>
+</section>

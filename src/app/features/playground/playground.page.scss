@@ -1,0 +1,21 @@
+.playground__inner {
+  max-width: 40rem;
+}
+
+.playground__badge {
+  display: inline-flex;
+  margin: 0 0 var(--ep-space-4);
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--ep-border-strong);
+  border-radius: var(--ep-radius-sm);
+  font-size: var(--ep-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ep-status-soon);
+  max-width: none;
+}
+
+.playground .ep-btn {
+  margin-top: var(--ep-space-5);
+}

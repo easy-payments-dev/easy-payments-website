@@ -1,0 +1,11 @@
+.not-found__inner {
+  max-width: 40rem;
+  padding-block: var(--ep-space-6);
+}
+
+.not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: var(--ep-space-6);
+}

@@ -1,0 +1,45 @@
+:root {
+  /* Brand */
+  --ep-brand-accent: #0a7ea4;
+  --ep-brand-navy: #0b1f33;
+  --ep-brand-turquoise: #1aa6b7;
+
+  /* Typography */
+  --ep-font-sans: 'Outfit', 'Segoe UI', sans-serif;
+  --ep-font-display: 'Syne', 'Outfit', sans-serif;
+
+  --ep-text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
+  --ep-text-sm: clamp(0.875rem, 0.82rem + 0.25vw, 0.9375rem);
+  --ep-text-base: clamp(1rem, 0.95rem + 0.3vw, 1.0625rem);
+  --ep-text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  --ep-text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --ep-text-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  --ep-text-3xl: clamp(2.25rem, 1.7rem + 2vw, 3.25rem);
+
+  --ep-leading-tight: 1.15;
+  --ep-leading-snug: 1.35;
+  --ep-leading-normal: 1.6;
+
+  /* Space */
+  --ep-space-1: 0.25rem;
+  --ep-space-2: 0.5rem;
+  --ep-space-3: 0.75rem;
+  --ep-space-4: 1rem;
+  --ep-space-5: 1.5rem;
+  --ep-space-6: 2rem;
+  --ep-space-7: 3rem;
+  --ep-space-8: 4.5rem;
+
+  --ep-radius-sm: 0.375rem;
+  --ep-radius-md: 0.625rem;
+  --ep-radius-lg: 1rem;
+
+  --ep-header-height: 4rem;
+  --ep-content-max: 72rem;
+  --ep-measure: 42rem;
+
+  --ep-focus-ring: 0 0 0 3px color-mix(in srgb, var(--ep-brand-accent) 45%, transparent);
+
+  --ep-transition-fast: 150ms ease;
+  --ep-transition: 220ms ease;
+}

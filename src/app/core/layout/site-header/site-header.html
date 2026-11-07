@@ -1,0 +1,89 @@
+<header class="site-header">
+  <div class="ep-container site-header__inner">
+    <a class="brand" routerLink="/" (click)="closeMobile()" aria-label="Easy Payments home">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__text">
+        <span class="brand__name">{{ siteName }}</span>
+        <span class="brand__tagline">Payments made simple</span>
+      </span>
+    </a>
+
+    <nav class="nav nav--desktop" aria-label="Primary">
+      @for (item of navItems; track item.label) {
+        @if (item.path) {
+          <a
+            class="nav__link"
+            [routerLink]="item.path"
+            routerLinkActive="nav__link--active"
+            [routerLinkActiveOptions]="{ exact: item.exact === true }"
+          >
+            {{ item.label }}
+          </a>
+        } @else if (item.externalUrl) {
+          <a class="nav__link" [href]="item.externalUrl" target="_blank" rel="noopener noreferrer">
+            {{ item.label }}
+          </a>
+        }
+      }
+    </nav>
+
+    <div class="site-header__actions">
+      <label class="theme-select">
+        <span class="sr-only">Theme</span>
+        <select
+          [value]="themePreference()"
+          (change)="onThemeChange($event)"
+          aria-label="Color theme"
+        >
+          @for (option of themeOptions; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="menu-toggle"
+        [attr.aria-expanded]="mobileOpen()"
+        aria-controls="mobile-nav"
+        (click)="toggleMobile()"
+      >
+        <span class="sr-only">{{ mobileOpen() ? 'Close' : 'Open' }} menu</span>
+        <span class="menu-toggle__bars" [ngClass]="{ 'is-open': mobileOpen() }" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-nav"
+    class="nav-mobile"
+    [ngClass]="{ 'is-open': mobileOpen() }"
+    [attr.aria-hidden]="!mobileOpen()"
+  >
+    <nav class="nav nav--mobile ep-container" aria-label="Mobile">
+      @for (item of navItems; track item.label) {
+        @if (item.path) {
+          <a
+            class="nav__link"
+            [routerLink]="item.path"
+            routerLinkActive="nav__link--active"
+            [routerLinkActiveOptions]="{ exact: item.exact === true }"
+            (click)="closeMobile()"
+          >
+            {{ item.label }}
+          </a>
+        } @else if (item.externalUrl) {
+          <a
+            class="nav__link"
+            [href]="item.externalUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            (click)="closeMobile()"
+          >
+            {{ item.label }}
+          </a>
+        }
+      }
+    </nav>
+  </div>
+</header>

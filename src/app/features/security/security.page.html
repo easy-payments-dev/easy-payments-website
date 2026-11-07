@@ -1,0 +1,36 @@
+<section class="ep-page security">
+  <div class="ep-container">
+    <p class="ep-eyebrow">Trust</p>
+    <h1>Security</h1>
+    <p class="ep-lede">
+      An honest overview of how this website fits into the Easy Payments security posture. Detailed library guidance
+      lives in the existing repository documentation.
+    </p>
+
+    <ul class="security-list">
+      @for (item of principles; track item.title) {
+        <li>
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.body }}</p>
+        </li>
+      }
+    </ul>
+
+    <div class="security-links">
+      <h2>Repository documentation</h2>
+      <p>
+        Prefer the security and contribution docs in the Easy Payments repositories for implementation-level guidance,
+        threat notes, and reporting expectations.
+      </p>
+      <ul>
+        <li>
+          <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">Easy Payments on GitHub</a>
+        </li>
+        <li>
+          Review the security and README documentation published with the Angular library repository in the
+          Easy Payments organization.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

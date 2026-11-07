@@ -1,0 +1,25 @@
+.home__inner {
+  max-width: 44rem;
+  padding-block: var(--ep-space-6);
+}
+
+.home h1 {
+  margin-bottom: var(--ep-space-2);
+}
+
+.home__tagline {
+  margin: 0 0 var(--ep-space-5);
+  font-size: var(--ep-text-sm);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ep-accent);
+  max-width: none;
+}
+
+.home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: var(--ep-space-6);
+}
