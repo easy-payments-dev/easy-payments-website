@@ -1,0 +1,57 @@
+@if (open()) {
+  <div class="docs-search" role="presentation" (click)="onBackdrop($event)">
+    <div
+      class="docs-search__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="docs-search-title"
+    >
+      <div class="docs-search__header">
+        <h2 id="docs-search-title">Search documentation</h2>
+        <button type="button" class="docs-search__close" (click)="close()">
+          Close
+        </button>
+      </div>
+
+      <label class="docs-search__field">
+        <span class="sr-only">Search query</span>
+        <input
+          #searchInput
+          type="search"
+          [value]="query()"
+          (input)="onInput($event)"
+          placeholder="Search titles, headings, and content"
+          autocomplete="off"
+        />
+      </label>
+
+      <label class="docs-search__scope">
+        <span>Scope</span>
+        <select [value]="scope()" (change)="onScopeChange($event)">
+          <option value="current">
+            {{ frameworkLabel() }} {{ versionLabel() }}
+          </option>
+          <option value="all">All published documentation</option>
+        </select>
+      </label>
+
+      @if (query().trim() && hits().length === 0) {
+        <p class="docs-search__empty">No results for “{{ query() }}”.</p>
+      } @else {
+        <ul class="docs-search__results">
+          @for (hit of hits(); track hit.href + hit.matchKind + hit.excerpt) {
+            <li>
+              <a [routerLink]="hit.href" (click)="close()">
+                <span class="docs-search__result-title">{{ hit.title }}</span>
+                <span class="docs-search__result-meta">
+                  {{ hit.frameworkName }} {{ hit.version }} · {{ hit.matchKind }}
+                </span>
+                <span class="docs-search__result-excerpt">{{ hit.excerpt }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+}

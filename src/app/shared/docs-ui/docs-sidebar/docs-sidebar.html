@@ -5,18 +5,23 @@
       <ul class="ep-docs-sidebar__list">
         @for (item of group.items; track item.id) {
           <li>
-            <button
-              type="button"
-              class="ep-docs-sidebar__link"
-              [ngClass]="{
-                'ep-docs-sidebar__link--active': item.active,
-                'ep-docs-sidebar__link--disabled': item.disabled
-              }"
-              [disabled]="item.disabled === true"
-              [attr.aria-current]="item.active ? 'page' : null"
-            >
-              {{ item.label }}
-            </button>
+            @if (item.href && item.disabled !== true) {
+              <a
+                class="ep-docs-sidebar__link"
+                [routerLink]="item.href"
+                [ngClass]="{ 'ep-docs-sidebar__link--active': item.active }"
+                [attr.aria-current]="item.active ? 'page' : null"
+              >
+                {{ item.label }}
+              </a>
+            } @else {
+              <span
+                class="ep-docs-sidebar__link ep-docs-sidebar__link--disabled"
+                aria-disabled="true"
+              >
+                {{ item.label }}
+              </span>
+            }
           </li>
         }
       </ul>

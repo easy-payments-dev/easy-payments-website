@@ -9,6 +9,10 @@
 .ep-docs-shell__sidebar,
 .ep-docs-shell__toc {
   min-width: 0;
+  position: sticky;
+  top: calc(var(--ep-header-height) + var(--ep-space-4));
+  max-height: calc(100vh - var(--ep-header-height) - var(--ep-space-6));
+  overflow: auto;
 }
 
 .ep-docs-shell__main {

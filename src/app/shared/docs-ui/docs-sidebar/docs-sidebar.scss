@@ -37,15 +37,17 @@
   color: var(--ep-text-muted);
   font-size: var(--ep-text-sm);
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
   transition:
     background-color var(--ep-transition-fast),
     color var(--ep-transition-fast);
 }
 
-.ep-docs-sidebar__link:hover:not(:disabled) {
+.ep-docs-sidebar__link:hover:not(.ep-docs-sidebar__link--disabled) {
   color: var(--ep-navy);
   background: var(--ep-bg-muted);
+  text-decoration: none;
 }
 
 .ep-docs-sidebar__link--active {

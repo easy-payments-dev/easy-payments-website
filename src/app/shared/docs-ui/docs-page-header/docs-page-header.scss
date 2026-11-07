@@ -32,3 +32,13 @@
   max-width: 40rem;
   color: var(--ep-text-muted);
 }
+
+.ep-docs-page-header__actions:empty {
+  display: none;
+}
+
+.ep-docs-page-header__actions:not(:empty) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ep-space-2);
+}

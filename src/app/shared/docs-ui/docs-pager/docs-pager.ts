@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 export interface DocsPagerLink {
   label: string;
@@ -7,6 +8,7 @@ export interface DocsPagerLink {
 
 @Component({
   selector: 'ep-docs-pager',
+  imports: [RouterLink],
   templateUrl: './docs-pager.html',
   styleUrl: './docs-pager.scss',
 })

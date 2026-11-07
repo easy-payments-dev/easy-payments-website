@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
+import { getLatestPublishedAngularVersion } from './data/frameworks';
+
+const latestAngularVersion = getLatestPublishedAngularVersion();
+const latestAngularDocs = `/docs/angular/${latestAngularVersion}/getting-started`;
 
 export const routes: Routes = [
   {
@@ -14,9 +18,24 @@ export const routes: Routes = [
     title: 'Frameworks | easy payments',
   },
   {
+    path: 'docs',
+    pathMatch: 'full',
+    redirectTo: latestAngularDocs,
+  },
+  {
     path: 'docs/angular',
+    pathMatch: 'full',
+    redirectTo: latestAngularDocs,
+  },
+  {
+    path: 'docs/angular/:version',
+    pathMatch: 'full',
+    redirectTo: '/docs/angular/:version/getting-started',
+  },
+  {
+    path: 'docs/:framework/:version/:slug',
     loadComponent: () =>
-      import('./features/docs/docs-angular.page').then((m) => m.DocsAngularPage),
+      import('./features/docs/docs-viewer.page').then((m) => m.DocsViewerPage),
     title: 'Documentation | easy payments',
   },
   {

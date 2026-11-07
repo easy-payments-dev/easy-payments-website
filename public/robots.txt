@@ -1,2 +1,8 @@
 User-agent: *
 Allow: /
+
+# Unpublished release-candidate documentation is not routed as published docs.
+Disallow: /docs/angular/1.2.0
+Disallow: /docs/react/
+Disallow: /docs/vue/
+Disallow: /docs/svelte/

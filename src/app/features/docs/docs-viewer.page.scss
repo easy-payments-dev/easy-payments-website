@@ -1,0 +1,74 @@
+@use '../../../styles/breakpoints' as bp;
+
+.docs-viewer {
+  display: grid;
+  gap: var(--ep-space-5);
+  padding-block: var(--ep-space-6) var(--ep-space-10);
+}
+
+.docs-viewer__mobile-nav {
+  display: grid;
+  gap: var(--ep-space-3);
+}
+
+.docs-viewer__mobile-toggle {
+  min-height: 2.5rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-sm);
+  background: var(--ep-bg-elevated);
+  color: var(--ep-text);
+  font-size: var(--ep-text-sm);
+  font-weight: var(--ep-font-semibold);
+  cursor: pointer;
+}
+
+.docs-viewer__desktop-sidebar {
+  display: none;
+}
+
+.docs-viewer__article {
+  display: grid;
+  gap: var(--ep-space-6);
+  min-width: 0;
+}
+
+.docs-missing {
+  display: grid;
+  gap: var(--ep-space-5);
+  padding-block: var(--ep-space-8) var(--ep-space-12);
+}
+
+.docs-missing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.docs-missing__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--ep-radius-sm);
+  border: 1px solid var(--ep-border);
+  background: var(--ep-bg-elevated);
+  color: var(--ep-navy);
+  text-decoration: none;
+  font-weight: var(--ep-font-semibold);
+}
+
+.docs-missing__link:hover {
+  border-color: var(--ep-border-accent);
+  background: var(--ep-bg-accent-soft);
+}
+
+@include bp.lg {
+  .docs-viewer__mobile-nav {
+    display: none;
+  }
+
+  .docs-viewer__desktop-sidebar {
+    display: block;
+  }
+}
