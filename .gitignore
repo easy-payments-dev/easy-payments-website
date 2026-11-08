@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/dist/typecheck
 
 # Node
 /node_modules
@@ -54,3 +55,9 @@ Thumbs.db
 # Local configuration and credentials
 *.pem
 *.key
+
+# Isolated historical playground verification artifacts
+/scripts/playground-historical-results.json
+
+# Isolated historical playground verification artifacts
+/scripts/playground-historical-results.json

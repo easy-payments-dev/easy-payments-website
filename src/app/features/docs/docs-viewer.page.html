@@ -16,15 +16,18 @@
           type="button"
           class="docs-viewer__mobile-toggle"
           [attr.aria-expanded]="mobileNavOpen()"
+          aria-controls="docs-mobile-nav"
           (click)="toggleMobileNav()"
         >
           {{ mobileNavOpen() ? 'Hide' : 'Show' }} documentation menu
         </button>
         @if (mobileNavOpen()) {
-          <ep-docs-sidebar
-            [groups]="navGroups()"
-            ariaLabel="Documentation sections"
-          />
+          <div id="docs-mobile-nav">
+            <ep-docs-sidebar
+              [groups]="navGroups()"
+              ariaLabel="Documentation sections"
+            />
+          </div>
         }
       </div>
 

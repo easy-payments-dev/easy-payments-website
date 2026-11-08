@@ -27,6 +27,7 @@ export class EpImageLightbox {
   private readonly closeButton =
     viewChild<ElementRef<HTMLButtonElement>>('closeButton');
   private previousOverflow = '';
+  private previouslyFocused: HTMLElement | null = null;
 
   readonly open = input(false);
   readonly image = input<LightboxImage | null>(null);
@@ -42,11 +43,18 @@ export class EpImageLightbox {
       }
 
       if (isOpen) {
+        this.previouslyFocused =
+          document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
         this.previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         queueMicrotask(() => this.closeButton()?.nativeElement.focus());
       } else {
         document.body.style.overflow = this.previousOverflow;
+        const restore = this.previouslyFocused;
+        this.previouslyFocused = null;
+        queueMicrotask(() => restore?.focus());
       }
     });
   }

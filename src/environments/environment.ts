@@ -4,6 +4,8 @@
  */
 export const environment = {
   production: false,
+  /** Canonical public origin (no trailing slash). */
+  siteUrl: 'http://localhost:4200',
   siteName: 'Easy Payments',
   /** Official visual wordmark casing from the Easy Payments logo. */
   wordmark: 'easy payments',

@@ -224,6 +224,10 @@ export class DocsViewerPage {
     if (isFind) {
       event.preventDefault();
       this.openSearch();
+      return;
+    }
+    if (event.key === 'Escape' && this.mobileNavOpen() && !this.searchOpen()) {
+      this.closeMobileNav();
     }
   }
 

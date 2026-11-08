@@ -1,6 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HISTORICAL_ANGULAR_API } from '../../core/docs/historical-api.evidence';
 import { EpAlert } from '../../shared/ui/alert/alert';
@@ -41,8 +40,6 @@ import { validatePlaygroundConfig } from './playground.validation';
   styleUrl: './playground.page.scss',
 })
 export class PlaygroundPage {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
   private eventSeq = 0;
 
   protected readonly methodOptions = PLAYGROUND_METHOD_OPTIONS;
@@ -93,17 +90,6 @@ export class PlaygroundPage {
       return `${product.amount} ${product.currency}`;
     }
   });
-
-  constructor() {
-    this.title.setTitle(
-      'Playground | Angular checkout simulation | easy payments',
-    );
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        'Interactive Angular checkout playground for easy payments. Configure published package options, preview a local simulation, and copy integration code. Demonstration only — no payments are processed.',
-    });
-  }
 
   protected setVersion(version: PlaygroundVersion): void {
     this.config.update((current) => ({

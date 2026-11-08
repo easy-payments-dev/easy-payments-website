@@ -1,8 +1,11 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
   HostListener,
+  PLATFORM_ID,
   effect,
+  inject,
   input,
   output,
   viewChild,
@@ -17,8 +20,10 @@ import { DocsSearchHit } from '../../core/docs/docs.types';
   styleUrl: './docs-search-dialog.scss',
 })
 export class DocsSearchDialog {
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly inputRef =
     viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  private previouslyFocused: HTMLElement | null = null;
 
   readonly open = input(false);
   readonly query = input('');
@@ -33,8 +38,19 @@ export class DocsSearchDialog {
 
   constructor() {
     effect(() => {
+      if (!isPlatformBrowser(this.platformId)) {
+        return;
+      }
       if (this.open()) {
+        this.previouslyFocused =
+          document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
         queueMicrotask(() => this.inputRef()?.nativeElement.focus());
+      } else if (this.previouslyFocused) {
+        const restore = this.previouslyFocused;
+        this.previouslyFocused = null;
+        queueMicrotask(() => restore.focus());
       }
     });
   }
