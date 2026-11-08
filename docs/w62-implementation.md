@@ -48,6 +48,33 @@ easy-payments-dev/
 
 Clean install: `npm ci` (requires committed vendor). Refresh vendor after library changes: `npm run sync:lib:build`.
 
+## Reproducibility closeout
+
+**Commit:** `9bd907134960efcd13c158de120f717110bf69bf`  
+`feat: ship W6.2 with vendored angular 1.2.0, demos, and contact prep`
+
+**Vendor package in that commit**
+- `vendor/easy-payments-angular/package.json` → version **1.2.0**
+- FESM imports `loadStripe` from `@stripe/stripe-js/pure`
+- Stamp: unpublished local sync (not an npm registry release)
+
+**Clean checkout verification** (detached worktree of `9bd9071` at `Desktop/tmp-ep-w62-clean-verify`)
+- Sibling `../easy-payments-angular` **absent** (`Test-Path` → false)
+- Working tree clean (no uncommitted files)
+- Sequence matching `amplify.yml` build path:
+
+| Step | Result |
+| --- | --- |
+| `npm ci` | Pass (389 packages; lockfile + `file:vendor/…`) |
+| `node scripts/ensure-vendor-angular.mjs` | Pass (1.2.0 + `/pure`) |
+| `npm run build:prod` | Pass (budget warning on main bundle size) |
+| `npm run verify:static` | Pass |
+| `npm run verify:mock-network` (prod static serve, port 4174) | Pass — 0 payment SDK / Turnstile hits |
+
+Build did **not** require the sibling library repo or any uncommitted files.
+
+**Production contact** remains disabled in `environment.production.ts` (`contactEnabled: false`, `contactApiUrl: null`, `turnstileSiteKey: null`) until Turnstile, SES, the real endpoint, and CSP `connect-src` are configured.
+
 ## Validations run
 
 | Check | Result |
@@ -58,6 +85,7 @@ Clean install: `npm ci` (requires committed vendor). Refresh vendor after librar
 | `npm run build:prod` | Pass (budget warning on main bundle size) |
 | `npm run verify:static` | Pass |
 | `npm run verify:mock-network` | Pass (vendor pure import + Playwright playground; 0 payment SDK / Turnstile hits) |
+| Clean checkout Amplify sequence + mock-network (`9bd9071`) | Pass (see Reproducibility closeout) |
 | Real SES / Amplify / Turnstile prod | **Not run** (stage limits) |
 
 ## Contact architecture
@@ -94,12 +122,12 @@ Dev uses local mock URL + Cloudflare **test** site key `1x00000000000000000000AA
 
 ## Pending before go-live
 
-1. **Commit `vendor/easy-payments-angular`** (Amplify/CI blocker if untracked).
-2. Configure real Turnstile site + secret; allowlist hostnames; set widget action `contact`.
-3. Verify SES sender identity; confirm recipient; leave sandbox or move out (sandbox only delivers to verified identities).
-4. Deploy `infra/contact` (manual later); set production `contactApiUrl` / `turnstileSiteKey` / `contactEnabled`.
-5. Replace CSP `connect-src` placeholder `https://contact-api.example.invalid` in `public/_headers` and `customHttp.yml`.
-6. Amplify: connect repo, apply redirects from `amplify/redirects.json`, preview, then production.
+1. Configure real Turnstile site + secret; allowlist hostnames; set widget action `contact`.
+2. Verify SES sender identity; confirm recipient; leave sandbox or move out (sandbox only delivers to verified identities).
+3. Deploy `infra/contact` (manual later); set production `contactApiUrl` / `turnstileSiteKey` / `contactEnabled`.
+4. Replace CSP `connect-src` placeholder `https://contact-api.example.invalid` in `public/_headers` and `customHttp.yml`.
+5. Amplify: connect repo, apply redirects from `amplify/redirects.json`, preview, then production.
+6. Push is intentionally deferred from this stage.
 
 ### Expected AWS resources / cost review
 - Amplify Hosting (static)
