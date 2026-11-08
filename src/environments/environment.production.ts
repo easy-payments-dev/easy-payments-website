@@ -19,4 +19,15 @@ export const environment = {
   license: 'MIT',
   docsLatestAngularVersion: '1.1.0',
   angularPackageName: '@easy-payments/angular',
+  /**
+   * Contact form (public, non-secret values only).
+   * Production MUST use 'api'. While contactApiUrl / turnstileSiteKey are null the contact
+   * page shows a NOT OPERATIONAL notice and no submit form. Set the real values at build time
+   * (e.g. a deploy-time replacement of this file) once the backend is deployed — see
+   * infra/contact/README.md. Local mock transport is rejected in production builds.
+   */
+  contactTransport: 'api' as 'local-mock' | 'api',
+  contactApiUrl: null as string | null,
+  turnstileSiteKey: null as string | null,
+  contactEnabled: false as boolean,
 } as const;

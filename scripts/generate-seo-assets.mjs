@@ -25,7 +25,7 @@ function readDocsPages(version) {
 }
 
 const versions = ['1.0.0', '1.1.0'];
-const staticPaths = ['/', '/frameworks', '/security', '/playground'];
+const staticPaths = ['/', '/frameworks', '/security', '/playground', '/contact'];
 const docsPaths = versions.flatMap((version) =>
   readDocsPages(version).map((slug) => `/docs/angular/${version}/${slug}`),
 );

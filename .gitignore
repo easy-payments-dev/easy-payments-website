@@ -61,3 +61,10 @@ Thumbs.db
 
 # Isolated historical playground verification artifacts
 /scripts/playground-historical-results.json
+
+# Contact backend (AWS CDK)
+infra/**/node_modules
+infra/**/cdk.out
+infra/**/dist
+infra/**/.env
+cdk.context.json

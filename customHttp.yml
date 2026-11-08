@@ -1,0 +1,67 @@
+# AWS Amplify Hosting custom response headers (equivalent of public/_headers on Cloudflare Pages).
+# Amplify reads this file from the repository root at build time. Cloudflare ignores it.
+#
+# Contact form notes:
+# - script-src and frame-src allow https://challenges.cloudflare.com (Cloudflare Turnstile). The script is
+#   only requested by the /contact page; Amplify applies matching header rules together, so the single
+#   allowance is kept global rather than a /contact-only CSP.
+# - connect-src lists the contact API origin. https://contact-api.example.invalid is a PLACEHOLDER (reserved
+#   .invalid TLD, matches nothing). Replace it with the deployed API origin (scheme + host only) before
+#   enabling the contact form. See docs/amplify-hosting.md and infra/contact/README.md.
+customHeaders:
+  - pattern: '**'
+    headers:
+      - key: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains
+      - key: X-Content-Type-Options
+        value: nosniff
+      - key: X-Frame-Options
+        value: DENY
+      - key: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - key: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=(), payment=()
+      - key: Cross-Origin-Opener-Policy
+        value: same-origin
+      - key: Content-Security-Policy
+        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://contact-api.example.invalid; upgrade-insecure-requests"
+  - pattern: '*.html'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=0, must-revalidate
+  - pattern: '/sitemap.xml'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=3600, must-revalidate
+  - pattern: '/robots.txt'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=3600, must-revalidate
+  - pattern: '/site.webmanifest'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=86400
+  - pattern: '/brand/*'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=604800, immutable
+  - pattern: '/icons/*'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=604800, immutable
+  - pattern: '/screenshots/*'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=604800, immutable
+  - pattern: '/payment-marks/*'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=604800, immutable
+  - pattern: '*.js'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=31536000, immutable
+  - pattern: '*.css'
+    headers:
+      - key: Cache-Control
+        value: public, max-age=31536000, immutable

@@ -3,7 +3,7 @@ import { DOCS_VERSIONS } from './core/docs/docs.manifest';
 
 /**
  * Cloudflare Pages–compatible static prerender map.
- * Playground stays client-rendered (interactive simulation only).
+ * Playground stays client-rendered (interactive mock checkout only).
  * Redirect-only and catch-all routes stay client-side.
  */
 export const serverRoutes: ServerRoute[] = [
@@ -24,6 +24,8 @@ export const serverRoutes: ServerRoute[] = [
     },
   },
   { path: 'playground', renderMode: RenderMode.Client },
+  // Contact is client-only: Turnstile and the form need the browser.
+  { path: 'contact', renderMode: RenderMode.Client },
   { path: 'docs', renderMode: RenderMode.Client },
   { path: 'docs/angular', renderMode: RenderMode.Client },
   { path: 'docs/angular/:version', renderMode: RenderMode.Client },

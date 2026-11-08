@@ -289,12 +289,9 @@
 
         <div class="playground-panel">
           <ep-badge variant="available">Available</ep-badge>
-          <h3>Try it safely — checkout playground</h3>
-          <p>
-            Configure a published Angular checkout, preview a local simulation, and copy integration code. The
-            playground never processes payments and never accepts real card data.
-          </p>
-          <ep-button variant="outline" routerLink="/playground">Open Playground</ep-button>
+          <h3>{{ playgroundTitle() }}</h3>
+          <p>{{ playgroundBody() }}</p>
+          <ep-button variant="outline" routerLink="/playground">{{ playgroundCta() }}</ep-button>
         </div>
       </div>
     </ep-container>

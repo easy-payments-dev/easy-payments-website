@@ -1,0 +1,53 @@
+<section class="headless-demo" [attr.aria-label]="t('playground.headless.region')">
+  <p class="headless-demo__notice" role="note">
+    {{ t('playground.headless.consumerUiNotice') }}
+  </p>
+
+  @if (bootStatus() === 'failed') {
+    <p class="headless-demo__error" role="alert">{{ bootError() }}</p>
+  } @else if (bootStatus() !== 'ready') {
+    <p class="headless-demo__status" role="status">{{ t('playground.headless.starting') }}</p>
+  } @else {
+    <div class="headless-demo__methods" role="list" [attr.aria-label]="t('playground.methods')">
+      @for (entry of available(); track entry.method) {
+        <button
+          type="button"
+          class="headless-demo__method"
+          role="listitem"
+          [class.is-selected]="uiSelected() === entry.method"
+          [disabled]="!entry.available || mountBusy()"
+          (click)="selectMethod(entry.method)"
+        >
+          <span>{{ methodLabels[entry.method] ?? entry.method }}</span>
+          @if (entry.mock) {
+            <span class="headless-demo__mock">DEMO</span>
+          }
+        </button>
+      }
+    </div>
+
+    <div
+      #mountHost
+      class="headless-demo__mount"
+      [attr.aria-label]="t('playground.headless.mountLabel')"
+      [attr.aria-busy]="mountBusy()"
+    ></div>
+
+    @if (canConfirm()) {
+      <ep-button
+        variant="primary"
+        type="button"
+        [disabled]="confirmBusy()"
+        (click)="confirmPayment()"
+      >
+        {{ t('playground.headless.confirm') }}
+      </ep-button>
+    }
+
+    @if (sessionState(); as state) {
+      <p class="headless-demo__state" aria-live="polite">
+        {{ t('playground.headless.state') }}: <code>{{ state }}</code>
+      </p>
+    }
+  }
+</section>

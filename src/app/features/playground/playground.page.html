@@ -1,35 +1,48 @@
 <section class="playground" aria-labelledby="playground-title">
   <ep-container>
     <header class="playground__intro">
-      <p class="playground__eyebrow">Interactive demo</p>
-      <h1 id="playground-title">Angular Checkout Playground</h1>
-      <p class="playground__lede">
-        Configure a published Angular checkout surface, preview a local simulation, and copy integration code. This
-        playground never processes payments, never loads provider payment SDKs, and never contacts a payment backend.
-      </p>
+      <p class="playground__eyebrow">{{ t('playground.eyebrow') }}</p>
+      <h1 id="playground-title">{{ t('playground.title') }}</h1>
+      <p class="playground__lede">{{ t('playground.lede') }}</p>
       <div class="playground__badges">
-        <ep-badge variant="info">Simulation only</ep-badge>
-        <ep-badge variant="available">Angular {{ config().version }}</ep-badge>
+        <ep-badge variant="info">{{ t('playground.badge.live') }}</ep-badge>
+        <ep-badge variant="coming-soon">{{ t('playground.unpublishedBadge') }}</ep-badge>
       </div>
     </header>
 
-    <ep-alert variant="warning" title="Simulation only — no payment is processed">
-      Preview interactions emit local demo events only. A simulated success is not a verified payment and must not be
-      used for fulfillment.
+    <ep-alert variant="warning" [title]="t('playground.alertTitle')">
+      {{ t('playground.alertBody') }}
     </ep-alert>
 
     <div class="playground__layout">
       <!-- Configuration -->
       <section class="playground-panel playground-config" aria-labelledby="config-title">
         <div class="playground-panel__head">
-          <h2 id="config-title">Configuration</h2>
+          <h2 id="config-title">{{ t('playground.config') }}</h2>
           <ep-button variant="ghost" size="sm" type="button" (click)="resetDefaults()">
-            Reset defaults
+            {{ t('playground.reset') }}
           </ep-button>
         </div>
 
         <div class="field">
-          <span class="field__label" id="version-label">Angular package version</span>
+          <span class="field__label" id="demo-mode-label">{{ t('playground.demoMode') }}</span>
+          <div class="segmented" role="group" aria-labelledby="demo-mode-label">
+            @for (mode of demoModes; track mode) {
+              <button
+                type="button"
+                class="segmented__option"
+                [class.is-active]="demoMode() === mode"
+                (click)="setDemoMode(mode)"
+              >
+                {{ demoLabel(mode) }}
+              </button>
+            }
+          </div>
+          <p class="field__hint">{{ t('playground.demoModeHint') }}</p>
+        </div>
+
+        <div class="field">
+          <span class="field__label" id="version-label">{{ t('playground.version') }}</span>
           <div class="segmented" role="group" aria-labelledby="version-label">
             <button
               type="button"
@@ -37,7 +50,7 @@
               [class.is-active]="config().version === '1.1.0'"
               (click)="setVersion('1.1.0')"
             >
-              1.1.0 — Latest Published
+              {{ t('playground.versionLatest') }}
             </button>
             <button
               type="button"
@@ -45,22 +58,19 @@
               [class.is-active]="config().version === '1.0.0'"
               (click)="setVersion('1.0.0')"
             >
-              1.0.0 — Published
+              {{ t('playground.versionPublished') }}
             </button>
             <button type="button" class="segmented__option" disabled aria-disabled="true">
-              1.2.0 — Unpublished
+              {{ t('playground.versionUnpublished') }}
             </button>
           </div>
-          <p class="field__hint">
-            Options and generated code follow verified npm APIs for
-            <code>@easy-payments/angular@{{ config().version }}</code>.
-          </p>
+          <p class="field__hint">{{ t('playground.versionHint') }}</p>
         </div>
 
         <fieldset class="fieldset">
-          <legend>Product</legend>
+          <legend>{{ t('playground.product') }}</legend>
           <label class="field">
-            <span class="field__label">Name</span>
+            <span class="field__label">{{ t('playground.name') }}</span>
             <input
               type="text"
               [value]="config().product.name"
@@ -73,7 +83,7 @@
             }
           </label>
           <label class="field">
-            <span class="field__label">Description</span>
+            <span class="field__label">{{ t('playground.description') }}</span>
             <textarea
               rows="2"
               [value]="config().product.description"
@@ -87,7 +97,7 @@
           </label>
           <div class="field-row">
             <label class="field">
-              <span class="field__label">Price (major units)</span>
+              <span class="field__label">{{ t('playground.price') }}</span>
               <input
                 type="number"
                 min="0.01"
@@ -101,7 +111,7 @@
               }
             </label>
             <label class="field">
-              <span class="field__label">Currency</span>
+              <span class="field__label">{{ t('playground.currency') }}</span>
               <select
                 [value]="config().product.currency"
                 (change)="patchProduct('currency', $any($event.target).value)"
@@ -112,7 +122,7 @@
               </select>
             </label>
             <label class="field">
-              <span class="field__label">Quantity</span>
+              <span class="field__label">{{ t('playground.quantity') }}</span>
               <input
                 type="number"
                 min="1"
@@ -130,8 +140,8 @@
         </fieldset>
 
         <fieldset class="fieldset">
-          <legend>Payment methods</legend>
-          <div class="method-grid" role="group" aria-label="Payment methods">
+          <legend>{{ t('playground.methods') }}</legend>
+          <div class="method-grid" role="group" [attr.aria-label]="t('playground.methods')">
             @for (method of methodOptions; track method.id) {
               <label class="method-chip">
                 <input
@@ -149,13 +159,11 @@
         </fieldset>
 
         <fieldset class="fieldset">
-          <legend>Checkout options</legend>
-          <p class="field__hint">
-            These controls configure the <strong>checkout component theme</strong>, not the website theme switcher.
-          </p>
+          <legend>{{ t('playground.checkoutOptions') }}</legend>
+          <p class="field__hint">{{ t('playground.themeHint') }}</p>
 
           <div class="field">
-            <span class="field__label" id="theme-label">Theme</span>
+            <span class="field__label" id="theme-label">{{ t('playground.theme') }}</span>
             <div class="segmented" role="group" aria-labelledby="theme-label">
               @for (theme of evidence().themes; track theme) {
                 <button
@@ -170,63 +178,89 @@
             </div>
           </div>
 
-          <div class="field">
-            <span class="field__label" id="appearance-label">Appearance</span>
-            <div class="segmented" role="group" aria-labelledby="appearance-label">
-              @for (appearance of evidence().appearances; track appearance) {
+          @if (showFull()) {
+            <div class="field">
+              <span class="field__label" id="appearance-label">{{ t('playground.appearance') }}</span>
+              <div class="segmented" role="group" aria-labelledby="appearance-label">
+                @for (appearance of evidence().appearances; track appearance) {
+                  <button
+                    type="button"
+                    class="segmented__option"
+                    [class.is-active]="config().appearance === appearance"
+                    (click)="setAppearance($any(appearance))"
+                  >
+                    {{ appearance }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="success-label">{{ t('playground.successBehavior') }}</span>
+              <div class="segmented" role="group" aria-labelledby="success-label">
                 <button
                   type="button"
                   class="segmented__option"
-                  [class.is-active]="config().appearance === appearance"
-                  (click)="setAppearance($any(appearance))"
+                  [class.is-active]="config().successBehavior === 'confirmation'"
+                  (click)="setSuccessBehavior('confirmation')"
                 >
-                  {{ appearance }}
+                  confirmation
                 </button>
+                <button
+                  type="button"
+                  class="segmented__option"
+                  [class.is-active]="config().successBehavior === 'event-only'"
+                  (click)="setSuccessBehavior('event-only')"
+                >
+                  event-only
+                </button>
+              </div>
+            </div>
+
+            <label class="field">
+              <span class="field__label">{{ t('playground.maxWidth') }}</span>
+              <input
+                type="number"
+                min="320"
+                max="1200"
+                step="10"
+                [value]="config().maxWidth"
+                (input)="onMaxWidthInput($event)"
+                [attr.aria-invalid]="issueFor('maxWidth') ? true : null"
+              />
+              @if (issueFor('maxWidth'); as message) {
+                <span class="field__error">{{ message }}</span>
               }
-            </div>
-          </div>
+            </label>
+          }
 
-          <div class="field">
-            <span class="field__label" id="success-label">successBehavior</span>
-            <div class="segmented" role="group" aria-labelledby="success-label">
-              <button
-                type="button"
-                class="segmented__option"
-                [class.is-active]="config().successBehavior === 'confirmation'"
-                (click)="setSuccessBehavior('confirmation')"
-              >
-                confirmation
-              </button>
-              <button
-                type="button"
-                class="segmented__option"
-                [class.is-active]="config().successBehavior === 'event-only'"
-                (click)="setSuccessBehavior('event-only')"
-              >
-                event-only
-              </button>
+          @if (showButtons()) {
+            <div class="field">
+              <span class="field__label" id="buttons-layout-label">{{ t('playground.buttonsLayout') }}</span>
+              <div class="segmented" role="group" aria-labelledby="buttons-layout-label">
+                <button
+                  type="button"
+                  class="segmented__option"
+                  [class.is-active]="buttonsLayout() === 'vertical'"
+                  (click)="setButtonsLayout('vertical')"
+                >
+                  vertical
+                </button>
+                <button
+                  type="button"
+                  class="segmented__option"
+                  [class.is-active]="buttonsLayout() === 'horizontal'"
+                  (click)="setButtonsLayout('horizontal')"
+                >
+                  horizontal
+                </button>
+              </div>
             </div>
-          </div>
-
-          <label class="field">
-            <span class="field__label">maxWidth (320–1200)</span>
-            <input
-              type="number"
-              min="320"
-              max="1200"
-              step="10"
-              [value]="config().maxWidth"
-              (input)="onMaxWidthInput($event)"
-              [attr.aria-invalid]="issueFor('maxWidth') ? true : null"
-            />
-            @if (issueFor('maxWidth'); as message) {
-              <span class="field__error">{{ message }}</span>
-            }
-          </label>
+          }
 
           @if (supportsLocale()) {
             <div class="field">
-              <span class="field__label" id="locale-label">Locale (1.1.0)</span>
+              <span class="field__label" id="locale-label">{{ t('playground.locale') }}</span>
               <div class="segmented" role="group" aria-labelledby="locale-label">
                 @for (locale of ['auto', 'en', 'es', 'pt']; track locale) {
                   <button
@@ -241,134 +275,129 @@
               </div>
             </div>
           } @else {
-            <p class="field__hint">
-              Locale inputs are unavailable in Angular 1.0.0. Switch to 1.1.0 to configure localization.
-            </p>
+            <p class="field__hint">{{ t('playground.localeUnavailable') }}</p>
           }
+
+          <div class="field">
+            <span class="field__label" id="mock-outcome-label">{{ t('playground.mockOutcome') }}</span>
+            <div class="segmented" role="group" aria-labelledby="mock-outcome-label">
+              @for (outcome of mockOutcomes; track outcome) {
+                <button
+                  type="button"
+                  class="segmented__option"
+                  [class.is-active]="mockOutcome() === outcome"
+                  (click)="setMockOutcome(outcome)"
+                >
+                  @switch (outcome) {
+                    @case ('success') {
+                      {{ t('playground.outcomeSuccess') }}
+                    }
+                    @case ('cancelled') {
+                      {{ t('playground.outcomeCancelled') }}
+                    }
+                    @case ('failed') {
+                      {{ t('playground.outcomeFailed') }}
+                    }
+                  }
+                </button>
+              }
+            </div>
+            <p class="field__hint">{{ t('playground.mockOutcomeHint') }}</p>
+          </div>
         </fieldset>
 
         <div class="playground-config__frameworks">
-          <p class="field__label">Other frameworks</p>
-          <p class="field__hint">React, Vue, and Svelte playgrounds remain Coming Soon.</p>
+          <p class="field__label">{{ t('playground.otherFrameworks') }}</p>
+          <p class="field__hint">{{ t('playground.otherFrameworksHint') }}</p>
         </div>
       </section>
 
       <!-- Preview -->
       <section class="playground-panel playground-preview" aria-labelledby="preview-title">
         <div class="playground-panel__head">
-          <h2 id="preview-title">Checkout preview</h2>
-          <ep-badge variant="coming-soon">Visual simulation</ep-badge>
+          <h2 id="preview-title">{{ t('playground.preview') }}</h2>
+          <ep-badge variant="info">{{ t('playground.previewBadge') }}</ep-badge>
         </div>
-        <p class="field__hint">
-          This is a website-owned simulation of the published Full Checkout configuration. It does
-          <strong>not</strong> render the live <code>@easy-payments/angular</code> package component and does not load
-          Stripe, PayPal, or wallet SDKs.
-        </p>
+
+        @if (showFull()) {
+          <p class="field__hint">{{ t('playground.previewHint.full') }}</p>
+        } @else if (showButtons()) {
+          <p class="field__hint">{{ t('playground.previewHint.buttons') }}</p>
+        } @else {
+          <p class="field__hint">{{ t('playground.previewHint.headless') }}</p>
+        }
+        <p class="field__hint">{{ t('playground.livePackageNote') }}</p>
 
         <div
           class="preview-frame"
-          [ngClass]="{
-            'preview-frame--dark': resolvedPreviewTheme() === 'dark',
-            'preview-frame--transparent': config().appearance === 'transparent',
-          }"
-          [style.maxWidth.px]="config().maxWidth"
+          [class.preview-frame--transparent]="showFull() && config().appearance === 'transparent'"
+          [style.maxWidth.px]="showFull() ? config().maxWidth : null"
         >
-          <div class="preview-shell">
-            <div class="preview-shell__banner">DEMO · Simulated checkout</div>
-
-            @if (previewState() === 'success') {
-              <div class="preview-outcome" role="status">
-                <h3>Payment succeeded (simulated)</h3>
-                <p>This is not a verified charge. Fulfill only after backend or webhook confirmation.</p>
-                @if (config().successBehavior === 'confirmation') {
-                  <ep-button variant="primary" type="button" (click)="simulateSuccessContinue()">
-                    Continue
-                  </ep-button>
-                }
-              </div>
-            } @else if (previewState() === 'cancelled') {
-              <div class="preview-outcome" role="status">
-                <h3>Payment cancelled (simulated)</h3>
-                <ep-button variant="outline" type="button" (click)="resetSimulation(false)">
-                  Try again
-                </ep-button>
-              </div>
-            } @else if (previewState() === 'error') {
-              <div class="preview-outcome" role="alert">
-                <h3>Payment failed (simulated)</h3>
-                <p><code>PAYMENT_FAILED</code></p>
-                <ep-button variant="outline" type="button" (click)="resetSimulation(false)">
-                  Try again
-                </ep-button>
-              </div>
-            } @else {
-              <div class="preview-product">
-                <h3>{{ config().product.name || 'Untitled product' }}</h3>
-                @if (config().product.description) {
-                  <p>{{ config().product.description }}</p>
-                }
-                <p class="preview-product__price">{{ formattedAmount() }}</p>
-              </div>
-
-              <p class="preview-methods-label">Payment methods</p>
-              <ul class="preview-methods">
-                @for (method of config().methods; track method) {
-                  <li>
-                    <button
-                      type="button"
-                      class="preview-method"
-                      [class.is-selected]="selectedMethod() === method"
-                      [disabled]="!isValid()"
-                      (click)="selectMethod(method)"
-                    >
-                      @if (methodOptions.find((entry) => entry.id === method)?.markSrc; as mark) {
-                        <img [src]="mark" alt="" width="36" height="24" />
-                      }
-                      <span>{{ method }}</span>
-                    </button>
-                  </li>
-                }
-              </ul>
-
-              <div class="preview-actions">
-                <ep-button
-                  variant="primary"
-                  type="button"
-                  [disabled]="!selectedMethod() || !isValid()"
-                  (click)="simulateSuccess()"
-                >
-                  Simulate success
-                </ep-button>
-                <ep-button
-                  variant="outline"
-                  type="button"
-                  [disabled]="!selectedMethod() || !isValid()"
-                  (click)="simulateCancel()"
-                >
-                  Simulate cancel
-                </ep-button>
-                <ep-button
-                  variant="ghost"
-                  type="button"
-                  [disabled]="!selectedMethod() || !isValid()"
-                  (click)="simulateError()"
-                >
-                  Simulate error
-                </ep-button>
-              </div>
-            }
+          <div class="preview-demo-banner" role="status">
+            {{ t('playground.badge.demo') }} · DEMO
           </div>
+
+          @if (isValid()) {
+            @if (showFull()) {
+              @for (_ of [remountToken()]; track _) {
+                <easy-payments
+                  [product]="checkoutProduct()"
+                  [methods]="checkoutMethods()"
+                  [theme]="config().theme"
+                  [appearance]="config().appearance"
+                  [maxWidth]="config().maxWidth"
+                  [successBehavior]="config().successBehavior"
+                  [locale]="checkoutLocale()"
+                  (success)="onSuccess($event)"
+                  (cancel)="onCancel($event)"
+                  (error)="onError($event)"
+                  (successContinue)="onSuccessContinue($event)"
+                />
+              }
+            } @else if (showButtons()) {
+              @for (_ of [remountToken()]; track _) {
+                <easy-payment-buttons
+                  [product]="checkoutProduct()"
+                  [methods]="checkoutMethods()"
+                  [layout]="buttonsLayout()"
+                  [theme]="config().theme"
+                  [locale]="checkoutLocale()"
+                  checkoutInstanceId="website-playground-buttons"
+                  (success)="onSuccess($event)"
+                  (cancel)="onCancel($event)"
+                  (error)="onError($event)"
+                  (started)="onStarted($event)"
+                />
+              }
+            } @else {
+              <app-playground-headless-demo
+                [product]="checkoutProduct()"
+                [methods]="checkoutMethods()"
+                [theme]="config().theme"
+                [locale]="checkoutLocale()"
+                [resetToken]="remountToken()"
+                (success)="onSuccess($event)"
+                (cancel)="onCancel($event)"
+                (error)="onError($event)"
+                (started)="onStarted($event)"
+              />
+            }
+          } @else {
+            <p class="preview-invalid" role="status">
+              {{ issueFor('methods') || issueFor('product.name') || issueFor('product.amount') || issueFor('maxWidth') }}
+            </p>
+          }
         </div>
 
         <div class="event-log" aria-live="polite">
           <div class="playground-panel__head">
-            <h3>Event log</h3>
+            <h3>{{ t('playground.eventLog') }}</h3>
             <ep-button variant="ghost" size="sm" type="button" (click)="clearEventLog()">
-              Clear
+              {{ t('playground.clear') }}
             </ep-button>
           </div>
           @if (eventLog().length === 0) {
-            <p class="field__hint">No simulated events yet. Select a method and run a demo action.</p>
+            <p class="field__hint">{{ t('playground.noEvents') }}</p>
           } @else {
             <ol class="event-log__list">
               @for (event of eventLog(); track event.id) {
@@ -387,16 +416,12 @@
     <!-- Generated code -->
     <section class="playground-panel playground-code" aria-labelledby="code-title">
       <div class="playground-panel__head">
-        <h2 id="code-title">Generated Angular code</h2>
+        <h2 id="code-title">{{ t('playground.code') }}</h2>
         <a class="playground-code__docs" [routerLink]="code().docsHref">
-          Docs for Angular {{ config().version }}
+          {{ t('playground.docsLink') }} {{ config().version }}
         </a>
       </div>
-      <p class="field__hint">
-        Snippets use only verified public exports for
-        <code>@easy-payments/angular@{{ config().version }}</code>. Replace placeholder publishable keys and Client IDs
-        with your own TEST credentials. Never put secret keys in Angular.
-      </p>
+      <p class="field__hint">{{ t('playground.codeHint') }}</p>
 
       <div class="code-grid">
         <ep-code-block label="Install" language="bash" [code]="code().install" />

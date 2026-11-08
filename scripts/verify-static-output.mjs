@@ -41,6 +41,10 @@ assert(
   'Playground must remain client-rendered (no prerendered playground/index.html)',
 );
 assert(
+  !existsSync(join(browser, 'contact', 'index.html')),
+  'Contact must remain client-rendered (Turnstile needs the browser; no prerendered contact/index.html)',
+);
+assert(
   !existsSync(join(browser, 'docs', 'angular', '1.2.0')),
   'Unpublished Angular 1.2.0 docs must not appear in static output',
 );
@@ -84,9 +88,15 @@ assert(!docsHtml.includes('/docs/angular/1.2.0'), 'Docs prerender must not adver
 const headers = readFileSync(join(browser, '_headers'), 'utf8');
 assert(headers.includes('Content-Security-Policy'), '_headers missing CSP');
 assert(headers.includes('X-Frame-Options: DENY'), '_headers missing frame deny');
+assert(
+  /script-src[^;]*https:\/\/challenges\.cloudflare\.com/.test(headers) &&
+    /frame-src[^;]*https:\/\/challenges\.cloudflare\.com/.test(headers),
+  '_headers CSP must allow Cloudflare Turnstile (script-src + frame-src) for /contact',
+);
 
 const redirects = readFileSync(join(browser, '_redirects'), 'utf8');
 assert(redirects.includes('/docs/angular/1.1.0/getting-started'), '_redirects missing docs redirect');
+assert(/^\/contact\s+\/index\.html\s+200/m.test(redirects), '_redirects missing /contact SPA fallback');
 
 function countHtmlFiles(dir) {
   let count = 0;

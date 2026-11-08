@@ -48,7 +48,13 @@ export const routes: Routes = [
     path: 'playground',
     loadComponent: () =>
       import('./features/playground/playground.page').then((m) => m.PlaygroundPage),
-    title: 'Playground | Angular checkout simulation | easy payments',
+    title: 'Playground | Angular checkout mock demo | easy payments',
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./features/contact/contact.page').then((m) => m.ContactPage),
+    title: 'Contact | easy payments',
   },
   {
     path: '**',

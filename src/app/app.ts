@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SiteI18nService } from './core/i18n/site-i18n.service';
 import { SiteFooter } from './core/layout/site-footer/site-footer';
 import { SiteHeader } from './core/layout/site-header/site-header';
 import { SeoRouterService } from './core/seo/seo-router.service';
@@ -13,11 +14,13 @@ import { ThemeService } from './core/theme/theme.service';
 })
 export class App implements OnInit, OnDestroy {
   private readonly themeService = inject(ThemeService);
+  private readonly siteI18n = inject(SiteI18nService);
   /** Ensures route-level SEO metadata is applied for CSR and prerender. */
   private readonly seoRouter = inject(SeoRouterService);
 
   ngOnInit(): void {
     this.themeService.init();
+    this.siteI18n.init();
     void this.seoRouter;
   }
 

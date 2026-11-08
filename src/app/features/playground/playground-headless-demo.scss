@@ -1,0 +1,76 @@
+.headless-demo {
+  display: grid;
+  gap: var(--ep-space-4);
+}
+
+.headless-demo__notice {
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border-left: 3px solid var(--ep-accent);
+  background: var(--ep-bg-muted);
+  color: var(--ep-text-muted);
+  font-size: var(--ep-text-sm);
+}
+
+.headless-demo__error {
+  margin: 0;
+  color: var(--ep-danger, #b42318);
+}
+
+.headless-demo__status,
+.headless-demo__state {
+  margin: 0;
+  color: var(--ep-text-muted);
+  font-size: var(--ep-text-sm);
+}
+
+.headless-demo__methods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.headless-demo__method {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-sm);
+  background: var(--ep-bg-muted);
+  color: var(--ep-text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.headless-demo__method.is-selected {
+  border-color: var(--ep-accent);
+  box-shadow: inset 0 0 0 1px var(--ep-accent);
+}
+
+.headless-demo__method:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.headless-demo__mock {
+  font-size: var(--ep-text-xs);
+  font-weight: var(--ep-font-semibold);
+  letter-spacing: var(--ep-tracking-wide);
+  color: var(--ep-accent-deep, var(--ep-accent));
+}
+
+.headless-demo__mount {
+  min-height: 4rem;
+  padding: var(--ep-space-3);
+  border: 1px dashed var(--ep-border-strong);
+  border-radius: var(--ep-radius-md);
+  background: var(--ep-bg-subtle);
+}
+
+.headless-demo__method:focus-visible {
+  outline: 2px solid var(--ep-accent);
+  outline-offset: 2px;
+}

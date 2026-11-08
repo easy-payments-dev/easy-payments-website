@@ -2,6 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, withInMemoryScrolling, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { providePlaygroundEasyPayments } from './features/playground/playground.providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +16,7 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideClientHydration(),
+    // Marketing site only mounts EP on /playground; mock mode never charges.
+    providePlaygroundEasyPayments(),
   ],
 };

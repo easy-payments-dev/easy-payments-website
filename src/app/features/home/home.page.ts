@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
 import { FRAMEWORKS, getLatestPublishedAngularVersion } from '../../data/frameworks';
 import {
   PAYMENT_METHODS,
@@ -36,8 +37,19 @@ import { EpSectionHeading } from '../../shared/ui/section-heading/section-headin
   styleUrl: './home.page.scss',
 })
 export class HomePage {
+  private readonly i18n = inject(SiteI18nService);
+
   protected readonly tagline = environment.tagline;
   protected readonly githubUrl = environment.githubUrl;
+  protected readonly playgroundTitle = computed(() =>
+    this.i18n.t('home.playgroundTitle'),
+  );
+  protected readonly playgroundBody = computed(() =>
+    this.i18n.t('home.playgroundBody'),
+  );
+  protected readonly playgroundCta = computed(() =>
+    this.i18n.t('home.playgroundCta'),
+  );
   protected readonly githubAngularUrl = environment.githubAngularUrl;
   protected readonly githubWebsiteUrl = environment.githubWebsiteUrl;
   protected readonly npmAngularUrl = environment.npmAngularUrl;
@@ -93,14 +105,14 @@ export class HomePage {
     {
       name: 'Buttons Only',
       status: 'preview' as const,
-      versionNote: 'Coming in Angular v1.2.0',
+      versionNote: 'Unpublished — 1.2.0',
       body: 'Render provider buttons and card expansion without the full checkout shell. Not part of npm 1.1.0.',
     },
     {
       name: 'Headless',
       status: 'preview' as const,
-      versionNote: 'Coming in Angular v1.2.0',
-      body: 'Programmatic checkout control for custom UI shells. Preview in the 1.2.0 release candidate only.',
+      versionNote: 'Unpublished — 1.2.0',
+      body: 'Programmatic checkout control for custom UI shells. Not part of npm 1.1.0.',
     },
   ] as const;
 

@@ -2,6 +2,9 @@ import { HistoricalAngularVersion } from '../../core/docs/historical-api.evidenc
 
 export type PlaygroundVersion = HistoricalAngularVersion;
 
+/** Live demo surface mounted from local unpublished 1.2.0. */
+export type PlaygroundDemoMode = 'full' | 'buttons' | 'headless';
+
 export type PlaygroundPaymentMethod =
   | 'card'
   | 'paypal'
@@ -14,12 +17,16 @@ export type PlaygroundCheckoutTheme = 'light' | 'dark' | 'system';
 export type PlaygroundAppearance = 'default' | 'transparent';
 export type PlaygroundSuccessBehavior = 'confirmation' | 'event-only';
 export type PlaygroundLocale = 'auto' | 'en' | 'es' | 'pt';
+export type PlaygroundButtonsLayout = 'vertical' | 'horizontal';
 
 export type PlaygroundSimEventName =
   | 'success'
   | 'cancel'
   | 'error'
-  | 'successContinue';
+  | 'successContinue'
+  | 'started'
+  | 'pending'
+  | 'methodChange';
 
 export type PlaygroundPreviewState =
   | 'idle'

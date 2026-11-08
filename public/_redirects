@@ -10,5 +10,8 @@
 # Client-rendered interactive playground (no prerendered HTML required).
 /playground    /index.html    200
 
+# Client-rendered contact form (Turnstile loads in the browser only).
+/contact    /index.html    200
+
 # SPA fallback for unknown client routes (404 page hydrates in Angular).
 /*    /index.html   200

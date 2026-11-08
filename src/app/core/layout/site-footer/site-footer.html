@@ -12,35 +12,35 @@
     </div>
 
     <div class="site-footer__columns">
-      <nav class="site-footer__nav" aria-label="Footer product">
-        <p class="site-footer__heading">Product</p>
-        <a routerLink="/frameworks">Frameworks</a>
-        <a routerLink="/docs/angular">Documentation</a>
-        <a routerLink="/playground">Playground</a>
+      <nav class="site-footer__nav" [attr.aria-label]="t('footer.product')">
+        <p class="site-footer__heading">{{ t('footer.product') }}</p>
+        <a routerLink="/frameworks">{{ t('nav.frameworks') }}</a>
+        <a routerLink="/docs/angular">{{ t('nav.documentation') }}</a>
+        <a routerLink="/playground">{{ t('nav.playground') }}</a>
       </nav>
 
-      <nav class="site-footer__nav" aria-label="Footer trust">
-        <p class="site-footer__heading">Trust</p>
-        <a routerLink="/security">Security</a>
+      <nav class="site-footer__nav" [attr.aria-label]="t('footer.trust')">
+        <p class="site-footer__heading">{{ t('footer.trust') }}</p>
+        <a routerLink="/security">{{ t('nav.security') }}</a>
+        <a routerLink="/contact">{{ t('nav.contact') }}</a>
         <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">
-          GitHub organization
-          <span class="sr-only">(opens in a new tab)</span>
+          {{ t('footer.githubOrg') }}
+          <span class="sr-only">{{ t('newTab') }}</span>
         </a>
         <a [href]="githubAngularUrl" target="_blank" rel="noopener noreferrer">
-          Angular library
-          <span class="sr-only">(opens in a new tab)</span>
+          {{ t('footer.angularLib') }}
+          <span class="sr-only">{{ t('newTab') }}</span>
         </a>
-        <span class="site-footer__meta">{{ license }} license</span>
+        <span class="site-footer__meta">{{ license }} {{ t('footer.license') }}</span>
       </nav>
     </div>
 
     <p class="site-footer__statement">
-      Easy Payments is an open-source integration library ecosystem for developers. It is not a payment processor and
-      does not move money, hold funds, or replace Stripe, PayPal, or other providers.
+      {{ t('footer.statement') }}
     </p>
 
     <p class="site-footer__copy">
-      © {{ year }} {{ siteName }}. Official ecosystem website.
+      © {{ year }} {{ siteName }}. {{ t('footer.copy') }}
     </p>
   </div>
 </footer>

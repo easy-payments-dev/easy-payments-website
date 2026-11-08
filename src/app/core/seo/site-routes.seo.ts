@@ -24,10 +24,16 @@ export const STATIC_SEO_PAGES: readonly SeoPageMeta[] = [
   },
   {
     path: '/playground',
-    title: `Playground | Angular checkout simulation | ${SITE}`,
+    title: `Playground | Angular checkout mock demo | ${SITE}`,
     description:
-      'Interactive Angular checkout playground. Configure published package options, preview a local simulation, and copy integration code. Demonstration only — no payments are processed.',
+      'Interactive Angular checkout playground. Configure published package options, preview the real @easy-payments/angular component in mock mode, and copy integration code. Demonstration only — no payments are processed.',
     index: true,
+  },
+  {
+    path: '/contact',
+    title: `Contact | ${SITE}`,
+    description:
+      'Contact the easy payments maintainers: send a suggestion, report a problem, or ask a question. Do not include card numbers or other sensitive data.',
   },
 ] as const;
 

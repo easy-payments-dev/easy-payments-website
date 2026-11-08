@@ -1,5 +1,16 @@
 # Cloudflare Pages security and caching headers.
 # Keep CSP compatible with theme boot script, Google Fonts, and clipboard UX.
+#
+# Contact form (/contact):
+# - The Turnstile script is only ever requested by the /contact page component, but the CSP
+#   below allows https://challenges.cloudflare.com in script-src and frame-src site-wide.
+#   Cloudflare Pages merges header values from every matching rule, and multiple CSP headers
+#   are ENFORCED TOGETHER (intersection), so a /contact-only rule cannot loosen this policy.
+#   Allowing one trusted origin globally is the simplest safe option; no other page loads it.
+# - connect-src must list the deployed contact API origin. The value below is a placeholder
+#   (reserved .invalid TLD, matches nothing). Replace it with the API Gateway / custom domain
+#   origin (scheme + host only, e.g. https://api.example.com) before enabling the form.
+#   See infra/contact/README.md and docs/cloudflare-pages.md.
 
 /*
   X-Content-Type-Options: nosniff
@@ -7,7 +18,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://contact-api.example.invalid; upgrade-insecure-requests
 
 /
   Cache-Control: public, max-age=0, must-revalidate

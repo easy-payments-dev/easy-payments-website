@@ -13,8 +13,8 @@
       />
     </a>
 
-    <nav class="nav nav--desktop" aria-label="Primary">
-      @for (item of navItems; track item.label) {
+    <nav class="nav nav--desktop" [attr.aria-label]="t('nav.primary')">
+      @for (item of navItems(); track item.labelKey) {
         @if (item.path) {
           <a
             class="nav__link"
@@ -32,17 +32,32 @@
             rel="noopener noreferrer"
           >
             {{ item.label }}
-            <span class="sr-only">(opens in a new tab)</span>
+            <span class="sr-only">{{ t('newTab') }}</span>
           </a>
         }
       }
     </nav>
 
     <div class="site-header__actions">
+      <div class="lang-switcher" role="group" [attr.aria-label]="t('lang.label')">
+        @for (option of languages; track option.code) {
+          <button
+            type="button"
+            class="lang-switcher__option"
+            [ngClass]="{ 'is-active': isLanguage(option.code) }"
+            [attr.aria-pressed]="isLanguage(option.code)"
+            [attr.lang]="option.code"
+            (click)="setLanguage(option.code)"
+          >
+            {{ option.nativeLabel }}
+          </button>
+        }
+      </div>
+
       <div
         class="theme-switcher"
         role="group"
-        [attr.aria-label]="'Color theme, currently ' + themePreference()"
+        [attr.aria-label]="t('theme.label') + ', ' + themePreference()"
       >
         @for (option of themeOptions; track option.value) {
           <button
@@ -52,7 +67,7 @@
             [attr.aria-pressed]="isTheme(option.value)"
             (click)="setTheme(option.value)"
           >
-            {{ option.label }}
+            {{ themeLabel(option.value) }}
           </button>
         }
       </div>
@@ -65,7 +80,7 @@
         aria-controls="mobile-nav"
         (click)="toggleMobile()"
       >
-        <span class="sr-only">{{ mobileOpen() ? 'Close' : 'Open' }} menu</span>
+        <span class="sr-only">{{ mobileOpen() ? t('menu.close') : t('menu.open') }}</span>
         <span class="menu-toggle__bars" [ngClass]="{ 'is-open': mobileOpen() }" aria-hidden="true"></span>
       </button>
     </div>
@@ -80,8 +95,26 @@
   >
     <div class="nav-mobile__panel">
       <div class="ep-container nav-mobile__theme">
-        <p class="nav-mobile__theme-label">Theme</p>
-        <div class="theme-switcher theme-switcher--mobile" role="group" aria-label="Color theme">
+        <p class="nav-mobile__theme-label">{{ t('lang.label') }}</p>
+        <div class="lang-switcher lang-switcher--mobile" role="group" [attr.aria-label]="t('lang.label')">
+          @for (option of languages; track option.code) {
+            <button
+              type="button"
+              class="lang-switcher__option"
+              [ngClass]="{ 'is-active': isLanguage(option.code) }"
+              [attr.aria-pressed]="isLanguage(option.code)"
+              [attr.lang]="option.code"
+              (click)="setLanguage(option.code)"
+            >
+              {{ option.nativeLabel }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="ep-container nav-mobile__theme">
+        <p class="nav-mobile__theme-label">{{ t('theme.label') }}</p>
+        <div class="theme-switcher theme-switcher--mobile" role="group" [attr.aria-label]="t('theme.label')">
           @for (option of themeOptions; track option.value) {
             <button
               type="button"
@@ -90,14 +123,14 @@
               [attr.aria-pressed]="isTheme(option.value)"
               (click)="setTheme(option.value)"
             >
-              {{ option.label }}
+              {{ themeLabel(option.value) }}
             </button>
           }
         </div>
       </div>
 
-      <nav class="nav nav--mobile ep-container" aria-label="Mobile">
-        @for (item of navItems; track item.label) {
+      <nav class="nav nav--mobile ep-container" [attr.aria-label]="t('nav.mobile')">
+        @for (item of navItems(); track item.labelKey) {
           @if (item.path) {
             <a
               class="nav__link"
@@ -117,7 +150,7 @@
               (click)="closeMobile()"
             >
               {{ item.label }}
-              <span class="sr-only">(opens in a new tab)</span>
+              <span class="sr-only">{{ t('newTab') }}</span>
             </a>
           }
         }

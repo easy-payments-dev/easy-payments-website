@@ -19,4 +19,13 @@ export const environment = {
   license: 'MIT',
   docsLatestAngularVersion: '1.1.0',
   angularPackageName: '@easy-payments/angular',
+  /**
+   * Contact form (public, non-secret values only).
+   * Dev: local mock API (npm run contact:local) + official Cloudflare Turnstile test site key
+   * (always passes). Never use these in production builds.
+   */
+  contactTransport: 'local-mock' as 'local-mock' | 'api',
+  contactApiUrl: 'http://localhost:8787/contact' as string | null,
+  turnstileSiteKey: '1x00000000000000000000AA' as string | null,
+  contactEnabled: true as boolean,
 } as const;

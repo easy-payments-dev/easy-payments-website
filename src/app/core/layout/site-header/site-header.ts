@@ -13,11 +13,14 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { filter } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { BRAND_ASSETS } from '../../brand/brand-assets';
+import { SiteI18nService } from '../../i18n/site-i18n.service';
+import { SiteLanguage } from '../../i18n/site-locale';
+import { SiteMessageKey } from '../../i18n/site-messages';
 import { ThemeService } from '../../theme/theme.service';
 import { THEME_OPTIONS, ThemePreference } from '../../theme/theme.types';
 
 interface NavItem {
-  label: string;
+  labelKey: SiteMessageKey;
   path?: string;
   externalUrl?: string;
   exact?: boolean;
@@ -31,6 +34,7 @@ interface NavItem {
 })
 export class SiteHeader {
   private readonly themeService = inject(ThemeService);
+  private readonly i18n = inject(SiteI18nService);
   private readonly router = inject(Router);
   private readonly menuToggle = viewChild<ElementRef<HTMLButtonElement>>('menuToggle');
 
@@ -38,6 +42,8 @@ export class SiteHeader {
   protected readonly themeOptions = THEME_OPTIONS;
   protected readonly themePreference = this.themeService.preference;
   protected readonly resolvedTheme = this.themeService.resolvedTheme;
+  protected readonly language = this.i18n.language;
+  protected readonly languages = this.i18n.languages;
   protected readonly mobileOpen = signal(false);
 
   protected readonly lockupSrc = computed(() =>
@@ -52,12 +58,22 @@ export class SiteHeader {
       : `${BRAND_ASSETS.headerLockupLight} 1x, ${BRAND_ASSETS.headerLockupLight2x} 2x`,
   );
 
-  protected readonly navItems: readonly NavItem[] = [
-    { label: 'Frameworks', path: '/frameworks' },
-    { label: 'Documentation', path: '/docs/angular' },
-    { label: 'Playground', path: '/playground' },
-    { label: 'GitHub', externalUrl: environment.githubUrl },
+  private readonly navDefs: readonly NavItem[] = [
+    { labelKey: 'nav.frameworks', path: '/frameworks' },
+    { labelKey: 'nav.documentation', path: '/docs/angular' },
+    { labelKey: 'nav.playground', path: '/playground' },
+    { labelKey: 'nav.contact', path: '/contact' },
+    { labelKey: 'nav.github', externalUrl: environment.githubUrl },
   ];
+
+  protected readonly navItems = computed(() => {
+    // Recompute labels when language changes.
+    void this.language();
+    return this.navDefs.map((item) => ({
+      ...item,
+      label: this.i18n.t(item.labelKey),
+    }));
+  });
 
   constructor() {
     this.router.events
@@ -66,6 +82,21 @@ export class SiteHeader {
         takeUntilDestroyed(),
       )
       .subscribe(() => this.closeMobile());
+  }
+
+  protected t(key: SiteMessageKey): string {
+    return this.i18n.t(key);
+  }
+
+  protected themeLabel(preference: ThemePreference): string {
+    switch (preference) {
+      case 'light':
+        return this.t('theme.light');
+      case 'dark':
+        return this.t('theme.dark');
+      default:
+        return this.t('theme.system');
+    }
   }
 
   protected toggleMobile(): void {
@@ -82,6 +113,14 @@ export class SiteHeader {
 
   protected isTheme(preference: ThemePreference): boolean {
     return this.themePreference() === preference;
+  }
+
+  protected setLanguage(language: SiteLanguage): void {
+    this.i18n.setLanguage(language);
+  }
+
+  protected isLanguage(language: SiteLanguage): boolean {
+    return this.language() === language;
   }
 
   @HostListener('document:keydown.escape')

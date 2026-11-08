@@ -7,6 +7,7 @@ describe('site-routes SEO catalog', () => {
     expect(paths).toContain('/frameworks');
     expect(paths).toContain('/security');
     expect(paths).toContain('/playground');
+    expect(paths).toContain('/contact');
     expect(paths).toContain('/docs/angular/1.0.0/getting-started');
     expect(paths).toContain('/docs/angular/1.1.0/localization');
     expect(paths.some((path) => path.includes('1.2.0'))).toBe(false);

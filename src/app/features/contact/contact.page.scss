@@ -1,0 +1,170 @@
+.contact {
+  display: grid;
+  gap: var(--ep-space-6);
+}
+
+.contact__notes {
+  display: grid;
+  gap: var(--ep-space-2);
+  color: var(--ep-text-muted);
+  font-size: var(--ep-text-sm);
+}
+
+.contact__notes p {
+  margin: 0;
+  max-width: none;
+}
+
+.contact__form {
+  display: grid;
+  gap: var(--ep-space-5);
+  padding: var(--ep-space-5);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-lg);
+  background: var(--ep-bg-elevated);
+}
+
+.contact__fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  display: grid;
+  gap: var(--ep-space-5);
+}
+
+.contact__fieldset:disabled {
+  opacity: 0.75;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.field__label {
+  margin: 0;
+  font-size: var(--ep-text-xs);
+  font-weight: var(--ep-font-semibold);
+  letter-spacing: var(--ep-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ep-text-subtle);
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  min-height: var(--ep-control-height);
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--ep-border-strong);
+  border-radius: var(--ep-radius-sm);
+  background: var(--ep-bg);
+  color: var(--ep-text);
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+  line-height: var(--ep-leading-normal);
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible {
+  outline: none;
+  border-color: var(--ep-accent);
+  box-shadow: var(--ep-focus-ring);
+}
+
+.field input[aria-invalid='true'],
+.field textarea[aria-invalid='true'] {
+  border-color: var(--ep-alert-error-text);
+}
+
+.field__error {
+  margin: 0;
+  max-width: none;
+  color: var(--ep-alert-error-text);
+  font-size: var(--ep-text-sm);
+}
+
+.field__hint,
+.field__count {
+  margin: 0;
+  max-width: none;
+  color: var(--ep-text-subtle);
+  font-size: var(--ep-text-xs);
+}
+
+.field__count {
+  text-align: end;
+}
+
+.field__count--over {
+  color: var(--ep-alert-error-text);
+  font-weight: var(--ep-font-semibold);
+}
+
+/*
+ * Honeypot: removed from layout and from the accessibility tree (aria-hidden + tabindex=-1)
+ * but still present in the DOM so automated form fillers populate it.
+ */
+.contact__trap {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.contact__verify {
+  display: grid;
+  gap: var(--ep-space-2);
+}
+
+.contact__turnstile {
+  min-height: 4.0625rem;
+}
+
+.contact__actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.contact__success {
+  display: grid;
+  gap: var(--ep-space-3);
+  justify-items: start;
+  padding: var(--ep-space-5);
+  border: 1px solid var(--ep-alert-security-border);
+  border-left-width: 3px;
+  border-radius: var(--ep-radius-md);
+  background: var(--ep-alert-security-bg);
+}
+
+.contact__success p {
+  margin: 0;
+  max-width: none;
+  color: var(--ep-text-muted);
+}
+
+.contact__success-title {
+  margin: 0;
+  font-size: var(--ep-text-lg);
+  color: var(--ep-alert-security-text);
+}
+
+.contact__success-title:focus-visible {
+  outline: none;
+  box-shadow: var(--ep-focus-ring);
+  border-radius: var(--ep-radius-xs);
+}
+
+.contact__fallback {
+  display: flex;
+}
