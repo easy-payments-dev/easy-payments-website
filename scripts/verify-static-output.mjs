@@ -88,6 +88,23 @@ assert(
   'Docs og:type should be article',
 );
 
+const supportHtml = readFileSync(join(browser, 'support', 'index.html'), 'utf8');
+assert(
+  supportHtml.includes('https://paypal.me/JoseVicente07') &&
+    supportHtml.includes('support-card__paypal') &&
+    supportHtml.includes('Support with PayPal'),
+  'Support page must prerender the PayPal support link from production paypalSupportUrl',
+);
+assert(
+  docsHtml.includes('https://paypal.me/JoseVicente07') &&
+    docsHtml.includes('support-card__paypal'),
+  'Docs support card must prerender the PayPal support link',
+);
+assert(
+  !supportHtml.includes('coming later') && !supportHtml.includes('paypalPending'),
+  'Support page must not show the old PayPal pending message',
+);
+
 const headers = readFileSync(join(browser, '_headers'), 'utf8');
 assert(headers.includes('Content-Security-Policy'), '_headers missing CSP');
 assert(headers.includes('X-Frame-Options: DENY'), '_headers missing frame deny');

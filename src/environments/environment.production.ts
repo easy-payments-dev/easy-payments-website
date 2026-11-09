@@ -33,6 +33,7 @@ export const environment = {
   /**
    * Voluntary PayPal.Me support link (plain external URL — no PayPal SDK).
    * Same public profile as the locale/country variant; keep the clean URL in production.
+   * Set to null to hide the PayPal button.
    */
   paypalSupportUrl: 'https://paypal.me/JoseVicente07' as string | null,
 } as const;
