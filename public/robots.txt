@@ -1,8 +1,7 @@
 User-agent: *
 Allow: /
 
-# Unpublished / fictional documentation surfaces are not published routes.
-Disallow: /docs/angular/1.2.0
+# Framework docs that are not published yet.
 Disallow: /docs/react/
 Disallow: /docs/vue/
 Disallow: /docs/svelte/

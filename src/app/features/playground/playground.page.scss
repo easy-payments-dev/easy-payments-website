@@ -179,12 +179,44 @@
 
 .preview-frame {
   width: 100%;
+  min-width: 0;
   margin-inline: auto;
   padding: var(--ep-space-4);
   border-radius: var(--ep-radius-lg);
   background: var(--ep-bg-subtle);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
   gap: var(--ep-space-3);
+}
+
+/*
+ * The frame never narrows the demo: each surface fills the frame and the
+ * checkout caps itself via [maxWidth], so padding does not squeeze its layout.
+ */
+.preview-frame > :not(.preview-demo-banner) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.playground-preview__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ep-space-3);
+}
+
+.playground-preview__guide {
+  color: var(--ep-accent-deep);
+  font-size: var(--ep-text-sm);
+  font-weight: var(--ep-font-semibold);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.playground-preview__guide:hover {
+  color: var(--ep-navy);
 }
 
 .preview-frame--transparent {

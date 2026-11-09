@@ -27,7 +27,10 @@ describe('documentation examples and navigation after W4.1', () => {
     const search = TestBed.configureTestingModule({}).inject(DocsSearchService);
     const hits = search.search('confirmPaymentUrl', { scope: 'all' });
     expect(hits.some((hit) => hit.version === '1.0.0')).toBe(true);
-    expect(hits.every((hit) => hit.version !== '1.2.0')).toBe(true);
+    // 1.2.0 examples are allowed (launch-review version).
+    expect(
+      hits.every((hit) => ['1.0.0', '1.1.0', '1.2.0'].includes(hit.version)),
+    ).toBe(true);
 
     const localization = search.search('Localization', {
       framework: 'angular',

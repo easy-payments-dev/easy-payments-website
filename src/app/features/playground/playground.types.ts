@@ -2,7 +2,7 @@ import { HistoricalAngularVersion } from '../../core/docs/historical-api.evidenc
 
 export type PlaygroundVersion = HistoricalAngularVersion;
 
-/** Live demo surface mounted from local unpublished 1.2.0. */
+/** Live demo surface mounted from the 1.2.0 library build. */
 export type PlaygroundDemoMode = 'full' | 'buttons' | 'headless';
 
 export type PlaygroundPaymentMethod =

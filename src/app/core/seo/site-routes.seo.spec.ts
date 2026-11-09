@@ -8,9 +8,13 @@ describe('site-routes SEO catalog', () => {
     expect(paths).toContain('/security');
     expect(paths).toContain('/playground');
     expect(paths).toContain('/contact');
+    expect(paths).toContain('/faq');
+    expect(paths).toContain('/support');
     expect(paths).toContain('/docs/angular/1.0.0/getting-started');
     expect(paths).toContain('/docs/angular/1.1.0/localization');
-    expect(paths.some((path) => path.includes('1.2.0'))).toBe(false);
+    expect(paths).toContain('/docs/angular/1.1.0/checkout-modes');
+    expect(paths).toContain('/docs/angular/1.2.0/getting-started');
+    expect(paths).toContain('/docs/angular/1.2.0/checkout-modes');
     expect(paths.some((path) => path.includes('/docs/react'))).toBe(false);
     expect(new Set(paths).size).toBe(paths.length);
   });
@@ -20,12 +24,17 @@ describe('site-routes SEO catalog', () => {
     expect(pages.length).toBeGreaterThan(20);
     const titles = pages.map((page) => page.title);
     expect(new Set(titles).size).toBe(titles.length);
-    expect(
-      pages.find((page) => page.path.includes('/1.1.0/getting-started'))?.title,
-    ).toContain('latest published');
-    expect(
-      pages.find((page) => page.path.includes('/1.0.0/getting-started'))?.title,
-    ).not.toContain('latest published');
+    const title120 = pages.find((page) =>
+      page.path.includes('/1.2.0/getting-started'),
+    )?.title;
+    expect(title120).toContain('Angular 1.2.0');
+    expect(title120).not.toMatch(/latest published/i);
+    for (const version of ['1.1.0', '1.0.0']) {
+      expect(
+        pages.find((page) => page.path.includes(`/${version}/getting-started`))
+          ?.title,
+      ).not.toMatch(/latest published/i);
+    }
   });
 
   it('keeps static marketing pages indexed', () => {

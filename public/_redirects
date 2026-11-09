@@ -2,16 +2,21 @@
 # Static prerendered files are preferred when present; these rules cover
 # docs entry redirects and SPA fallback for client-only routes.
 
-/docs    /docs/angular/1.1.0/getting-started    301
-/docs/angular    /docs/angular/1.1.0/getting-started    301
+/docs    /docs/angular/1.2.0/getting-started    301
+/docs/angular    /docs/angular/1.2.0/getting-started    301
 /docs/angular/1.0.0    /docs/angular/1.0.0/getting-started    301
 /docs/angular/1.1.0    /docs/angular/1.1.0/getting-started    301
+/docs/angular/1.2.0    /docs/angular/1.2.0/getting-started    301
 
 # Client-rendered interactive playground (no prerendered HTML required).
 /playground    /index.html    200
 
 # Client-rendered contact form (Turnstile loads in the browser only).
 /contact    /index.html    200
+
+# FAQ and support are prerendered; keep SPA fallback for deep links/previews.
+/faq    /index.html    200
+/support    /index.html    200
 
 # SPA fallback for unknown client routes (404 page hydrates in Angular).
 /*    /index.html   200

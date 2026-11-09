@@ -1,47 +1,99 @@
 <section class="headless-demo" [attr.aria-label]="t('playground.headless.region')">
-  <p class="headless-demo__notice" role="note">
-    {{ t('playground.headless.consumerUiNotice') }}
-  </p>
+  <header class="headless-demo__header">
+    <p class="headless-demo__kicker">{{ t('playground.headless.kicker') }}</p>
+    <h3 class="headless-demo__title">{{ t('playground.headless.title') }}</h3>
+    <p class="headless-demo__notice" role="note">
+      {{ t('playground.headless.consumerUiNotice') }}
+    </p>
+  </header>
+
+  <section class="headless-demo__product" aria-labelledby="headless-product-heading">
+    <h4 class="headless-demo__subtitle" id="headless-product-heading">
+      {{ t('playground.headless.product') }}
+    </h4>
+    <p class="headless-demo__product-name">{{ product().name }}</p>
+    @if (product().description) {
+      <p class="headless-demo__product-description">{{ product().description }}</p>
+    }
+    <p class="headless-demo__product-price">
+      {{ priceLabel() }}
+      @if ((product().quantity ?? 1) > 1) {
+        <span class="headless-demo__product-qty">
+          · {{ t('playground.headless.qty') }} {{ product().quantity }} · {{ totalLabel() }}
+        </span>
+      }
+    </p>
+  </section>
 
   @if (bootStatus() === 'failed') {
     <p class="headless-demo__error" role="alert">{{ bootError() }}</p>
   } @else if (bootStatus() !== 'ready') {
     <p class="headless-demo__status" role="status">{{ t('playground.headless.starting') }}</p>
   } @else {
-    <div class="headless-demo__methods" role="list" [attr.aria-label]="t('playground.methods')">
-      @for (entry of available(); track entry.method) {
-        <button
-          type="button"
-          class="headless-demo__method"
-          role="listitem"
-          [class.is-selected]="uiSelected() === entry.method"
-          [disabled]="!entry.available || mountBusy()"
-          (click)="selectMethod(entry.method)"
-        >
-          <span>{{ methodLabels[entry.method] ?? entry.method }}</span>
-          @if (entry.mock) {
-            <span class="headless-demo__mock">DEMO</span>
-          }
-        </button>
-      }
-    </div>
+    <section class="headless-demo__selector" aria-labelledby="headless-methods-heading">
+      <h4 class="headless-demo__subtitle" id="headless-methods-heading">
+        {{ t('playground.methods') }}
+      </h4>
+      <div class="headless-demo__methods" role="list">
+        @for (entry of available(); track entry.method) {
+          <button
+            type="button"
+            class="headless-demo__method"
+            role="listitem"
+            [class.is-selected]="uiSelected() === entry.method"
+            [attr.aria-pressed]="uiSelected() === entry.method"
+            [attr.data-method]="entry.method"
+            [disabled]="!entry.available || mountBusy()"
+            (click)="selectMethod(entry.method)"
+          >
+            <span class="headless-demo__method-main">
+              <span class="headless-demo__method-name">
+                {{ methodLabels[entry.method] ?? entry.method }}
+              </span>
+              @if (entry.mock) {
+                <span class="headless-demo__badge headless-demo__badge--demo">
+                  {{ t('playground.headless.demoBadge') }}
+                </span>
+              }
+            </span>
+            <span class="headless-demo__method-meta">
+              @if (entry.available) {
+                {{ interactionLabel(entry) }}
+              } @else {
+                {{ t('playground.headless.unavailable') }}
+              }
+            </span>
+          </button>
+        }
+      </div>
+    </section>
+  }
 
+  <section class="headless-demo__mount" aria-labelledby="headless-mount-heading">
+    <h4 class="headless-demo__subtitle" id="headless-mount-heading">
+      {{ t('playground.headless.mountTitle') }}
+    </h4>
+    @if (!uiSelected()) {
+      <p class="headless-demo__hint">{{ t('playground.headless.mountIdle') }}</p>
+    }
     <div
       #mountHost
-      class="headless-demo__mount"
+      class="headless-demo__mount-host"
+      [class.is-active]="!!uiSelected()"
+      [attr.data-method]="uiSelected()"
       [attr.aria-label]="t('playground.headless.mountLabel')"
       [attr.aria-busy]="mountBusy()"
     ></div>
 
-    @if (canConfirm()) {
-      <ep-button
-        variant="primary"
+    @if (showConfirm()) {
+      <button
         type="button"
-        [disabled]="confirmBusy()"
+        class="headless-demo__pay"
+        [disabled]="!canConfirm()"
         (click)="confirmPayment()"
       >
-        {{ t('playground.headless.confirm') }}
-      </ep-button>
+        {{ confirmLabel() }}
+      </button>
     }
 
     @if (sessionState(); as state) {
@@ -49,5 +101,20 @@
         {{ t('playground.headless.state') }}: <code>{{ state }}</code>
       </p>
     }
-  }
+  </section>
+
+  <section class="headless-demo__events" aria-labelledby="headless-events-heading">
+    <h4 class="headless-demo__subtitle" id="headless-events-heading">
+      {{ t('playground.headless.eventsTitle') }}
+    </h4>
+    @if (lifecycle().length === 0) {
+      <p class="headless-demo__hint">{{ t('playground.headless.noEvents') }}</p>
+    } @else {
+      <ul class="headless-demo__event-list">
+        @for (entry of lifecycle(); track entry.id) {
+          <li>{{ entry.label }}</li>
+        }
+      </ul>
+    }
+  </section>
 </section>

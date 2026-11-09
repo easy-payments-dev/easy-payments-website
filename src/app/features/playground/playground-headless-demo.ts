@@ -18,6 +18,7 @@ import {
   PaymentError,
   type EasyPaymentsLocale,
   type HeadlessCheckoutSession,
+  type HeadlessMethodInteraction,
   type HeadlessMountHandle,
   type PaymentMethod,
   type PaymentProduct,
@@ -26,15 +27,32 @@ import {
 } from '@easy-payments/angular';
 import { SiteI18nService } from '../../core/i18n/site-i18n.service';
 import { SiteMessageKey } from '../../core/i18n/site-messages';
-import { EpButton } from '../../shared/ui/button/button';
+
+interface HeadlessMethodRow {
+  method: PaymentMethod;
+  available: boolean;
+  interaction: HeadlessMethodInteraction;
+  mock: boolean;
+}
+
+interface HeadlessLifecycleEntry {
+  id: number;
+  label: string;
+}
+
+/** Same terminal error delivered twice (event + rejected promise) is shown once. */
+const ERROR_DEDUPE_MS = 1500;
+const LIFECYCLE_LIMIT = 8;
 
 /**
- * Consumer-owned Headless demo UI. Layout/copy belong to the website;
- * payment mounts come from EasyPaymentsHeadless (public API).
+ * Merchant-owned Headless demo UI. Layout and copy belong to the website;
+ * payment mounts and lifecycle come from `EasyPaymentsHeadless` (public API).
+ * Mirrors the structure of the library demo panel: product, method list,
+ * mount host, confirm CTA, and lifecycle events.
  */
 @Component({
   selector: 'app-playground-headless-demo',
-  imports: [EpButton],
+  imports: [],
   templateUrl: './playground-headless-demo.html',
   styleUrl: './playground-headless-demo.scss',
 })
@@ -59,33 +77,48 @@ export class PlaygroundHeadlessDemo {
   private mountHandle: HeadlessMountHandle | null = null;
   private bootGeneration = 0;
   private eventSubscriptions = new Subscription();
+  private lifecycleSeq = 0;
+  private lastErrorKey = '';
+  private lastErrorAt = 0;
 
   protected readonly methodLabels = PAYMENT_METHOD_LABELS;
   protected readonly bootStatus = signal<'idle' | 'ready' | 'failed'>('idle');
   protected readonly bootError = signal<string | null>(null);
   protected readonly uiSelected = signal<PaymentMethod | null>(null);
   protected readonly mountBusy = signal(false);
+  protected readonly mountReady = signal(false);
   protected readonly confirmBusy = signal(false);
-  protected readonly available = signal<
-    readonly {
-      method: PaymentMethod;
-      available: boolean;
-      interaction: string;
-      mock: boolean;
-    }[]
-  >([]);
+  protected readonly available = signal<readonly HeadlessMethodRow[]>([]);
   protected readonly sessionState = signal<string | null>(null);
+  protected readonly lifecycle = signal<readonly HeadlessLifecycleEntry[]>([]);
 
-  protected readonly canConfirm = computed(() => {
-    const method = this.uiSelected();
-    const interaction = this.available().find((entry) => entry.method === method)
-      ?.interaction;
-    return (
-      !!method &&
-      (interaction === 'confirm' || interaction === 'mock') &&
-      !!this.mountHandle &&
-      !this.confirmBusy()
-    );
+  protected readonly selectedRow = computed(
+    () =>
+      this.available().find((entry) => entry.method === this.uiSelected()) ??
+      null,
+  );
+
+  /** Confirm applies to Stripe confirm methods and mock-mode stand-ins. */
+  protected readonly showConfirm = computed(() => {
+    const interaction = this.selectedRow()?.interaction;
+    return interaction === 'confirm' || interaction === 'mock';
+  });
+
+  protected readonly canConfirm = computed(
+    () => this.showConfirm() && this.mountReady() && !this.confirmBusy(),
+  );
+
+  protected readonly priceLabel = computed(() => {
+    const product = this.product();
+    return this.formatMoney(product.amount, product.currency);
+  });
+
+  protected readonly totalLabel = computed(() => {
+    const product = this.product();
+    const quantity = product.quantity ?? 1;
+    return quantity > 1
+      ? this.formatMoney(product.amount * quantity, product.currency)
+      : null;
   });
 
   constructor() {
@@ -101,12 +134,31 @@ export class PlaygroundHeadlessDemo {
     });
 
     this.destroyRef.onDestroy(() => {
+      this.bootGeneration += 1;
       void this.teardown();
     });
   }
 
   protected t(key: SiteMessageKey): string {
     return this.i18n.t(key);
+  }
+
+  protected interactionLabel(row: HeadlessMethodRow): string {
+    switch (row.interaction) {
+      case 'confirm':
+        return this.t('playground.headless.interaction.confirm');
+      case 'mock':
+        return this.t('playground.headless.interaction.mock');
+      default:
+        return this.t('playground.headless.interaction.wallet');
+    }
+  }
+
+  protected confirmLabel(): string {
+    if (this.confirmBusy()) {
+      return this.t('playground.headless.processing');
+    }
+    return this.t('playground.headless.confirm');
   }
 
   protected async selectMethod(method: PaymentMethod): Promise<void> {
@@ -126,17 +178,54 @@ export class PlaygroundHeadlessDemo {
     try {
       await this.session.confirm();
     } catch (err) {
-      const paymentError =
+      this.emitError(
         err instanceof PaymentError
           ? err
           : new PaymentError({
               code: 'PAYMENT_FAILED',
               message: err instanceof Error ? err.message : 'Confirm failed',
-            });
-      this.error.emit(paymentError);
+            }),
+      );
     } finally {
       this.confirmBusy.set(false);
+      this.refreshState();
     }
+  }
+
+  private formatMoney(amount: number, currency: string): string {
+    try {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency,
+      }).format(amount);
+    } catch {
+      return `${amount} ${currency}`;
+    }
+  }
+
+  private refreshState(): void {
+    this.sessionState.set(this.session?.state() ?? null);
+  }
+
+  private log(label: string): void {
+    this.lifecycleSeq += 1;
+    const entry: HeadlessLifecycleEntry = { id: this.lifecycleSeq, label };
+    this.lifecycle.update((entries) =>
+      [entry, ...entries].slice(0, LIFECYCLE_LIMIT),
+    );
+  }
+
+  /** Emits a terminal error once even if the session event and a rejection both report it. */
+  private emitError(err: PaymentError): void {
+    const key = `${err.code}|${err.message}`;
+    const now = Date.now();
+    if (key === this.lastErrorKey && now - this.lastErrorAt < ERROR_DEDUPE_MS) {
+      return;
+    }
+    this.lastErrorKey = key;
+    this.lastErrorAt = now;
+    this.log(`error · ${err.code}`);
+    this.error.emit(err);
   }
 
   private async bootSession(
@@ -158,6 +247,7 @@ export class PlaygroundHeadlessDemo {
 
     this.bootStatus.set('idle');
     this.bootError.set(null);
+    this.lifecycle.set([]);
     try {
       const session = this.headless.createSession({
         product,
@@ -181,7 +271,7 @@ export class PlaygroundHeadlessDemo {
           mock: entry.mock,
         })),
       );
-      this.sessionState.set(session.state());
+      this.refreshState();
       this.bootStatus.set('ready');
       const first = session.availableMethods().find((entry) => entry.available);
       if (first) {
@@ -202,26 +292,35 @@ export class PlaygroundHeadlessDemo {
     this.eventSubscriptions = new Subscription();
     this.eventSubscriptions.add(
       session.events.success.subscribe((result) => {
-        this.sessionState.set(session.state());
+        this.refreshState();
+        this.log(`success · ${result.method}`);
         this.success.emit(result);
       }),
     );
     this.eventSubscriptions.add(
       session.events.cancel.subscribe((result) => {
-        this.sessionState.set(session.state());
+        this.refreshState();
+        this.log(`cancel · ${result.method}`);
         this.cancel.emit(result);
       }),
     );
     this.eventSubscriptions.add(
       session.events.error.subscribe((err) => {
-        this.sessionState.set(session.state());
-        this.error.emit(err);
+        this.refreshState();
+        this.emitError(err);
       }),
     );
     this.eventSubscriptions.add(
       session.events.started.subscribe((event) => {
-        this.sessionState.set(session.state());
+        this.refreshState();
+        this.log(`started · ${event.method}`);
         this.started.emit({ method: event.method });
+      }),
+    );
+    this.eventSubscriptions.add(
+      session.events.pending.subscribe((result) => {
+        this.refreshState();
+        this.log(`pending · ${result.method}`);
       }),
     );
   }
@@ -233,6 +332,7 @@ export class PlaygroundHeadlessDemo {
       return;
     }
     this.mountBusy.set(true);
+    this.mountReady.set(false);
     try {
       if (this.mountHandle) {
         await this.mountHandle.unmount();
@@ -240,19 +340,20 @@ export class PlaygroundHeadlessDemo {
       }
       host.replaceChildren();
       this.mountHandle = await session.mount(method, host);
+      this.mountReady.set(true);
     } catch (err) {
-      const paymentError =
+      this.emitError(
         err instanceof PaymentError
           ? err
           : new PaymentError({
               code: 'SDK_LOAD_FAILED',
               message: err instanceof Error ? err.message : 'Mount failed',
               method,
-            });
-      this.error.emit(paymentError);
+            }),
+      );
     } finally {
       this.mountBusy.set(false);
-      this.sessionState.set(session.state());
+      this.refreshState();
     }
   }
 
@@ -267,6 +368,7 @@ export class PlaygroundHeadlessDemo {
       // ignore
     }
     this.mountHandle = null;
+    this.mountReady.set(false);
     this.uiSelected.set(null);
     this.available.set([]);
     this.sessionState.set(null);

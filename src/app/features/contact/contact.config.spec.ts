@@ -3,7 +3,7 @@ import { ContactEnvironment, resolveContactConfig } from './contact.config';
 const dev: ContactEnvironment = {
   production: false,
   contactTransport: 'local-mock',
-  contactApiUrl: 'http://localhost:8787/contact',
+  contactApiUrl: 'http://127.0.0.1:8787/contact',
   turnstileSiteKey: '1x00000000000000000000AA',
   contactEnabled: true,
 };
@@ -21,7 +21,7 @@ describe('resolveContactConfig', () => {
     expect(resolveContactConfig(dev)).toEqual({
       operational: true,
       transport: 'local-mock',
-      apiUrl: 'http://localhost:8787/contact',
+      apiUrl: 'http://127.0.0.1:8787/contact',
       siteKey: '1x00000000000000000000AA',
     });
   });

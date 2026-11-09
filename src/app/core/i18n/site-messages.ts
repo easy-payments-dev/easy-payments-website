@@ -7,6 +7,8 @@ export type SiteMessageKey =
   | 'nav.github'
   | 'nav.security'
   | 'nav.contact'
+  | 'nav.faq'
+  | 'nav.support'
   | 'nav.primary'
   | 'nav.mobile'
   | 'theme.label'
@@ -34,9 +36,6 @@ export type SiteMessageKey =
   | 'playground.config'
   | 'playground.reset'
   | 'playground.version'
-  | 'playground.versionLatest'
-  | 'playground.versionPublished'
-  | 'playground.versionUnpublished'
   | 'playground.versionHint'
   | 'playground.product'
   | 'playground.name'
@@ -63,11 +62,6 @@ export type SiteMessageKey =
   | 'playground.buttonsLayout'
   | 'playground.preview'
   | 'playground.previewBadge'
-  | 'playground.previewHint'
-  | 'playground.previewHint.full'
-  | 'playground.previewHint.buttons'
-  | 'playground.previewHint.headless'
-  | 'playground.livePackageNote'
   | 'playground.mockOutcome'
   | 'playground.mockOutcomeHint'
   | 'playground.outcomeSuccess'
@@ -79,11 +73,6 @@ export type SiteMessageKey =
   | 'playground.code'
   | 'playground.codeHint'
   | 'playground.docsLink'
-  | 'playground.unpublishedTitle'
-  | 'playground.unpublishedBody'
-  | 'playground.buttonsOnly'
-  | 'playground.headless'
-  | 'playground.unpublishedBadge'
   | 'playground.headless.region'
   | 'playground.headless.consumerUiNotice'
   | 'playground.headless.starting'
@@ -92,6 +81,20 @@ export type SiteMessageKey =
   | 'playground.headless.state'
   | 'playground.headless.noMethods'
   | 'playground.headless.bootFailed'
+  | 'playground.headless.kicker'
+  | 'playground.headless.title'
+  | 'playground.headless.product'
+  | 'playground.headless.qty'
+  | 'playground.headless.demoBadge'
+  | 'playground.headless.unavailable'
+  | 'playground.headless.mountTitle'
+  | 'playground.headless.mountIdle'
+  | 'playground.headless.eventsTitle'
+  | 'playground.headless.noEvents'
+  | 'playground.headless.processing'
+  | 'playground.headless.interaction.confirm'
+  | 'playground.headless.interaction.mock'
+  | 'playground.headless.interaction.wallet'
   | 'home.playgroundTitle'
   | 'home.playgroundBody'
   | 'home.playgroundCta'
@@ -126,7 +129,22 @@ export type SiteMessageKey =
   | 'contact.verifyRequired'
   | 'contact.verifyFailed'
   | 'contact.verifyLoading'
-  | 'contact.formLabel';
+  | 'contact.formLabel'
+  | 'faq.eyebrow'
+  | 'faq.title'
+  | 'faq.lede'
+  | 'faq.jump'
+  | 'faq.openInNewTab'
+  | 'playground.guideLink'
+  | 'support.eyebrow'
+  | 'support.title'
+  | 'support.lede'
+  | 'support.body'
+  | 'support.community'
+  | 'support.paypal'
+  | 'support.paypalPending'
+  | 'support.github'
+  | 'support.issues';
 
 type Catalog = Record<SiteMessageKey, string>;
 
@@ -162,15 +180,12 @@ const en: Catalog = {
   'playground.badge.live': 'Live component · mock mode',
   'playground.alertTitle': 'Easy Payments demo — no payment is processed',
   'playground.alertBody':
-    'This playground mounts real `@easy-payments/angular` APIs with `enableMockMode`. Outcomes are local mock adapters only. A simulated success is not a verified payment. Klarna uses the library mock DEMO flow — not an official Klarna checkout.',
+    'Mock mode only: outcomes come from local mock adapters, and a simulated success is not a verified payment. Klarna runs the library DEMO flow, not an official Klarna checkout.',
   'playground.config': 'Configuration',
   'playground.reset': 'Reset defaults',
-  'playground.version': 'Snippet package version (codegen)',
-  'playground.versionLatest': '1.1.0 — Latest Published',
-  'playground.versionPublished': '1.0.0 — Published',
-  'playground.versionUnpublished': '1.2.0 — Unpublished',
+  'playground.version': 'Package version',
   'playground.versionHint':
-    'Generated code follows verified npm APIs for the selected version. Live demos use local unpublished 1.2.0 (not npm 1.1.0).',
+    'Generated examples follow the selected version. Buttons Only and Headless are 1.2.0 only.',
   'playground.product': 'Product',
   'playground.name': 'Name',
   'playground.description': 'Description',
@@ -192,23 +207,13 @@ const en: Catalog = {
   'playground.otherFrameworksHint': 'React, Vue, and Svelte playgrounds remain Coming Soon.',
   'playground.demoMode': 'Demo experience',
   'playground.demoModeHint':
-    'Full Checkout, Buttons Only, and Headless mount real public APIs from local unpublished 1.2.0.',
+    'Full Checkout, Buttons Only, and Headless mount real public APIs from 1.2.0.',
   'playground.demo.full': 'Full Checkout',
   'playground.demo.buttons': 'Buttons Only',
   'playground.demo.headless': 'Headless',
   'playground.buttonsLayout': 'Buttons layout',
   'playground.preview': 'Checkout preview',
   'playground.previewBadge': 'Real API · mock',
-  'playground.previewHint':
-    'Official library UI in mock mode. Marks and layout come from the library where the demo provides them.',
-  'playground.previewHint.full':
-    'Official Full Checkout (`<easy-payments>`). Select Klarna (or any method) inside the component to exercise the mock DEMO flow.',
-  'playground.previewHint.buttons':
-    'Official Buttons Only (`<easy-payment-buttons>`). Library logos and strip presentation. Unpublished — 1.2.0.',
-  'playground.previewHint.headless':
-    'Headless API with a consumer-built example UI. Headless does not ship a checkout design — this layout is website-owned. Unpublished — 1.2.0.',
-  'playground.livePackageNote':
-    'Live binary: local unpublished `@easy-payments/angular@1.2.0` (vendor). Not available from npm 1.1.0. Snippets below still target published npm versions.',
   'playground.mockOutcome': 'Mock payment outcome',
   'playground.mockOutcomeHint':
     'Sets `MockPaymentController` before you pay. Applies to Klarna DEMO and every other mock method.',
@@ -222,26 +227,56 @@ const en: Catalog = {
   'playground.codeHint':
     'Snippets use verified public exports for the selected published version. Replace placeholder TEST credentials. Never put secret keys in Angular.',
   'playground.docsLink': 'Docs for Angular',
-  'playground.unpublishedTitle': 'Unpublished — 1.2.0',
-  'playground.unpublishedBody':
-    'Buttons Only and Headless demos use local unpublished 1.2.0. They are not part of npm `@easy-payments/angular@1.1.0`.',
-  'playground.buttonsOnly': 'Buttons Only',
-  'playground.headless': 'Headless',
-  'playground.unpublishedBadge': 'Unpublished — 1.2.0',
+  'playground.guideLink': 'View integration guide',
   'playground.headless.region': 'Headless demo',
   'playground.headless.consumerUiNotice':
-    'Custom consumer UI example — headless mode does not provide this design.',
+    'This panel is merchant-owned UI built by this website. Headless ships no checkout design: the library only runs the session and mounts provider surfaces into your container.',
   'playground.headless.starting': 'Starting headless session…',
   'playground.headless.mountLabel': 'Payment method mount',
   'playground.headless.confirm': 'Confirm payment',
   'playground.headless.state': 'Session state',
   'playground.headless.noMethods': 'Select at least one payment method.',
   'playground.headless.bootFailed': 'Could not start the headless session.',
+  'playground.headless.kicker': 'Merchant-owned UI',
+  'playground.headless.title': 'Headless checkout',
+  'playground.headless.product': 'Product',
+  'playground.headless.qty': 'Qty',
+  'playground.headless.demoBadge': 'DEMO',
+  'playground.headless.unavailable': 'Unavailable',
+  'playground.headless.mountTitle': 'Provider surface',
+  'playground.headless.mountIdle': 'Select a payment method to mount its UI here.',
+  'playground.headless.eventsTitle': 'Lifecycle events',
+  'playground.headless.noEvents': 'No lifecycle events yet.',
+  'playground.headless.processing': 'Processing…',
+  'playground.headless.interaction.confirm': 'Merchant confirm',
+  'playground.headless.interaction.mock': 'Mock method',
+  'playground.headless.interaction.wallet': 'Wallet button',
   'home.playgroundTitle': 'Try it safely — checkout playground',
   'home.playgroundBody':
     'Configure a checkout, preview real library demos in mock mode, and copy integration code. The playground never processes payments and never accepts real card data.',
   'home.playgroundCta': 'Open Playground',
   'nav.contact': 'Contact',
+  'nav.faq': 'FAQ',
+  'nav.support': 'Support',
+  'faq.eyebrow': 'Help',
+  'faq.title': 'Frequently asked questions',
+  'faq.lede':
+    'Short answers for integrating Easy Payments. Each item links to the matching guide when you need more detail.',
+  'faq.jump': 'Jump to a question',
+  'faq.openInNewTab': 'Open this question in a new tab',
+  'support.eyebrow': 'Community',
+  'support.title': 'Support Easy Payments',
+  'support.lede':
+    'A quiet way to help documentation, maintenance, and new framework work — never required to use the library.',
+  'support.body':
+    'Easy Payments is a free project. If you find it useful, you can support its development, documentation, and maintenance with a voluntary contribution.',
+  'support.community':
+    'You can also help by sharing the project, reporting issues, or contributing on GitHub.',
+  'support.paypal': 'Support with PayPal',
+  'support.paypalPending':
+    'PayPal contributions will appear here once the maintainer publishes a support link. GitHub options are available now.',
+  'support.github': 'View on GitHub',
+  'support.issues': 'Report an issue',
   'contact.title': 'Contact',
   'contact.lede':
     'Send a suggestion, report a problem, or ask a question about Easy Payments. We read every message.',
@@ -318,12 +353,12 @@ const es: Catalog = {
   'playground.badge.live': 'Componente real · modo mock',
   'playground.alertTitle': 'Demo de Easy Payments — no se procesa ningún pago',
   'playground.alertBody':
-    'Este playground monta APIs reales de `@easy-payments/angular` con `enableMockMode`. Los resultados usan solo adaptadores mock locales. Un éxito simulado no es un pago verificado. Klarna usa el flujo mock DEMO de la librería — no un checkout oficial de Klarna.',
+    'Solo modo mock: los resultados vienen de adaptadores mock locales y un éxito simulado no es un pago verificado. Klarna ejecuta el flujo DEMO de la librería, no un checkout oficial de Klarna.',
   'playground.config': 'Configuración',
   'playground.reset': 'Restablecer valores',
-  'playground.version': 'Versión del paquete para snippets',
+  'playground.version': 'Versión del paquete',
   'playground.versionHint':
-    'El código generado sigue las APIs npm verificadas de la versión seleccionada. Las demos en vivo usan 1.2.0 local no publicada (no npm 1.1.0).',
+    'Los ejemplos generados siguen la versión elegida. Buttons Only y Headless son solo 1.2.0.',
   'playground.product': 'Producto',
   'playground.name': 'Nombre',
   'playground.description': 'Descripción',
@@ -343,26 +378,19 @@ const es: Catalog = {
   'playground.otherFrameworksHint': 'Los playgrounds de React, Vue y Svelte siguen Coming Soon.',
   'playground.demoMode': 'Experiencia demo',
   'playground.demoModeHint':
-    'Full Checkout, Buttons Only y Headless montan APIs públicas reales de 1.2.0 local no publicada.',
+    'Full Checkout, Buttons Only y Headless montan APIs públicas reales de 1.2.0.',
   'playground.demo.full': 'Full Checkout',
   'playground.demo.buttons': 'Buttons Only',
   'playground.demo.headless': 'Headless',
   'playground.buttonsLayout': 'Diseño de botones',
   'playground.preview': 'Vista previa del checkout',
   'playground.previewBadge': 'API real · mock',
-  'playground.previewHint':
-    'UI oficial de la librería en modo mock. Los marks y el layout vienen de la librería cuando la demo los aporta.',
-  'playground.previewHint.full':
-    'Full Checkout oficial (`<easy-payments>`). Selecciona Klarna (u otro método) dentro del componente para probar el flujo mock DEMO.',
-  'playground.previewHint.buttons':
-    'Buttons Only oficial (`<easy-payment-buttons>`). Logos y presentación de la librería. Unpublished — 1.2.0.',
-  'playground.previewHint.headless':
-    'API Headless con una UI de ejemplo del consumidor. Headless no aporta diseño de checkout — este layout es del sitio. Unpublished — 1.2.0.',
-  'playground.livePackageNote':
-    'Binario en vivo: `@easy-payments/angular@1.2.0` local no publicado (vendor). No disponible en npm 1.1.0. Los snippets siguen apuntando a versiones npm publicadas.',
   'playground.mockOutcome': 'Resultado mock del pago',
   'playground.mockOutcomeHint':
     'Configura `MockPaymentController` antes de pagar. Aplica a Klarna DEMO y al resto de métodos mock.',
+  'playground.outcomeSuccess': 'success',
+  'playground.outcomeCancelled': 'cancelled',
+  'playground.outcomeFailed': 'failed',
   'playground.eventLog': 'Registro de eventos',
   'playground.clear': 'Limpiar',
   'playground.noEvents': 'Aún no hay eventos. Completa un pago mock en la vista previa.',
@@ -370,24 +398,56 @@ const es: Catalog = {
   'playground.codeHint':
     'Los snippets usan exports públicos verificados de la versión publicada seleccionada. Sustituye credenciales TEST. Nunca pongas secret keys en Angular.',
   'playground.docsLink': 'Docs de Angular',
-  'playground.unpublishedTitle': 'Unpublished — 1.2.0',
-  'playground.unpublishedBody':
-    'Las demos Buttons Only y Headless usan 1.2.0 local no publicada. No forman parte de npm `@easy-payments/angular@1.1.0`.',
-  'playground.unpublishedBadge': 'Unpublished — 1.2.0',
+  'playground.guideLink': 'Ver guía de integración',
   'playground.headless.region': 'Demo headless',
   'playground.headless.consumerUiNotice':
-    'Ejemplo de UI del consumidor — el modo headless no proporciona este diseño.',
+    'Este panel es UI propia del comercio construida por este sitio. Headless no incluye diseño de checkout: la librería solo ejecuta la sesión y monta superficies del proveedor en tu contenedor.',
   'playground.headless.starting': 'Iniciando sesión headless…',
   'playground.headless.mountLabel': 'Montaje del método de pago',
   'playground.headless.confirm': 'Confirmar pago',
   'playground.headless.state': 'Estado de la sesión',
   'playground.headless.noMethods': 'Selecciona al menos un método de pago.',
   'playground.headless.bootFailed': 'No se pudo iniciar la sesión headless.',
+  'playground.headless.kicker': 'UI del comercio',
+  'playground.headless.title': 'Checkout headless',
+  'playground.headless.product': 'Producto',
+  'playground.headless.qty': 'Cant.',
+  'playground.headless.demoBadge': 'DEMO',
+  'playground.headless.unavailable': 'No disponible',
+  'playground.headless.mountTitle': 'Superficie del proveedor',
+  'playground.headless.mountIdle': 'Selecciona un método de pago para montar su UI aquí.',
+  'playground.headless.eventsTitle': 'Eventos del ciclo de vida',
+  'playground.headless.noEvents': 'Aún no hay eventos del ciclo de vida.',
+  'playground.headless.processing': 'Procesando…',
+  'playground.headless.interaction.confirm': 'Confirmación del comercio',
+  'playground.headless.interaction.mock': 'Método mock',
+  'playground.headless.interaction.wallet': 'Botón de wallet',
   'home.playgroundTitle': 'Pruébalo con seguridad — playground de checkout',
   'home.playgroundBody':
     'Configura un checkout, previsualiza demos reales en modo mock y copia el código. El playground nunca procesa pagos ni acepta datos reales de tarjeta.',
   'home.playgroundCta': 'Abrir Playground',
   'nav.contact': 'Contacto',
+  'nav.faq': 'FAQ',
+  'nav.support': 'Apoyo',
+  'faq.eyebrow': 'Ayuda',
+  'faq.title': 'Preguntas frecuentes',
+  'faq.lede':
+    'Respuestas breves para integrar Easy Payments. Cada ítem enlaza la guía correspondiente cuando necesites más detalle.',
+  'faq.jump': 'Ir a una pregunta',
+  'faq.openInNewTab': 'Abrir esta pregunta en una pestaña nueva',
+  'support.eyebrow': 'Comunidad',
+  'support.title': 'Apoya Easy Payments',
+  'support.lede':
+    'Una forma discreta de ayudar con documentación, mantenimiento y nuevos frameworks — nunca es obligatorio para usar la librería.',
+  'support.body':
+    'Easy Payments es un proyecto gratuito. Si te resulta útil, puedes apoyar su desarrollo, documentación y mantenimiento con una contribución voluntaria.',
+  'support.community':
+    'También puedes ayudar compartiendo el proyecto, reportando problemas o contribuyendo en GitHub.',
+  'support.paypal': 'Apoyar con PayPal',
+  'support.paypalPending':
+    'Las contribuciones con PayPal aparecerán aquí cuando el mantenedor publique un enlace. Las opciones de GitHub ya están disponibles.',
+  'support.github': 'Ver en GitHub',
+  'support.issues': 'Reportar un problema',
   'contact.title': 'Contacto',
   'contact.lede':
     'Envía una sugerencia, informa de un problema o haz una consulta sobre Easy Payments. Leemos todos los mensajes.',
@@ -464,12 +524,12 @@ const pt: Catalog = {
   'playground.badge.live': 'Componente real · modo mock',
   'playground.alertTitle': 'Demo Easy Payments — nenhum pagamento é processado',
   'playground.alertBody':
-    'Este playground monta APIs reais de `@easy-payments/angular` com `enableMockMode`. Os resultados usam apenas adaptadores mock locais. Um sucesso simulado não é um pagamento verificado. Klarna usa o fluxo mock DEMO da biblioteca — não um checkout oficial da Klarna.',
+    'Somente modo mock: os resultados vêm de adaptadores mock locais e um sucesso simulado não é um pagamento verificado. Klarna executa o fluxo DEMO da biblioteca, não um checkout oficial da Klarna.',
   'playground.config': 'Configuração',
   'playground.reset': 'Restaurar padrões',
-  'playground.version': 'Versão do pacote para snippets',
+  'playground.version': 'Versão do pacote',
   'playground.versionHint':
-    'O código gerado segue as APIs npm verificadas da versão selecionada. As demos ao vivo usam 1.2.0 local não publicada (não npm 1.1.0).',
+    'Os exemplos gerados seguem a versão escolhida. Buttons Only e Headless são somente 1.2.0.',
   'playground.product': 'Produto',
   'playground.name': 'Nome',
   'playground.description': 'Descrição',
@@ -489,26 +549,19 @@ const pt: Catalog = {
   'playground.otherFrameworksHint': 'Playgrounds React, Vue e Svelte continuam Coming Soon.',
   'playground.demoMode': 'Experiência demo',
   'playground.demoModeHint':
-    'Full Checkout, Buttons Only e Headless montam APIs públicas reais da 1.2.0 local não publicada.',
+    'Full Checkout, Buttons Only e Headless montam APIs públicas reais da 1.2.0.',
   'playground.demo.full': 'Full Checkout',
   'playground.demo.buttons': 'Buttons Only',
   'playground.demo.headless': 'Headless',
   'playground.buttonsLayout': 'Layout dos botões',
   'playground.preview': 'Prévia do checkout',
   'playground.previewBadge': 'API real · mock',
-  'playground.previewHint':
-    'UI oficial da biblioteca em modo mock. Marks e layout vêm da biblioteca quando a demo os fornece.',
-  'playground.previewHint.full':
-    'Full Checkout oficial (`<easy-payments>`). Selecione Klarna (ou outro método) dentro do componente para testar o fluxo mock DEMO.',
-  'playground.previewHint.buttons':
-    'Buttons Only oficial (`<easy-payment-buttons>`). Logos e apresentação da biblioteca. Unpublished — 1.2.0.',
-  'playground.previewHint.headless':
-    'API Headless com UI de exemplo do consumidor. Headless não fornece design de checkout — este layout é do site. Unpublished — 1.2.0.',
-  'playground.livePackageNote':
-    'Binário ao vivo: `@easy-payments/angular@1.2.0` local não publicada (vendor). Não disponível no npm 1.1.0. Os snippets ainda apontam para versões npm publicadas.',
   'playground.mockOutcome': 'Resultado mock do pagamento',
   'playground.mockOutcomeHint':
     'Define `MockPaymentController` antes de pagar. Aplica-se a Klarna DEMO e aos demais métodos mock.',
+  'playground.outcomeSuccess': 'success',
+  'playground.outcomeCancelled': 'cancelled',
+  'playground.outcomeFailed': 'failed',
   'playground.eventLog': 'Registro de eventos',
   'playground.clear': 'Limpar',
   'playground.noEvents': 'Ainda não há eventos. Conclua um pagamento mock na prévia.',
@@ -516,24 +569,56 @@ const pt: Catalog = {
   'playground.codeHint':
     'Os snippets usam exports públicos verificados da versão publicada selecionada. Substitua credenciais TEST. Nunca coloque secret keys no Angular.',
   'playground.docsLink': 'Docs do Angular',
-  'playground.unpublishedTitle': 'Unpublished — 1.2.0',
-  'playground.unpublishedBody':
-    'As demos Buttons Only e Headless usam 1.2.0 local não publicada. Não fazem parte do npm `@easy-payments/angular@1.1.0`.',
-  'playground.unpublishedBadge': 'Unpublished — 1.2.0',
+  'playground.guideLink': 'Ver guia de integração',
   'playground.headless.region': 'Demo headless',
   'playground.headless.consumerUiNotice':
-    'Exemplo de UI do consumidor — o modo headless não fornece este design.',
+    'Este painel é UI própria do lojista construída por este site. Headless não inclui design de checkout: a biblioteca apenas executa a sessão e monta superfícies do provedor no seu contêiner.',
   'playground.headless.starting': 'Iniciando sessão headless…',
   'playground.headless.mountLabel': 'Montagem do método de pagamento',
   'playground.headless.confirm': 'Confirmar pagamento',
   'playground.headless.state': 'Estado da sessão',
   'playground.headless.noMethods': 'Selecione pelo menos um método de pagamento.',
   'playground.headless.bootFailed': 'Não foi possível iniciar a sessão headless.',
+  'playground.headless.kicker': 'UI do lojista',
+  'playground.headless.title': 'Checkout headless',
+  'playground.headless.product': 'Produto',
+  'playground.headless.qty': 'Qtd.',
+  'playground.headless.demoBadge': 'DEMO',
+  'playground.headless.unavailable': 'Indisponível',
+  'playground.headless.mountTitle': 'Superfície do provedor',
+  'playground.headless.mountIdle': 'Selecione um método de pagamento para montar sua UI aqui.',
+  'playground.headless.eventsTitle': 'Eventos do ciclo de vida',
+  'playground.headless.noEvents': 'Ainda não há eventos do ciclo de vida.',
+  'playground.headless.processing': 'Processando…',
+  'playground.headless.interaction.confirm': 'Confirmação do lojista',
+  'playground.headless.interaction.mock': 'Método mock',
+  'playground.headless.interaction.wallet': 'Botão de wallet',
   'home.playgroundTitle': 'Experimente com segurança — playground de checkout',
   'home.playgroundBody':
     'Configure um checkout, visualize demos reais em modo mock e copie o código. O playground nunca processa pagamentos nem aceita dados reais de cartão.',
   'home.playgroundCta': 'Abrir Playground',
   'nav.contact': 'Contato',
+  'nav.faq': 'FAQ',
+  'nav.support': 'Apoio',
+  'faq.eyebrow': 'Ajuda',
+  'faq.title': 'Perguntas frequentes',
+  'faq.lede':
+    'Respostas curtas para integrar o Easy Payments. Cada item liga ao guia correspondente quando precisar de mais detalhe.',
+  'faq.jump': 'Ir a uma pergunta',
+  'faq.openInNewTab': 'Abrir esta pergunta em uma nova aba',
+  'support.eyebrow': 'Comunidade',
+  'support.title': 'Apoie o Easy Payments',
+  'support.lede':
+    'Uma forma discreta de ajudar documentação, manutenção e novos frameworks — nunca é obrigatório para usar a biblioteca.',
+  'support.body':
+    'Easy Payments é um projeto gratuito. Se for útil para si, pode apoiar o desenvolvimento, a documentação e a manutenção com uma contribuição voluntária.',
+  'support.community':
+    'Também pode ajudar partilhando o projeto, reportando problemas ou contribuindo no GitHub.',
+  'support.paypal': 'Apoiar com PayPal',
+  'support.paypalPending':
+    'Contribuições PayPal aparecerão aqui quando o maintainer publicar um link. As opções GitHub já estão disponíveis.',
+  'support.github': 'Ver no GitHub',
+  'support.issues': 'Reportar um problema',
   'contact.title': 'Contato',
   'contact.lede':
     'Envie uma sugestão, relate um problema ou tire uma dúvida sobre o Easy Payments. Lemos todas as mensagens.',

@@ -16,7 +16,7 @@
             <ep-button variant="outline" size="lg" [href]="githubUrl" [external]="true">GitHub</ep-button>
           </div>
           <p class="hero__meta">
-            Latest published Angular library:
+            Angular library:
             <strong>{{ latestAngular }}</strong>
             · Package
             <code>{{ packageName }}</code>
@@ -62,7 +62,7 @@
 
               @if (framework.status === 'published') {
                 <p>
-                  Latest published version <strong>{{ framework.latestPublished }}</strong>.
+                  Version <strong>{{ framework.latestPublished }}</strong>.
                   Package <code>{{ framework.packageName }}</code>.
                 </p>
                 <ep-button variant="primary" size="sm" routerLink="/docs/angular">
@@ -218,7 +218,7 @@
         titleId="experiences-title"
         eyebrow="Integration modes"
         title="Checkout experiences"
-        description="Full Checkout ships in the published Angular library. Buttons Only and Headless are preview features for Angular v1.2.0."
+        description="Full Checkout, Buttons Only, and Headless are all available in Angular 1.2.0."
         [headingLevel]="2"
       />
 
@@ -228,11 +228,7 @@
             <ep-card variant="feature">
               <div class="experience-card__head">
                 <h3>{{ experience.name }}</h3>
-                @if (experience.status === 'available') {
-                  <ep-badge variant="available">Available</ep-badge>
-                } @else {
-                  <ep-badge variant="release-candidate">Coming in Angular v1.2.0</ep-badge>
-                }
+                <ep-badge variant="available">Available</ep-badge>
               </div>
               <p class="experience-card__note">{{ experience.versionNote }}</p>
               <p>{{ experience.body }}</p>
@@ -241,9 +237,9 @@
         }
       </ul>
 
-      <ep-alert variant="info" title="Version honesty">
-        Do not treat Buttons Only or Headless as available in npm {{ latestAngular }}. Those modes are part of the
-        unpublished Angular 1.2.0 release candidate.
+      <ep-alert variant="info" title="Launch version">
+        Angular {{ latestAngular }} is the launch version. Live demos mount the local vendor package; npm publish is
+        a separate launch step.
       </ep-alert>
     </ep-container>
   </section>
@@ -277,7 +273,7 @@
             titleId="docs-title"
             eyebrow="Documentation"
             title="Find the right guide"
-            description="Documentation currently tracks the latest published Angular version. Framework and version selectors in the docs UI preview disabled unpublished options."
+            description="Documentation currently tracks Angular 1.2.0. Framework and version selectors in the docs UI show Coming Soon frameworks as disabled."
             [headingLevel]="2"
           />
           <ul class="link-list">
@@ -363,8 +359,8 @@
       <p class="final-cta__eyebrow">Ready when you are</p>
       <h2 id="final-cta-title">Start with Angular {{ latestAngular }}</h2>
       <p>
-        Install the published package, read the docs, and keep provider secrets on your backend. Preview modes stay
-        clearly labeled until npm publishes them.
+        Install the package, read the docs, and keep provider secrets on your backend. Full Checkout, Buttons Only,
+        and Headless are all available in Angular {{ latestAngular }}.
       </p>
       <div class="final-cta__actions">
         <ep-button variant="primary" size="lg" routerLink="/docs/angular">Get Started</ep-button>

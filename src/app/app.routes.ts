@@ -57,6 +57,18 @@ export const routes: Routes = [
     title: 'Contact | easy payments',
   },
   {
+    path: 'faq',
+    loadComponent: () =>
+      import('./features/faq/faq.page').then((m) => m.FaqPage),
+    title: 'FAQ | easy payments',
+  },
+  {
+    path: 'support',
+    loadComponent: () =>
+      import('./features/support/support.page').then((m) => m.SupportPage),
+    title: 'Support Easy Payments | easy payments',
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./features/not-found/not-found.page').then((m) => m.NotFoundPage),

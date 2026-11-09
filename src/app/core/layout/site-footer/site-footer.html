@@ -17,12 +17,14 @@
         <a routerLink="/frameworks">{{ t('nav.frameworks') }}</a>
         <a routerLink="/docs/angular">{{ t('nav.documentation') }}</a>
         <a routerLink="/playground">{{ t('nav.playground') }}</a>
+        <a routerLink="/faq">{{ t('nav.faq') }}</a>
       </nav>
 
       <nav class="site-footer__nav" [attr.aria-label]="t('footer.trust')">
         <p class="site-footer__heading">{{ t('footer.trust') }}</p>
         <a routerLink="/security">{{ t('nav.security') }}</a>
         <a routerLink="/contact">{{ t('nav.contact') }}</a>
+        <a routerLink="/support">{{ t('nav.support') }}</a>
         <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">
           {{ t('footer.githubOrg') }}
           <span class="sr-only">{{ t('newTab') }}</span>
@@ -41,6 +43,8 @@
 
     <p class="site-footer__copy">
       © {{ year }} {{ siteName }}. {{ t('footer.copy') }}
+      ·
+      <a routerLink="/support">{{ t('support.title') }}</a>
     </p>
   </div>
 </footer>

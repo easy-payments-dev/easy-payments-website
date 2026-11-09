@@ -14,7 +14,7 @@ describe('DocsSearchService', () => {
       scope: 'all',
     });
     expect(titleHits.some((hit) => hit.slug === 'localization')).toBe(true);
-    expect(titleHits.every((hit) => hit.version !== '1.2.0')).toBe(true);
+    expect(titleHits.some((hit) => hit.version === '1.2.0')).toBe(true);
 
     const contentHits = service.search('enableMockMode', {
       framework: 'angular',

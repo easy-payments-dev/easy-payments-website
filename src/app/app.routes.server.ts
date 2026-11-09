@@ -26,6 +26,8 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'playground', renderMode: RenderMode.Client },
   // Contact is client-only: Turnstile and the form need the browser.
   { path: 'contact', renderMode: RenderMode.Client },
+  { path: 'faq', renderMode: RenderMode.Prerender },
+  { path: 'support', renderMode: RenderMode.Prerender },
   { path: 'docs', renderMode: RenderMode.Client },
   { path: 'docs/angular', renderMode: RenderMode.Client },
   { path: 'docs/angular/:version', renderMode: RenderMode.Client },

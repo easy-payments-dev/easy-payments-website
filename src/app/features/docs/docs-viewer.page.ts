@@ -29,9 +29,11 @@ import {
 } from '../../shared/docs-ui/docs-sidebar/docs-sidebar';
 import { DocsTocItem, EpDocsToc } from '../../shared/docs-ui/docs-toc/docs-toc';
 import { EpDocsToolbar } from '../../shared/docs-ui/docs-toolbar/docs-toolbar';
-import { EpAlert } from '../../shared/ui/alert/alert';
 import { EpBadge } from '../../shared/ui/badge/badge';
 import { EpContainer } from '../../shared/ui/container/container';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
+import { SiteMessageKey } from '../../core/i18n/site-messages';
+import { SupportProjectCard } from '../../shared/support/support-project-card';
 import { DocsSearchDialog } from './docs-search-dialog';
 
 @Component({
@@ -46,8 +48,8 @@ import { DocsSearchDialog } from './docs-search-dialog';
     EpDocsToc,
     EpDocsPager,
     EpDocsMarkdown,
-    EpAlert,
     EpBadge,
+    SupportProjectCard,
     DocsSearchDialog,
   ],
   templateUrl: './docs-viewer.page.html',
@@ -59,6 +61,11 @@ export class DocsViewerPage {
   private readonly router = inject(Router);
   private readonly title = inject(Title);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly i18n = inject(SiteI18nService);
+
+  protected t(key: SiteMessageKey): string {
+    return this.i18n.t(key);
+  }
 
   /** Bound from route params via withComponentInputBinding. */
   readonly framework = input.required<string>();
@@ -91,9 +98,6 @@ export class DocsViewerPage {
       return 'coming-soon';
     }
     const version = this.version();
-    if (version === '1.2.0') {
-      return 'unpublished';
-    }
     if (!this.catalog.getVersion(framework, version)) {
       return 'unknown-version';
     }
@@ -152,9 +156,8 @@ export class DocsViewerPage {
       if (!page) {
         return;
       }
-      const latest = page.latestPublished ? ' · latest published' : '';
       this.title.setTitle(
-        `${page.page.title} · Angular ${page.version}${latest} | easy payments`,
+        `${page.page.title} · Angular ${page.version} | easy payments`,
       );
     });
 

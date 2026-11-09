@@ -17,7 +17,7 @@ export const environment = {
   angularSecurityDocsUrl:
     'https://github.com/easy-payments-dev/easy-payments-angular/blob/master/docs/security.md',
   license: 'MIT',
-  docsLatestAngularVersion: '1.1.0',
+  docsLatestAngularVersion: '1.2.0',
   angularPackageName: '@easy-payments/angular',
   /**
    * Contact form (public, non-secret values only).
@@ -30,4 +30,6 @@ export const environment = {
   contactApiUrl: null as string | null,
   turnstileSiteKey: null as string | null,
   contactEnabled: false as boolean,
+  /** Set to a https PayPal.Me (or similar) URL to show the PayPal support button. */
+  paypalSupportUrl: null as string | null,
 } as const;

@@ -6,7 +6,7 @@
       <p class="playground__lede">{{ t('playground.lede') }}</p>
       <div class="playground__badges">
         <ep-badge variant="info">{{ t('playground.badge.live') }}</ep-badge>
-        <ep-badge variant="coming-soon">{{ t('playground.unpublishedBadge') }}</ep-badge>
+        <ep-badge variant="info">1.2.0</ep-badge>
       </div>
     </header>
 
@@ -44,25 +44,17 @@
         <div class="field">
           <span class="field__label" id="version-label">{{ t('playground.version') }}</span>
           <div class="segmented" role="group" aria-labelledby="version-label">
-            <button
-              type="button"
-              class="segmented__option"
-              [class.is-active]="config().version === '1.1.0'"
-              (click)="setVersion('1.1.0')"
-            >
-              {{ t('playground.versionLatest') }}
-            </button>
-            <button
-              type="button"
-              class="segmented__option"
-              [class.is-active]="config().version === '1.0.0'"
-              (click)="setVersion('1.0.0')"
-            >
-              {{ t('playground.versionPublished') }}
-            </button>
-            <button type="button" class="segmented__option" disabled aria-disabled="true">
-              {{ t('playground.versionUnpublished') }}
-            </button>
+            @for (version of availableVersions(); track version) {
+              <button
+                type="button"
+                class="segmented__option"
+                [class.is-active]="config().version === version"
+                [attr.aria-pressed]="config().version === version"
+                (click)="setVersion(version)"
+              >
+                {{ version }}
+              </button>
+            }
           </div>
           <p class="field__hint">{{ t('playground.versionHint') }}</p>
         </div>
@@ -316,22 +308,17 @@
       <section class="playground-panel playground-preview" aria-labelledby="preview-title">
         <div class="playground-panel__head">
           <h2 id="preview-title">{{ t('playground.preview') }}</h2>
-          <ep-badge variant="info">{{ t('playground.previewBadge') }}</ep-badge>
+          <div class="playground-preview__meta">
+            <ep-badge variant="info">{{ t('playground.previewBadge') }}</ep-badge>
+            <a class="playground-preview__guide" [routerLink]="guideHref()">
+              {{ t('playground.guideLink') }}
+            </a>
+          </div>
         </div>
-
-        @if (showFull()) {
-          <p class="field__hint">{{ t('playground.previewHint.full') }}</p>
-        } @else if (showButtons()) {
-          <p class="field__hint">{{ t('playground.previewHint.buttons') }}</p>
-        } @else {
-          <p class="field__hint">{{ t('playground.previewHint.headless') }}</p>
-        }
-        <p class="field__hint">{{ t('playground.livePackageNote') }}</p>
 
         <div
           class="preview-frame"
           [class.preview-frame--transparent]="showFull() && config().appearance === 'transparent'"
-          [style.maxWidth.px]="showFull() ? config().maxWidth : null"
         >
           <div class="preview-demo-banner" role="status">
             {{ t('playground.badge.demo') }} · DEMO
@@ -346,6 +333,7 @@
                   [theme]="config().theme"
                   [appearance]="config().appearance"
                   [maxWidth]="config().maxWidth"
+                  [style.maxWidth.px]="config().maxWidth"
                   [successBehavior]="config().successBehavior"
                   [locale]="checkoutLocale()"
                   (success)="onSuccess($event)"
@@ -360,6 +348,7 @@
                   [product]="checkoutProduct()"
                   [methods]="checkoutMethods()"
                   [layout]="buttonsLayout()"
+                  [buttonsAppearance]="buttonsAppearance"
                   [theme]="config().theme"
                   [locale]="checkoutLocale()"
                   checkoutInstanceId="website-playground-buttons"

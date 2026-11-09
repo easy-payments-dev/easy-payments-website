@@ -15,7 +15,7 @@ function readDocsPages(version) {
     .filter((name) => name.endsWith('.page.ts') && name !== 'index.ts')
     .map((name) => {
       const source = readFileSync(join(dir, name), 'utf8');
-      const slugMatch = source.match(/"slug":\s*"([^"]+)"/);
+      const slugMatch = source.match(/["']?slug["']?\s*:\s*["']([^"']+)["']/);
       if (!slugMatch) {
         throw new Error(`Missing slug in ${name}`);
       }
@@ -24,8 +24,16 @@ function readDocsPages(version) {
     .sort();
 }
 
-const versions = ['1.0.0', '1.1.0'];
-const staticPaths = ['/', '/frameworks', '/security', '/playground', '/contact'];
+const versions = ['1.0.0', '1.1.0', '1.2.0'];
+const staticPaths = [
+  '/',
+  '/frameworks',
+  '/security',
+  '/playground',
+  '/contact',
+  '/faq',
+  '/support',
+];
 const docsPaths = versions.flatMap((version) =>
   readDocsPages(version).map((slug) => `/docs/angular/${version}/${slug}`),
 );
@@ -59,7 +67,7 @@ const prerenderRoutes = [
   // Playground intentionally omitted — client-rendered interactive simulation.
 ].join('\n');
 
-const forbidden = ['1.2.0', '/docs/react', '/docs/vue', '/docs/svelte'];
+const forbidden = ['/docs/react', '/docs/vue', '/docs/svelte'];
 for (const marker of forbidden) {
   if (sitemap.includes(marker) || prerenderRoutes.includes(marker)) {
     throw new Error(`SEO assets unexpectedly include unpublished route marker: ${marker}`);

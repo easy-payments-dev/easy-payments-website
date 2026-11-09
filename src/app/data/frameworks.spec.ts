@@ -5,15 +5,21 @@ import {
 } from './frameworks';
 
 describe('framework version metadata', () => {
-  it('keeps Angular latest published at 1.1.0', () => {
-    expect(getLatestPublishedAngularVersion()).toBe('1.1.0');
-    expect(getFramework('angular')?.latestPublished).toBe('1.1.0');
+  it('presents Angular 1.2.0 as the latest (launch) version', () => {
+    expect(getLatestPublishedAngularVersion()).toBe('1.2.0');
+    expect(getFramework('angular')?.latestPublished).toBe('1.2.0');
   });
 
-  it('marks Angular 1.2.0 as release candidate only', () => {
+  it('lists Angular 1.0.0, 1.1.0, and 1.2.0 as published versions', () => {
     const angular = getFramework('angular');
-    const rc = angular?.versions.find((version) => version.version === '1.2.0');
-    expect(rc?.status).toBe('release-candidate');
+    expect(angular?.versions.map((version) => version.version)).toEqual([
+      '1.0.0',
+      '1.1.0',
+      '1.2.0',
+    ]);
+    expect(angular?.versions.every((version) => version.status === 'published')).toBe(
+      true,
+    );
   });
 
   it('lists React, Vue, and Svelte as coming soon', () => {

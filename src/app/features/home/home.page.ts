@@ -71,7 +71,7 @@ export class HomePage {
     },
     {
       title: 'Flexible checkout experiences',
-      body: 'Published Full Checkout covers the complete selector UI. Additional modes arrive with Angular v1.2.0.',
+      body: 'Full Checkout, Buttons Only, and Headless are all available in Angular 1.2.0.',
     },
     {
       title: 'TypeScript-friendly APIs',
@@ -99,20 +99,20 @@ export class HomePage {
     {
       name: 'Full Checkout',
       status: 'available' as const,
-      versionNote: `Available in published Angular ${getLatestPublishedAngularVersion()}`,
+      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
       body: 'Complete checkout UI with order summary, payment method selection, and confirm actions.',
     },
     {
       name: 'Buttons Only',
-      status: 'preview' as const,
-      versionNote: 'Unpublished — 1.2.0',
-      body: 'Render provider buttons and card expansion without the full checkout shell. Not part of npm 1.1.0.',
+      status: 'available' as const,
+      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
+      body: 'Render provider buttons and card expansion without the full checkout shell.',
     },
     {
       name: 'Headless',
-      status: 'preview' as const,
-      versionNote: 'Unpublished — 1.2.0',
-      body: 'Programmatic checkout control for custom UI shells. Not part of npm 1.1.0.',
+      status: 'available' as const,
+      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
+      body: 'Programmatic checkout control for custom UI shells.',
     },
   ] as const;
 

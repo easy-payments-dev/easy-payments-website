@@ -15,7 +15,10 @@ describe('app routes', () => {
     expect(paths).toContain('security');
     expect(paths).toContain('playground');
     expect(paths).toContain('contact');
+    expect(paths).toContain('faq');
+    expect(paths).toContain('support');
     expect(paths.indexOf('contact')).toBeLessThan(paths.indexOf('**'));
+    expect(paths.indexOf('faq')).toBeLessThan(paths.indexOf('**'));
     expect(paths).toContain('**');
   });
 

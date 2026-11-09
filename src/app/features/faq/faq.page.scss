@@ -1,0 +1,118 @@
+@use '../../../styles/breakpoints' as bp;
+
+.faq {
+  padding-block: var(--ep-space-7) var(--ep-space-12);
+}
+
+.faq__intro {
+  display: grid;
+  gap: var(--ep-space-3);
+  max-width: 44rem;
+  margin-bottom: var(--ep-space-7);
+}
+
+.faq__eyebrow {
+  margin: 0;
+  font-size: var(--ep-text-xs);
+  font-weight: var(--ep-font-semibold);
+  letter-spacing: var(--ep-tracking-wider);
+  text-transform: uppercase;
+  color: var(--ep-accent);
+}
+
+.faq__lede,
+.faq__jump-label {
+  margin: 0;
+  color: var(--ep-text-muted);
+}
+
+.faq__toc ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.faq__toc a {
+  color: var(--ep-accent-deep, var(--ep-accent));
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.faq__list {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 44rem;
+}
+
+.faq__item {
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-md);
+  background: var(--ep-bg-elevated);
+  padding: 0.15rem 0.85rem 0.15rem;
+}
+
+.faq__item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.85rem 0.15rem;
+  font-weight: var(--ep-font-semibold);
+  color: var(--ep-navy);
+}
+
+.faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq__item summary::before {
+  content: '+';
+  display: inline-block;
+  width: 1.25rem;
+  color: var(--ep-accent);
+  font-weight: var(--ep-font-bold);
+}
+
+.faq__item[open] summary::before {
+  content: '−';
+}
+
+.faq__item summary:focus-visible {
+  outline: 2px solid var(--ep-accent);
+  outline-offset: 2px;
+}
+
+.faq__answer {
+  padding: 0 0.15rem 0.95rem 1.4rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.faq__permalink {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.faq__permalink a {
+  color: var(--ep-color-link, #0b5fff);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.faq__answer p {
+  margin: 0;
+  color: var(--ep-text-muted);
+  font-size: var(--ep-text-sm);
+  line-height: 1.55;
+}
+
+.faq__links {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.faq__links a {
+  font-size: var(--ep-text-sm);
+  color: var(--ep-accent-deep, var(--ep-accent));
+}

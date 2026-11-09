@@ -1,5 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { map } from 'rxjs/operators';
 import {
   EasyPaymentButtonsComponent,
   EasyPaymentsComponent,
@@ -21,7 +23,12 @@ import { EpCodeBlock } from '../../shared/ui/code-block/code-block';
 import { EpContainer } from '../../shared/ui/container/container';
 import { PlaygroundHeadlessDemo } from './playground-headless-demo';
 import { generatePlaygroundCode } from './playground-code.generator';
-import { createDefaultPlaygroundConfig } from './playground.defaults';
+import {
+  PLAYGROUND_BUTTONS_APPEARANCE,
+  PLAYGROUND_VERSIONS_BY_MODE,
+  createDefaultPlaygroundConfig,
+  playgroundSupportsVersion,
+} from './playground.defaults';
 import {
   PLAYGROUND_CURRENCIES,
   PLAYGROUND_METHOD_OPTIONS,
@@ -58,9 +65,16 @@ import { validatePlaygroundConfig } from './playground.validation';
 export class PlaygroundPage {
   private readonly i18n = inject(SiteI18nService);
   private readonly mockController = inject(MockPaymentController);
+  private readonly route = inject(ActivatedRoute);
   private eventSeq = 0;
 
+  /** Terminal events repeated inside this window are logged once. */
+  private static readonly EVENT_DEDUPE_MS = 1500;
+  private readonly recentTerminalEvents = new Map<string, number>();
+
   protected readonly methodOptions = PLAYGROUND_METHOD_OPTIONS;
+  /** Public [buttonsAppearance] shared by every Buttons Only slot (matches library demo). */
+  protected readonly buttonsAppearance = PLAYGROUND_BUTTONS_APPEARANCE;
   protected readonly currencies = PLAYGROUND_CURRENCIES;
   protected readonly mockOutcomes: readonly MockPaymentOutcome[] = [
     'success',
@@ -77,7 +91,7 @@ export class PlaygroundPage {
     createDefaultPlaygroundConfig(),
   );
   protected readonly demoMode = signal<PlaygroundDemoMode>('full');
-  protected readonly buttonsLayout = signal<PlaygroundButtonsLayout>('vertical');
+  protected readonly buttonsLayout = signal<PlaygroundButtonsLayout>('horizontal');
   protected readonly eventLog = signal<readonly PlaygroundSimEvent[]>([]);
   protected readonly mockOutcome = signal<MockPaymentOutcome>('success');
   /** Bumped when demo/config reset should remount interactive hosts. */
@@ -90,11 +104,18 @@ export class PlaygroundPage {
   protected readonly evidence = computed(
     () => HISTORICAL_ANGULAR_API[this.config().version],
   );
+  /** Snippet versions offered for the active demo mode. */
+  protected readonly availableVersions = computed(
+    () => PLAYGROUND_VERSIONS_BY_MODE[this.demoMode()],
+  );
   protected readonly supportsLocale = computed(
     () => this.evidence().localization,
   );
   protected readonly code = computed(() =>
-    generatePlaygroundCode(this.config()),
+    generatePlaygroundCode(this.config(), {
+      mode: this.demoMode(),
+      buttonsLayout: this.buttonsLayout(),
+    }),
   );
   protected readonly language = this.i18n.language;
 
@@ -134,6 +155,28 @@ export class PlaygroundPage {
     effect(() => {
       this.mockController.setOutcome(this.mockOutcome());
     });
+
+    this.route.queryParamMap
+      .pipe(
+        map((params) => params.get('demo')),
+        takeUntilDestroyed(),
+      )
+      .subscribe((demo) => {
+        if (demo === 'full' || demo === 'buttons' || demo === 'headless') {
+          this.setDemoMode(demo);
+        }
+      });
+  }
+
+  protected guideHref(): string {
+    switch (this.demoMode()) {
+      case 'full':
+        return '/docs/angular/1.2.0/full-checkout';
+      case 'buttons':
+        return '/docs/angular/1.2.0/buttons-only';
+      case 'headless':
+        return '/docs/angular/1.2.0/headless';
+    }
   }
 
   protected t(key: SiteMessageKey): string {
@@ -156,11 +199,19 @@ export class PlaygroundPage {
       return;
     }
     this.demoMode.set(mode);
+    if (!playgroundSupportsVersion(mode, this.config().version)) {
+      this.setVersion('1.2.0');
+    }
     this.eventLog.set([]);
+    this.recentTerminalEvents.clear();
     this.remountToken.update((value) => value + 1);
   }
 
   protected setVersion(version: PlaygroundVersion): void {
+    if (!playgroundSupportsVersion(this.demoMode(), version)) {
+      return;
+    }
+    const localized = HISTORICAL_ANGULAR_API[version].localization;
     this.config.update((current) => ({
       ...createDefaultPlaygroundConfig(version),
       product: current.product,
@@ -169,12 +220,11 @@ export class PlaygroundPage {
       appearance: current.appearance,
       successBehavior: current.successBehavior,
       maxWidth: current.maxWidth,
-      locale:
-        version === '1.1.0'
-          ? current.locale === 'auto'
-            ? this.i18n.checkoutLocale()
-            : current.locale
-          : 'auto',
+      locale: localized
+        ? current.locale === 'auto'
+          ? this.i18n.checkoutLocale()
+          : current.locale
+        : 'auto',
       version,
     }));
     this.remountToken.update((value) => value + 1);
@@ -256,12 +306,15 @@ export class PlaygroundPage {
     const version = this.config().version;
     this.config.set({
       ...createDefaultPlaygroundConfig(version),
-      locale: version === '1.1.0' ? this.i18n.checkoutLocale() : 'auto',
+      locale: HISTORICAL_ANGULAR_API[version].localization
+        ? this.i18n.checkoutLocale()
+        : 'auto',
     });
     this.mockOutcome.set('success');
-    this.buttonsLayout.set('vertical');
+    this.buttonsLayout.set('horizontal');
     this.mockController.reset();
     this.eventLog.set([]);
+    this.recentTerminalEvents.clear();
     this.remountToken.update((value) => value + 1);
   }
 
@@ -304,9 +357,13 @@ export class PlaygroundPage {
 
   protected clearEventLog(): void {
     this.eventLog.set([]);
+    this.recentTerminalEvents.clear();
   }
 
   private pushEvent(name: PlaygroundSimEventName, detail: string): void {
+    if (this.isDuplicateTerminalEvent(name, detail)) {
+      return;
+    }
     this.eventSeq += 1;
     const entry: PlaygroundSimEvent = {
       id: `evt-${this.eventSeq}`,
@@ -315,5 +372,25 @@ export class PlaygroundPage {
       detail,
     };
     this.eventLog.update((events) => [entry, ...events].slice(0, 20));
+  }
+
+  /**
+   * success / cancel / error can reach the page twice for one outcome (for
+   * example a rejected confirm() plus the session error event). Log it once.
+   */
+  private isDuplicateTerminalEvent(
+    name: PlaygroundSimEventName,
+    detail: string,
+  ): boolean {
+    if (name !== 'success' && name !== 'cancel' && name !== 'error') {
+      return false;
+    }
+    const key = `${name}|${detail}`;
+    const now = Date.now();
+    const previous = this.recentTerminalEvents.get(key);
+    this.recentTerminalEvents.set(key, now);
+    return (
+      previous !== undefined && now - previous < PlaygroundPage.EVENT_DEDUPE_MS
+    );
   }
 }

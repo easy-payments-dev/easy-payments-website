@@ -22,7 +22,12 @@ if (process.env.NODE_ENV === 'production' || !['local', 'test'].includes(stage))
 }
 
 const PORT = Number(process.env.CONTACT_LOCAL_PORT ?? 8787);
-const HOST = '127.0.0.1';
+/**
+ * Prefer dual-stack bind. On Windows, browsers often resolve `localhost` → `::1`
+ * first; an IPv4-only listener makes Turnstile succeed while fetch fails →
+ * "Message not sent." The website env also targets 127.0.0.1 explicitly.
+ */
+const HOST = process.env.CONTACT_LOCAL_HOST ?? '::';
 const ALLOWED_ORIGINS = (
   process.env.CONTACT_LOCAL_ORIGINS ?? 'http://localhost:4200,http://127.0.0.1:4200'
 )
@@ -134,7 +139,9 @@ const server = createServer(async (req, res) => {
   const origin = req.headers.origin;
   const allowedOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : null;
 
-  if (new URL(req.url ?? '/', `http://${HOST}`).pathname !== '/contact') {
+  // HOST may be '::' (dual-stack); bracket IPv6 for URL parsing.
+  const urlHost = HOST.includes(':') ? `[${HOST}]` : HOST;
+  if (new URL(req.url ?? '/', `http://${urlHost}`).pathname !== '/contact') {
     return send(res, 404, { error: 'not_found' }, allowedOrigin);
   }
   if (!allowedOrigin) {
@@ -219,8 +226,9 @@ const server = createServer(async (req, res) => {
   return send(res, 200, { status: 'accepted' }, allowedOrigin);
 });
 
-server.listen(PORT, HOST, () => {
+server.listen({ port: PORT, host: HOST, ipv6Only: false }, () => {
   console.log(`Local contact API (email transport: local-mock, no email is sent)`);
-  console.log(`  POST http://localhost:${PORT}/contact   allowed origins: ${ALLOWED_ORIGINS.join(', ')}`);
+  console.log(`  POST http://127.0.0.1:${PORT}/contact (dual-stack; localhost/::1 also ok)`);
+  console.log(`  allowed origins: ${ALLOWED_ORIGINS.join(', ')}`);
   console.log(`  Turnstile: Cloudflare test secret; rate limit ${RATE.maxSubmissions}/15 min (in memory)`);
 });

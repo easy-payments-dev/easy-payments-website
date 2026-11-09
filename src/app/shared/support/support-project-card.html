@@ -1,0 +1,43 @@
+@if (variant() === 'compact') {
+  <p class="support-compact">
+    <a routerLink="/support" class="support-compact__link">{{ t('support.title') }}</a>
+  </p>
+} @else {
+  <aside class="support-card" [attr.aria-label]="t('support.title')">
+    <h2 class="support-card__title">{{ t('support.title') }}</h2>
+    <p class="support-card__body">{{ t('support.body') }}</p>
+    <p class="support-card__body">{{ t('support.community') }}</p>
+    <div class="support-card__actions">
+      @if (paypalUrl(); as paypal) {
+        <a
+          class="support-card__paypal"
+          [href]="paypal"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ t('support.paypal') }}
+          <span class="sr-only">{{ t('newTab') }}</span>
+        </a>
+      }
+      <a
+        [href]="githubUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ t('support.github') }}
+        <span class="sr-only">{{ t('newTab') }}</span>
+      </a>
+      <a
+        [href]="githubIssuesUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ t('support.issues') }}
+        <span class="sr-only">{{ t('newTab') }}</span>
+      </a>
+    </div>
+    @if (!paypalUrl()) {
+      <p class="support-card__hint" role="note">{{ t('support.paypalPending') }}</p>
+    }
+  </aside>
+}

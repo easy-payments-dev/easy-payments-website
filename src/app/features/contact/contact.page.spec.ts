@@ -11,7 +11,7 @@ import { TurnstileService } from './turnstile.service';
 const operational: ContactConfig = {
   operational: true,
   transport: 'local-mock',
-  apiUrl: 'http://localhost:8787/contact',
+  apiUrl: 'http://127.0.0.1:8787/contact',
   siteKey: '1x00000000000000000000AA',
 };
 

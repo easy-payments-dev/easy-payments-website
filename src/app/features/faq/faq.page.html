@@ -1,0 +1,67 @@
+<section class="faq" aria-labelledby="faq-title">
+  <ep-container>
+    <header class="faq__intro">
+      <p class="faq__eyebrow">{{ t('faq.eyebrow') }}</p>
+      <h1 id="faq-title">{{ t('faq.title') }}</h1>
+      <p class="faq__lede">{{ t('faq.lede') }}</p>
+      <p class="faq__jump-label" id="faq-toc-label">{{ t('faq.jump') }}</p>
+      <nav class="faq__toc" [attr.aria-labelledby]="'faq-toc-label'">
+        <ol>
+          @for (item of items(); track item.id) {
+            <li>
+              <a
+                [href]="questionHref(item.id)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ item.question }}
+                <span class="sr-only">{{ t('newTab') }}</span>
+              </a>
+            </li>
+          }
+        </ol>
+      </nav>
+    </header>
+
+    <div class="faq__list">
+      @for (item of items(); track item.id) {
+        <details class="faq__item" [id]="item.id">
+          <summary>{{ item.question }}</summary>
+          <div class="faq__answer">
+            <p class="faq__permalink">
+              <a
+                [href]="questionHref(item.id)"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ t('faq.openInNewTab') }}
+                <span class="sr-only">{{ t('newTab') }}</span>
+              </a>
+            </p>
+            @for (paragraph of item.answer; track paragraph) {
+              <p>{{ paragraph }}</p>
+            }
+            @if (item.links?.length) {
+              <ul class="faq__links">
+                @for (link of item.links; track link.href) {
+                  <li>
+                    @if (isExternal(link.href)) {
+                      <a [href]="link.href" target="_blank" rel="noopener noreferrer">
+                        {{ link.label }}
+                        <span class="sr-only">{{ t('newTab') }}</span>
+                      </a>
+                    } @else {
+                      <a [routerLink]="link.href">{{ link.label }}</a>
+                    }
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </details>
+      }
+    </div>
+
+    <app-support-project-card />
+  </ep-container>
+</section>

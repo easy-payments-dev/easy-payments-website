@@ -113,11 +113,9 @@ export class DocsCatalog {
 
     return meta.versions.map((version) => {
       if (version.status === 'published') {
-        const latest =
-          version.version === meta.latestPublished ? ' — Latest Published' : '';
         return {
           value: version.version,
-          label: `${version.version}${latest}`,
+          label: version.version,
         };
       }
       if (version.status === 'release-candidate') {

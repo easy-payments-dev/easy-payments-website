@@ -19,6 +19,9 @@ type PlaygroundHarness = PlaygroundPage & {
   eventLog: WritableSignal<readonly PlaygroundSimEvent[]>;
   mockOutcome: WritableSignal<'success' | 'cancelled' | 'failed'>;
   demoMode: WritableSignal<'full' | 'buttons' | 'headless'>;
+  buttonsAppearance: Record<string, string>;
+  availableVersions: () => readonly PlaygroundVersion[];
+  onError: (error: { code: string; message: string }) => void;
   isValid: () => boolean;
   code: () => PlaygroundCodeBundle;
   setVersion: (version: PlaygroundVersion) => void;
@@ -67,10 +70,24 @@ describe('PlaygroundPage', () => {
   it('renders the real-component mock playground with version controls', () => {
     expect(text()).toContain('Angular Checkout Playground');
     expect(text()).toContain('Live component · mock mode');
-    expect(text()).toContain('1.1.0 — Latest Published');
-    expect(text()).toContain('1.2.0 — Unpublished');
+    expect(text()).toContain('1.2.0');
+    expect(text()).toContain('1.1.0');
+    expect(text()).toContain('1.0.0');
+    expect(text()).not.toContain('— Latest');
+    expect(text()).not.toContain('— Published');
+    expect(text()).not.toContain('Unpublished');
     expect(text()).toContain('Real API · mock');
-    expect(text()).toContain('Unpublished — 1.2.0');
+  });
+
+  it('links to the 1.2.0 integration guide', () => {
+    const link = (fixture.nativeElement as HTMLElement).querySelector(
+      'a[href*="/docs/angular/1.2.0/"]',
+    ) as HTMLAnchorElement | null;
+    expect(link).toBeTruthy();
+    expect(link?.textContent).toContain('View integration guide');
+    expect(link?.getAttribute('href')).toMatch(
+      /\/docs\/angular\/1\.2\.0\/(full-checkout|buttons-only|headless)$/,
+    );
   });
 
   it('mounts easy-payments when configuration is valid', () => {
@@ -78,10 +95,24 @@ describe('PlaygroundPage', () => {
     expect(root.querySelector('easy-payments')).toBeTruthy();
   });
 
-  it('defaults to Angular 1.1.0 with locale controls visible', () => {
-    expect(page().config().version).toBe('1.1.0');
+  it('defaults to Angular 1.2.0 with locale controls and a plain version chip', () => {
+    expect(page().config().version).toBe('1.2.0');
+    expect(page().availableVersions()).toEqual(['1.2.0', '1.1.0', '1.0.0']);
     expect(text()).toContain('Checkout locale (1.1.0+)');
+    expect(page().code().install).toContain('@easy-payments/angular@1.2.0');
     expect(page().code().componentHtml).toContain('locale="auto"');
+    const active = (fixture.nativeElement as HTMLElement).querySelector(
+      '#version-label ~ .segmented .segmented__option.is-active',
+    );
+    expect(active?.textContent?.trim()).toBe('1.2.0');
+  });
+
+  it('keeps 1.1.0 snippets available for Full Checkout', () => {
+    page().setVersion('1.1.0');
+    fixture.detectChanges();
+    expect(page().config().version).toBe('1.1.0');
+    expect(page().code().install).toContain('@easy-payments/angular@1.1.0');
+    expect(page().code().componentHtml).toContain('locale=');
   });
 
   it('hides locale and regenerates code when switching to 1.0.0', () => {
@@ -155,11 +186,12 @@ describe('PlaygroundPage', () => {
     expect(blob).not.toContain('(started)');
   });
 
-  it('labels Buttons Only and Headless as unpublished 1.2.0 demos', () => {
+  it('labels Buttons Only and Headless as available 1.2.0 demos', () => {
     expect(text()).toContain('Full Checkout');
     expect(text()).toContain('Buttons Only');
     expect(text()).toContain('Headless');
-    expect(text()).toContain('Unpublished — 1.2.0');
+    expect(text()).toContain('1.2.0');
+    expect(text()).not.toContain('Unpublished');
     expect(text()).not.toContain('Official Klarna sandbox');
   });
 
@@ -199,10 +231,80 @@ describe('PlaygroundPage', () => {
     const versionButtons = Array.from(
       versionGroup?.querySelectorAll('.segmented__option:not([disabled])') ?? [],
     ) as HTMLButtonElement[];
-    expect(versionButtons.length).toBeGreaterThanOrEqual(2);
-    versionButtons[1].focus();
-    versionButtons[1].click();
+    expect(versionButtons.map((button) => button.textContent?.trim())).toEqual([
+      '1.2.0',
+      '1.1.0',
+      '1.0.0',
+    ]);
+    versionButtons[2].focus();
+    versionButtons[2].click();
     fixture.detectChanges();
     expect(page().config().version).toBe('1.0.0');
+  });
+
+  it('only offers 1.2.0 for Buttons Only and Headless', () => {
+    for (const mode of ['buttons', 'headless'] as const) {
+      page().setDemoMode(mode);
+      fixture.detectChanges();
+      expect(page().availableVersions()).toEqual(['1.2.0']);
+      const labels = Array.from(
+        (fixture.nativeElement as HTMLElement).querySelectorAll(
+          '#version-label ~ .segmented .segmented__option',
+        ),
+      ).map((button) => button.textContent?.trim());
+      expect(labels).toEqual(['1.2.0']);
+    }
+  });
+
+  it('moves to 1.2.0 when a 1.0.0 Full Checkout switches to Buttons Only', () => {
+    page().setVersion('1.0.0');
+    page().setDemoMode('buttons');
+    fixture.detectChanges();
+    expect(page().config().version).toBe('1.2.0');
+    expect(page().code().componentHtml).toContain('easy-payment-buttons');
+  });
+
+  it('shares library-default Buttons Only appearance through the public API', () => {
+    expect(page().buttonsAppearance).toEqual({
+      gap: '8px',
+      buttonHeight: '40px',
+      buttonMinWidth: '100px',
+      background: 'transparent',
+    });
+    page().setDemoMode('buttons');
+    fixture.detectChanges();
+    const code = page().code();
+    expect(code.componentHtml).toContain('[buttonsAppearance]');
+    expect(code.componentTs).toContain("gap: '8px'");
+    expect(code.componentTs).toContain("buttonHeight: '40px'");
+    expect(code.componentTs).toContain("buttonMinWidth: '100px'");
+  });
+
+  it('generates Headless snippets for 1.2.0', () => {
+    page().setDemoMode('headless');
+    fixture.detectChanges();
+    expect(page().code().componentTs).toContain('EasyPaymentsHeadless');
+    expect(page().code().componentTs).toContain('createSession');
+  });
+
+  it('logs duplicate terminal events once', () => {
+    page().onError({ code: 'PAYMENT_FAILED', message: 'Mock failure' });
+    page().onError({ code: 'PAYMENT_FAILED', message: 'Mock failure' });
+    page().onSuccess({ method: 'card', status: 'succeeded' });
+    page().onSuccess({ method: 'card', status: 'succeeded' });
+    expect(
+      page()
+        .eventLog()
+        .map((event) => event.name),
+    ).toEqual(['success', 'error']);
+  });
+
+  it('keeps the integration guide link in the preview header', () => {
+    const link = (fixture.nativeElement as HTMLElement).querySelector(
+      '.playground-preview a.playground-preview__guide',
+    );
+    expect(link?.textContent).toContain('View integration guide');
+    expect(text()).not.toContain('Live binary');
+    expect(text()).not.toContain('local vendor');
   });
 });

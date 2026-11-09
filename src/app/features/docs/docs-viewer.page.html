@@ -46,7 +46,7 @@
             [description]="page.page.description"
           >
             @if (page.latestPublished) {
-              <ep-badge variant="available">Latest published</ep-badge>
+              <ep-badge variant="available">{{ page.version }}</ep-badge>
             } @else {
               <ep-badge variant="info">Published</ep-badge>
             }
@@ -68,6 +68,12 @@
               page.next ? { label: page.next.title, href: page.next.href } : null
             "
           />
+
+          <p class="docs-viewer__faq-link">
+            <a routerLink="/faq">{{ t('nav.faq') }}</a>
+          </p>
+
+          <app-support-project-card />
         </article>
 
         <ep-docs-toc docsToc [items]="tocItems()" />
@@ -92,25 +98,14 @@
         [title]="
           missingReason() === 'coming-soon'
             ? 'Framework documentation coming soon'
-            : missingReason() === 'unpublished'
-              ? 'Version not published'
-              : 'Documentation page not found'
+            : 'Documentation page not found'
         "
         [description]="
           missingReason() === 'coming-soon'
             ? 'React, Vue, and Svelte adapters are not released yet. Angular documentation is available now.'
-            : missingReason() === 'unpublished'
-              ? 'Angular 1.2.0 is a release candidate and is not published as production documentation.'
-              : 'This framework, version, or page is not part of the published documentation set.'
+            : 'This framework, version, or page is not part of the documentation set.'
         "
       />
-
-      @if (missingReason() === 'unpublished') {
-        <ep-alert variant="warning" title="Unpublished release candidate">
-          Use Angular 1.1.0 (latest published) or 1.0.0 for production docs. 1.2.0
-          remains unavailable until npm publish.
-        </ep-alert>
-      }
 
       <div class="docs-missing__actions">
         <a class="docs-missing__link" [routerLink]="latestHref()">

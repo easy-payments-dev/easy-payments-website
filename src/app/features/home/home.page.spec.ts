@@ -52,11 +52,11 @@ describe('HomePage', () => {
     expect(el.textContent).toContain('Vue');
     expect(el.textContent).toContain('Svelte');
     expect(el.textContent).toContain('Coming soon');
-    expect(el.textContent).toContain('v1.1.0');
-    expect(el.textContent).not.toMatch(/Angular docs \(v1\.2\.0\)/);
+    expect(el.textContent).toContain('v1.2.0');
+    expect(el.textContent).toMatch(/Angular docs \(v1\.2\.0\)/);
   });
 
-  it('shows the published install command and labels 1.2.0 preview modes', () => {
+  it('shows the install command and presents all three modes as available in 1.2.0', () => {
     const el = fixture.nativeElement as HTMLElement;
     expect(el.textContent).toContain(
       'npm install @easy-payments/angular @stripe/stripe-js',
@@ -64,7 +64,9 @@ describe('HomePage', () => {
     expect(el.textContent).toContain('Full Checkout');
     expect(el.textContent).toContain('Buttons Only');
     expect(el.textContent).toContain('Headless');
-    expect(el.textContent).toContain('Coming in Angular v1.2.0');
+    expect(el.textContent).not.toContain('Coming in Angular v1.2.0');
+    expect(el.textContent).not.toContain('Unpublished');
+    expect(el.querySelectorAll('.experience-grid ep-badge').length).toBe(3);
     expect(el.textContent).toContain('Samsung Pay');
     expect(el.textContent).toContain('Not supported');
   });

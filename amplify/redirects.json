@@ -36,6 +36,18 @@
     "condition": null
   },
   {
+    "source": "/faq",
+    "target": "/index.html",
+    "status": "200",
+    "condition": null
+  },
+  {
+    "source": "/support",
+    "target": "/index.html",
+    "status": "200",
+    "condition": null
+  },
+  {
     "source": "</^[^.]+$/>",
     "target": "/index.html",
     "status": "404-200",
