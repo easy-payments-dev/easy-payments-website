@@ -13,6 +13,11 @@ Official Easy Payments brand files were copied from the workspace folder
 
 `favicon.svg` is a lightweight SVG adaptation of the official navy / turquoise / white EP mark for sharp small sizes.
 
+Header/footer lockups (`header-lockup-*.png`, `logo-lockup-*.png`) were refreshed from
+`Navy App Icon with Teal Bars and White P.png` so the mark’s **P stays white** against the navy
+rounded square (the original lockup export had a near-invisible dark P). Teal E bars and the
+wordmark were preserved.
+
 ## Ownership and reuse
 
 - Easy Payments brand artwork remains the property of the Easy Payments project / organization.
