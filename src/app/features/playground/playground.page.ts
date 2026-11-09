@@ -1,23 +1,44 @@
-import { NgClass } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { map } from 'rxjs/operators';
+import {
+  EasyPaymentButtonsComponent,
+  EasyPaymentsComponent,
+  EasyPaymentsLocale,
+  MockPaymentController,
+  MockPaymentOutcome,
+  PaymentError,
+  PaymentMethod,
+  PaymentProduct,
+  PaymentResult,
+} from '@easy-payments/angular';
 import { HISTORICAL_ANGULAR_API } from '../../core/docs/historical-api.evidence';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
+import { SiteMessageKey } from '../../core/i18n/site-messages';
 import { EpAlert } from '../../shared/ui/alert/alert';
 import { EpBadge } from '../../shared/ui/badge/badge';
 import { EpButton } from '../../shared/ui/button/button';
 import { EpCodeBlock } from '../../shared/ui/code-block/code-block';
 import { EpContainer } from '../../shared/ui/container/container';
+import { PlaygroundHeadlessDemo } from './playground-headless-demo';
 import { generatePlaygroundCode } from './playground-code.generator';
-import { createDefaultPlaygroundConfig } from './playground.defaults';
+import {
+  PLAYGROUND_BUTTONS_APPEARANCE,
+  PLAYGROUND_VERSIONS_BY_MODE,
+  createDefaultPlaygroundConfig,
+  playgroundSupportsVersion,
+} from './playground.defaults';
 import {
   PLAYGROUND_CURRENCIES,
   PLAYGROUND_METHOD_OPTIONS,
   PlaygroundAppearance,
+  PlaygroundButtonsLayout,
   PlaygroundCheckoutTheme,
   PlaygroundConfig,
+  PlaygroundDemoMode,
   PlaygroundLocale,
   PlaygroundPaymentMethod,
-  PlaygroundPreviewState,
   PlaygroundSimEvent,
   PlaygroundSimEventName,
   PlaygroundSuccessBehavior,
@@ -28,31 +49,53 @@ import { validatePlaygroundConfig } from './playground.validation';
 @Component({
   selector: 'app-playground-page',
   imports: [
-    NgClass,
     RouterLink,
     EpContainer,
     EpAlert,
     EpBadge,
     EpButton,
     EpCodeBlock,
+    EasyPaymentsComponent,
+    EasyPaymentButtonsComponent,
+    PlaygroundHeadlessDemo,
   ],
   templateUrl: './playground.page.html',
   styleUrl: './playground.page.scss',
 })
 export class PlaygroundPage {
+  private readonly i18n = inject(SiteI18nService);
+  private readonly mockController = inject(MockPaymentController);
+  private readonly route = inject(ActivatedRoute);
   private eventSeq = 0;
 
+  /** Terminal events repeated inside this window are logged once. */
+  private static readonly EVENT_DEDUPE_MS = 1500;
+  private readonly recentTerminalEvents = new Map<string, number>();
+
   protected readonly methodOptions = PLAYGROUND_METHOD_OPTIONS;
+  /** Public [buttonsAppearance] shared by every Buttons Only slot (matches library demo). */
+  protected readonly buttonsAppearance = PLAYGROUND_BUTTONS_APPEARANCE;
   protected readonly currencies = PLAYGROUND_CURRENCIES;
+  protected readonly mockOutcomes: readonly MockPaymentOutcome[] = [
+    'success',
+    'cancelled',
+    'failed',
+  ];
+  protected readonly demoModes: readonly PlaygroundDemoMode[] = [
+    'full',
+    'buttons',
+    'headless',
+  ];
 
   protected readonly config = signal<PlaygroundConfig>(
     createDefaultPlaygroundConfig(),
   );
-  protected readonly selectedMethod = signal<PlaygroundPaymentMethod | null>(
-    null,
-  );
-  protected readonly previewState = signal<PlaygroundPreviewState>('idle');
+  protected readonly demoMode = signal<PlaygroundDemoMode>('full');
+  protected readonly buttonsLayout = signal<PlaygroundButtonsLayout>('horizontal');
   protected readonly eventLog = signal<readonly PlaygroundSimEvent[]>([]);
+  protected readonly mockOutcome = signal<MockPaymentOutcome>('success');
+  /** Bumped when demo/config reset should remount interactive hosts. */
+  protected readonly remountToken = signal(0);
 
   protected readonly issues = computed(() =>
     validatePlaygroundConfig(this.config()),
@@ -61,37 +104,114 @@ export class PlaygroundPage {
   protected readonly evidence = computed(
     () => HISTORICAL_ANGULAR_API[this.config().version],
   );
+  /** Snippet versions offered for the active demo mode. */
+  protected readonly availableVersions = computed(
+    () => PLAYGROUND_VERSIONS_BY_MODE[this.demoMode()],
+  );
   protected readonly supportsLocale = computed(
     () => this.evidence().localization,
   );
   protected readonly code = computed(() =>
-    generatePlaygroundCode(this.config()),
+    generatePlaygroundCode(this.config(), {
+      mode: this.demoMode(),
+      buttonsLayout: this.buttonsLayout(),
+    }),
   );
-  protected readonly resolvedPreviewTheme = computed(() => {
-    const theme = this.config().theme;
-    if (theme !== 'system') {
-      return theme;
-    }
-    if (typeof window === 'undefined' || !window.matchMedia) {
-      return 'light';
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
-  });
-  protected readonly formattedAmount = computed(() => {
+  protected readonly language = this.i18n.language;
+
+  protected readonly checkoutProduct = computed<PaymentProduct>(() => {
     const product = this.config().product;
-    try {
-      return new Intl.NumberFormat(this.previewLocaleTag(), {
-        style: 'currency',
-        currency: product.currency || 'USD',
-      }).format(product.amount * Math.max(1, product.quantity || 1));
-    } catch {
-      return `${product.amount} ${product.currency}`;
-    }
+    return {
+      id: 'playground-premium',
+      name: product.name.trim() || 'Product',
+      description: product.description.trim() || undefined,
+      amount: product.amount,
+      currency: product.currency,
+      quantity: product.quantity,
+    };
   });
 
+  protected readonly checkoutMethods = computed<PaymentMethod[]>(
+    () => [...this.config().methods] as PaymentMethod[],
+  );
+
+  protected readonly checkoutLocale = computed<EasyPaymentsLocale>(() => {
+    if (this.supportsLocale()) {
+      const configured = this.config().locale;
+      if (configured !== 'auto') {
+        return configured;
+      }
+    }
+    return this.i18n.checkoutLocale();
+  });
+
+  protected readonly showFull = computed(() => this.demoMode() === 'full');
+  protected readonly showButtons = computed(() => this.demoMode() === 'buttons');
+  protected readonly showHeadless = computed(
+    () => this.demoMode() === 'headless',
+  );
+
+  constructor() {
+    effect(() => {
+      this.mockController.setOutcome(this.mockOutcome());
+    });
+
+    this.route.queryParamMap
+      .pipe(
+        map((params) => params.get('demo')),
+        takeUntilDestroyed(),
+      )
+      .subscribe((demo) => {
+        if (demo === 'full' || demo === 'buttons' || demo === 'headless') {
+          this.setDemoMode(demo);
+        }
+      });
+  }
+
+  protected guideHref(): string {
+    switch (this.demoMode()) {
+      case 'full':
+        return '/docs/angular/1.2.0/full-checkout';
+      case 'buttons':
+        return '/docs/angular/1.2.0/buttons-only';
+      case 'headless':
+        return '/docs/angular/1.2.0/headless';
+    }
+  }
+
+  protected t(key: SiteMessageKey): string {
+    return this.i18n.t(key);
+  }
+
+  protected demoLabel(mode: PlaygroundDemoMode): string {
+    switch (mode) {
+      case 'full':
+        return this.t('playground.demo.full');
+      case 'buttons':
+        return this.t('playground.demo.buttons');
+      case 'headless':
+        return this.t('playground.demo.headless');
+    }
+  }
+
+  protected setDemoMode(mode: PlaygroundDemoMode): void {
+    if (this.demoMode() === mode) {
+      return;
+    }
+    this.demoMode.set(mode);
+    if (!playgroundSupportsVersion(mode, this.config().version)) {
+      this.setVersion('1.2.0');
+    }
+    this.eventLog.set([]);
+    this.recentTerminalEvents.clear();
+    this.remountToken.update((value) => value + 1);
+  }
+
   protected setVersion(version: PlaygroundVersion): void {
+    if (!playgroundSupportsVersion(this.demoMode(), version)) {
+      return;
+    }
+    const localized = HISTORICAL_ANGULAR_API[version].localization;
     this.config.update((current) => ({
       ...createDefaultPlaygroundConfig(version),
       product: current.product,
@@ -100,10 +220,14 @@ export class PlaygroundPage {
       appearance: current.appearance,
       successBehavior: current.successBehavior,
       maxWidth: current.maxWidth,
-      locale: version === '1.1.0' ? current.locale : 'auto',
+      locale: localized
+        ? current.locale === 'auto'
+          ? this.i18n.checkoutLocale()
+          : current.locale
+        : 'auto',
       version,
     }));
-    this.resetSimulation(false);
+    this.remountToken.update((value) => value + 1);
   }
 
   protected patchProduct<K extends keyof PlaygroundConfig['product']>(
@@ -142,22 +266,23 @@ export class PlaygroundPage {
         : [...current.methods, method];
       return { ...current, methods };
     });
-    if (this.selectedMethod() === method) {
-      this.selectedMethod.set(null);
-      this.previewState.set('idle');
-    }
+    this.remountToken.update((value) => value + 1);
+    this.eventLog.set([]);
   }
 
   protected setTheme(theme: PlaygroundCheckoutTheme): void {
     this.config.update((current) => ({ ...current, theme }));
+    this.remountToken.update((value) => value + 1);
   }
 
   protected setAppearance(appearance: PlaygroundAppearance): void {
     this.config.update((current) => ({ ...current, appearance }));
+    this.remountToken.update((value) => value + 1);
   }
 
   protected setSuccessBehavior(successBehavior: PlaygroundSuccessBehavior): void {
     this.config.update((current) => ({ ...current, successBehavior }));
+    this.remountToken.update((value) => value + 1);
   }
 
   protected setLocale(locale: PlaygroundLocale): void {
@@ -165,78 +290,32 @@ export class PlaygroundPage {
       return;
     }
     this.config.update((current) => ({ ...current, locale }));
+    this.remountToken.update((value) => value + 1);
+  }
+
+  protected setButtonsLayout(layout: PlaygroundButtonsLayout): void {
+    this.buttonsLayout.set(layout);
+    this.remountToken.update((value) => value + 1);
+  }
+
+  protected setMockOutcome(outcome: MockPaymentOutcome): void {
+    this.mockOutcome.set(outcome);
   }
 
   protected resetDefaults(): void {
-    this.config.set(createDefaultPlaygroundConfig(this.config().version));
-    this.resetSimulation(true);
-  }
-
-  protected selectMethod(method: PlaygroundPaymentMethod): void {
-    if (!this.isValid() || !this.config().methods.includes(method)) {
-      return;
-    }
-    this.selectedMethod.set(method);
-    this.previewState.set('selected');
-  }
-
-  protected simulateSuccess(): void {
-    if (!this.ensureSelection()) {
-      return;
-    }
-    this.pushEvent(
-      'success',
-      `Simulated success for ${this.selectedMethod()} (UX only).`,
-    );
-    if (this.config().successBehavior === 'confirmation') {
-      this.previewState.set('success');
-    } else {
-      this.previewState.set('idle');
-      this.selectedMethod.set(null);
-    }
-  }
-
-  protected simulateCancel(): void {
-    if (!this.ensureSelection()) {
-      return;
-    }
-    this.pushEvent('cancel', `Simulated cancel for ${this.selectedMethod()}.`);
-    this.previewState.set('cancelled');
-  }
-
-  protected simulateError(): void {
-    if (!this.ensureSelection()) {
-      return;
-    }
-    this.pushEvent(
-      'error',
-      `Simulated error PAYMENT_FAILED for ${this.selectedMethod()}.`,
-    );
-    this.previewState.set('error');
-  }
-
-  protected simulateSuccessContinue(): void {
-    if (this.previewState() !== 'success') {
-      return;
-    }
-    this.pushEvent(
-      'successContinue',
-      'Simulated successContinue from confirmation UI.',
-    );
-    this.previewState.set('idle');
-    this.selectedMethod.set(null);
-  }
-
-  protected resetSimulation(clearLog: boolean): void {
-    this.selectedMethod.set(null);
-    this.previewState.set('idle');
-    if (clearLog) {
-      this.eventLog.set([]);
-    }
-  }
-
-  protected clearEventLog(): void {
+    const version = this.config().version;
+    this.config.set({
+      ...createDefaultPlaygroundConfig(version),
+      locale: HISTORICAL_ANGULAR_API[version].localization
+        ? this.i18n.checkoutLocale()
+        : 'auto',
+    });
+    this.mockOutcome.set('success');
+    this.buttonsLayout.set('horizontal');
+    this.mockController.reset();
     this.eventLog.set([]);
+    this.recentTerminalEvents.clear();
+    this.remountToken.update((value) => value + 1);
   }
 
   protected isMethodEnabled(method: PlaygroundPaymentMethod): boolean {
@@ -247,14 +326,44 @@ export class PlaygroundPage {
     return this.issues().find((issue) => issue.field === field)?.message ?? null;
   }
 
-  private ensureSelection(): boolean {
-    if (!this.isValid() || !this.selectedMethod()) {
-      return false;
-    }
-    return true;
+  protected onSuccess(result: PaymentResult): void {
+    this.pushEvent(
+      'success',
+      `Mock success · ${result.method} · ${result.message ?? 'ok'}`,
+    );
+  }
+
+  protected onCancel(result: PaymentResult): void {
+    this.pushEvent(
+      'cancel',
+      `Mock cancel · ${result.method} · ${result.message ?? 'cancelled'}`,
+    );
+  }
+
+  protected onError(error: PaymentError): void {
+    this.pushEvent('error', `Mock error · ${error.code} · ${error.message}`);
+  }
+
+  protected onSuccessContinue(result: PaymentResult): void {
+    this.pushEvent(
+      'successContinue',
+      `Mock successContinue · ${result.method}`,
+    );
+  }
+
+  protected onStarted(event: { method: PaymentMethod }): void {
+    this.pushEvent('started', `Mock started · ${event.method}`);
+  }
+
+  protected clearEventLog(): void {
+    this.eventLog.set([]);
+    this.recentTerminalEvents.clear();
   }
 
   private pushEvent(name: PlaygroundSimEventName, detail: string): void {
+    if (this.isDuplicateTerminalEvent(name, detail)) {
+      return;
+    }
     this.eventSeq += 1;
     const entry: PlaygroundSimEvent = {
       id: `evt-${this.eventSeq}`,
@@ -265,19 +374,23 @@ export class PlaygroundPage {
     this.eventLog.update((events) => [entry, ...events].slice(0, 20));
   }
 
-  private previewLocaleTag(): string {
-    if (!this.supportsLocale()) {
-      return 'en';
+  /**
+   * success / cancel / error can reach the page twice for one outcome (for
+   * example a rejected confirm() plus the session error event). Log it once.
+   */
+  private isDuplicateTerminalEvent(
+    name: PlaygroundSimEventName,
+    detail: string,
+  ): boolean {
+    if (name !== 'success' && name !== 'cancel' && name !== 'error') {
+      return false;
     }
-    switch (this.config().locale) {
-      case 'es':
-        return 'es';
-      case 'pt':
-        return 'pt';
-      case 'en':
-        return 'en';
-      default:
-        return typeof navigator !== 'undefined' ? navigator.language : 'en';
-    }
+    const key = `${name}|${detail}`;
+    const now = Date.now();
+    const previous = this.recentTerminalEvents.get(key);
+    this.recentTerminalEvents.set(key, now);
+    return (
+      previous !== undefined && now - previous < PlaygroundPage.EVENT_DEDUPE_MS
+    );
   }
 }

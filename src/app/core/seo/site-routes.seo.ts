@@ -24,10 +24,28 @@ export const STATIC_SEO_PAGES: readonly SeoPageMeta[] = [
   },
   {
     path: '/playground',
-    title: `Playground | Angular checkout simulation | ${SITE}`,
+    title: `Playground | Angular checkout mock demo | ${SITE}`,
     description:
-      'Interactive Angular checkout playground. Configure published package options, preview a local simulation, and copy integration code. Demonstration only — no payments are processed.',
+      'Interactive Angular checkout playground. Configure published package options, preview the real @easy-payments/angular component in mock mode, and copy integration code. Demonstration only — no payments are processed.',
     index: true,
+  },
+  {
+    path: '/contact',
+    title: `Contact | ${SITE}`,
+    description:
+      'Contact the easy payments maintainers: send a suggestion, report a problem, or ask a question. Do not include card numbers or other sensitive data.',
+  },
+  {
+    path: '/faq',
+    title: `FAQ | ${SITE}`,
+    description:
+      'Frequently asked questions about Easy Payments: checkout modes, mock demos, keys, Angular versions, and provider fees.',
+  },
+  {
+    path: '/support',
+    title: `Support Easy Payments | ${SITE}`,
+    description:
+      'Support the free Easy Payments open-source project with voluntary contributions or by helping on GitHub.',
   },
 ] as const;
 
@@ -35,9 +53,7 @@ export function docsSeoPages(): SeoPageMeta[] {
   return DOCS_VERSIONS.flatMap((manifest) =>
     manifest.pages.map((page) => ({
       path: `/docs/${manifest.framework}/${manifest.version}/${page.slug}`,
-      title: `${page.title} · Angular ${manifest.version}${
-        manifest.latestPublished ? ' · latest published' : ''
-      } | ${SITE}`,
+      title: `${page.title} · Angular ${manifest.version} | ${SITE}`,
       description: page.description,
       type: 'article' as const,
     })),

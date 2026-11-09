@@ -25,4 +25,15 @@ describe('SiteHeader', () => {
     expect(el.querySelector('.brand__name')).toBeNull();
     expect(el.querySelector('.brand__tagline')).toBeNull();
   });
+
+  it('exposes English, Español, and Português language controls', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const labels = Array.from(el.querySelectorAll('.lang-switcher__option')).map(
+      (node) => node.textContent?.trim(),
+    );
+    expect(labels).toContain('English');
+    expect(labels).toContain('Español');
+    expect(labels).toContain('Português');
+    expect(labels).not.toContain('Français');
+  });
 });

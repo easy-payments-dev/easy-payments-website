@@ -1,0 +1,56 @@
+[
+  {
+    "source": "/docs",
+    "target": "/docs/angular/1.1.0/getting-started",
+    "status": "301",
+    "condition": null
+  },
+  {
+    "source": "/docs/angular",
+    "target": "/docs/angular/1.1.0/getting-started",
+    "status": "301",
+    "condition": null
+  },
+  {
+    "source": "/docs/angular/1.0.0",
+    "target": "/docs/angular/1.0.0/getting-started",
+    "status": "301",
+    "condition": null
+  },
+  {
+    "source": "/docs/angular/1.1.0",
+    "target": "/docs/angular/1.1.0/getting-started",
+    "status": "301",
+    "condition": null
+  },
+  {
+    "source": "/playground",
+    "target": "/index.html",
+    "status": "200",
+    "condition": null
+  },
+  {
+    "source": "/contact",
+    "target": "/index.html",
+    "status": "200",
+    "condition": null
+  },
+  {
+    "source": "/faq",
+    "target": "/index.html",
+    "status": "200",
+    "condition": null
+  },
+  {
+    "source": "/support",
+    "target": "/index.html",
+    "status": "200",
+    "condition": null
+  },
+  {
+    "source": "</^[^.]+$/>",
+    "target": "/index.html",
+    "status": "404-200",
+    "condition": null
+  }
+]

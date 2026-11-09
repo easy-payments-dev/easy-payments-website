@@ -2,22 +2,23 @@ import { DocsPageMeta } from '../../../../app/core/docs/docs.types';
 import { page as p0 } from './getting_started.page';
 import { page as p1 } from './installation.page';
 import { page as p2 } from './quick_start.page';
-import { page as p3 } from './configuration.page';
-import { page as p4 } from './payment_methods.page';
-import { page as p5 } from './theming.page';
-import { page as p6 } from './stripe.page';
-import { page as p7 } from './paypal.page';
-import { page as p8 } from './apple_pay.page';
-import { page as p9 } from './google_pay.page';
-import { page as p10 } from './klarna.page';
-import { page as p11 } from './affirm.page';
-import { page as p12 } from './mock_mode.page';
-import { page as p13 } from './testing.page';
-import { page as p14 } from './error_handling.page';
-import { page as p15 } from './security.page';
-import { page as p16 } from './troubleshooting.page';
-import { page as p17 } from './api_reference.page';
-import { page as p18 } from './examples.page';
+import { page as p3 } from './checkout_modes.page';
+import { page as p4 } from './configuration.page';
+import { page as p5 } from './payment_methods.page';
+import { page as p6 } from './theming.page';
+import { page as p7 } from './stripe.page';
+import { page as p8 } from './paypal.page';
+import { page as p9 } from './apple_pay.page';
+import { page as p10 } from './google_pay.page';
+import { page as p11 } from './klarna.page';
+import { page as p12 } from './affirm.page';
+import { page as p13 } from './mock_mode.page';
+import { page as p14 } from './testing.page';
+import { page as p15 } from './error_handling.page';
+import { page as p16 } from './security.page';
+import { page as p17 } from './troubleshooting.page';
+import { page as p18 } from './api_reference.page';
+import { page as p19 } from './examples.page';
 
 export const pages: readonly DocsPageMeta[] = [
   p0,
@@ -39,4 +40,5 @@ export const pages: readonly DocsPageMeta[] = [
   p16,
   p17,
   p18,
+  p19,
 ];

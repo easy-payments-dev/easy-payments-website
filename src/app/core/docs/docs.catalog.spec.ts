@@ -17,11 +17,12 @@ describe('DocsCatalog', () => {
     expect(page?.href).toBe('/docs/angular/1.1.0/installation');
   });
 
-  it('does not resolve unpublished 1.2.0 documentation', () => {
-    expect(catalog.getVersion('angular', '1.2.0')).toBeUndefined();
+  it('resolves 1.2.0 launch documentation', () => {
+    expect(catalog.getVersion('angular', '1.2.0')).toBeDefined();
     expect(
       catalog.resolvePage('angular', '1.2.0', 'getting-started'),
-    ).toBeNull();
+    ).not.toBeNull();
+    expect(catalog.getLatestPublishedVersion('angular')).toBe('1.2.0');
   });
 
   it('preserves the current slug when switching versions when possible', () => {
@@ -39,9 +40,14 @@ describe('DocsCatalog', () => {
       true,
     );
     const versions = catalog.versionOptions('angular');
-    expect(versions.find((item) => item.value === '1.2.0')?.disabled).toBe(
-      true,
-    );
+    expect(versions.find((item) => item.value === '1.2.0')?.disabled).toBeFalsy();
     expect(versions.find((item) => item.value === '1.1.0')?.disabled).toBeFalsy();
+  });
+
+  it('labels the 1.2.0 version option as plain 1.2.0', () => {
+    const label = catalog
+      .versionOptions('angular')
+      .find((item) => item.value === '1.2.0')?.label;
+    expect(label).toBe('1.2.0');
   });
 });

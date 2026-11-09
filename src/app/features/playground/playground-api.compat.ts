@@ -14,6 +14,14 @@ const FORBIDDEN_SNIPPET_MARKERS = [
   'Headless',
 ] as const;
 
+/** Outputs bound by the Full Checkout snippet (verified in every published version). */
+const FULL_CHECKOUT_SNIPPET_OUTPUTS = [
+  'success',
+  'cancel',
+  'error',
+  'successContinue',
+] as const;
+
 /**
  * Structural compatibility checks against W4.1 historical npm evidence.
  * Does not install published packages into the website dependency tree.
@@ -74,7 +82,11 @@ export function assertGeneratedCodeMatchesPublishedApi(
     problems.push(`Missing selector <${evidence.componentSelector}>`);
   }
 
-  for (const output of evidence.componentOutputs) {
+  for (const output of FULL_CHECKOUT_SNIPPET_OUTPUTS) {
+    if (!evidence.componentOutputs.includes(output)) {
+      problems.push(`Evidence missing expected output ${output}`);
+      continue;
+    }
     if (!code.componentHtml.includes(`(${output})`)) {
       problems.push(`Missing verified output (${output})`);
     }
@@ -96,13 +108,17 @@ export function assertGeneratedCodeMatchesPublishedApi(
 
   if (evidence.localization) {
     if (!code.componentHtml.includes('locale=')) {
-      problems.push('Expected locale input for 1.1.0 generated HTML');
+      problems.push(`Expected locale input for ${version} generated HTML`);
     }
   } else if (code.componentHtml.includes('locale=')) {
-    problems.push('Locale must not appear in 1.0.0 generated HTML');
+    problems.push(`Locale must not appear in ${version} generated HTML`);
   }
 
-  for (const marker of FORBIDDEN_SNIPPET_MARKERS) {
+  // Newer-only APIs must never leak into snippets for versions that lack them.
+  const forbiddenMarkers = evidence.hasButtonsOnly
+    ? (['baseUrl', 'visualStyle'] as const)
+    : FORBIDDEN_SNIPPET_MARKERS;
+  for (const marker of forbiddenMarkers) {
     if (blob.includes(marker)) {
       problems.push(`Generated code contains unpublished marker: ${marker}`);
     }

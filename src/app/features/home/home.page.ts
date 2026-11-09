@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
 import { FRAMEWORKS, getLatestPublishedAngularVersion } from '../../data/frameworks';
 import {
   PAYMENT_METHODS,
@@ -36,8 +37,19 @@ import { EpSectionHeading } from '../../shared/ui/section-heading/section-headin
   styleUrl: './home.page.scss',
 })
 export class HomePage {
+  private readonly i18n = inject(SiteI18nService);
+
   protected readonly tagline = environment.tagline;
   protected readonly githubUrl = environment.githubUrl;
+  protected readonly playgroundTitle = computed(() =>
+    this.i18n.t('home.playgroundTitle'),
+  );
+  protected readonly playgroundBody = computed(() =>
+    this.i18n.t('home.playgroundBody'),
+  );
+  protected readonly playgroundCta = computed(() =>
+    this.i18n.t('home.playgroundCta'),
+  );
   protected readonly githubAngularUrl = environment.githubAngularUrl;
   protected readonly githubWebsiteUrl = environment.githubWebsiteUrl;
   protected readonly npmAngularUrl = environment.npmAngularUrl;
@@ -59,7 +71,7 @@ export class HomePage {
     },
     {
       title: 'Flexible checkout experiences',
-      body: 'Published Full Checkout covers the complete selector UI. Additional modes arrive with Angular v1.2.0.',
+      body: 'Full Checkout, Buttons Only, and Headless are all available in Angular 1.2.0.',
     },
     {
       title: 'TypeScript-friendly APIs',
@@ -87,20 +99,20 @@ export class HomePage {
     {
       name: 'Full Checkout',
       status: 'available' as const,
-      versionNote: `Available in published Angular ${getLatestPublishedAngularVersion()}`,
+      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
       body: 'Complete checkout UI with order summary, payment method selection, and confirm actions.',
     },
     {
       name: 'Buttons Only',
-      status: 'preview' as const,
-      versionNote: 'Coming in Angular v1.2.0',
-      body: 'Render provider buttons and card expansion without the full checkout shell. Not part of npm 1.1.0.',
+      status: 'available' as const,
+      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
+      body: 'Render provider buttons and card expansion without the full checkout shell.',
     },
     {
       name: 'Headless',
-      status: 'preview' as const,
-      versionNote: 'Coming in Angular v1.2.0',
-      body: 'Programmatic checkout control for custom UI shells. Preview in the 1.2.0 release candidate only.',
+      status: 'available' as const,
+      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
+      body: 'Programmatic checkout control for custom UI shells.',
     },
   ] as const;
 

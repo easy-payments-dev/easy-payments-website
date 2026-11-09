@@ -28,6 +28,18 @@ describe('historical API evidence (npm tarballs)', () => {
     expect(HISTORICAL_ABSENT_IN_1_0_AND_1_1).toContain('EasyPaymentsHeadless');
   });
 
+  it('records 1.2.0 as the local build with Buttons Only and Headless support', () => {
+    const evidence = HISTORICAL_ANGULAR_API['1.2.0'];
+    expect(evidence.version).toBe('1.2.0');
+    expect(evidence.npmShasum).toBeNull();
+    expect(evidence.hasButtonsOnly).toBe(true);
+    expect(evidence.hasHeadless).toBe(true);
+    expect(evidence.localization).toBe(true);
+    expect(evidence.componentOutputs).toEqual(
+      expect.arrayContaining(['success', 'cancel', 'error', 'successContinue', 'started']),
+    );
+  });
+
   it('captures localization only on 1.1.0', () => {
     expect(HISTORICAL_ANGULAR_API['1.0.0'].localization).toBe(false);
     expect(HISTORICAL_ANGULAR_API['1.1.0'].localization).toBe(true);

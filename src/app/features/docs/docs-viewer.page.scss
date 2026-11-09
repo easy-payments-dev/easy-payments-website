@@ -33,6 +33,17 @@
   min-width: 0;
 }
 
+.docs-viewer__faq-link {
+  margin: 0;
+  font-size: var(--ep-text-sm);
+}
+
+.docs-viewer__faq-link a {
+  color: var(--ep-accent-deep, var(--ep-accent));
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .docs-missing {
   display: grid;
   gap: var(--ep-space-5);

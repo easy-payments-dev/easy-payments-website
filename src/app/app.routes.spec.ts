@@ -14,6 +14,11 @@ describe('app routes', () => {
     expect(paths).toContain('docs/:framework/:version/:slug');
     expect(paths).toContain('security');
     expect(paths).toContain('playground');
+    expect(paths).toContain('contact');
+    expect(paths).toContain('faq');
+    expect(paths).toContain('support');
+    expect(paths.indexOf('contact')).toBeLessThan(paths.indexOf('**'));
+    expect(paths.indexOf('faq')).toBeLessThan(paths.indexOf('**'));
     expect(paths).toContain('**');
   });
 
@@ -49,7 +54,7 @@ describe('app routes', () => {
         ?.title,
     ).toBe('Documentation | easy payments');
     expect(routes.find((route) => route.path === 'playground')?.title).toBe(
-      'Playground | Angular checkout simulation | easy payments',
+      'Playground | Angular checkout mock demo | easy payments',
     );
   });
 });

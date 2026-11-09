@@ -16,6 +16,11 @@ describe('playground historical API compatibility', () => {
         createDefaultPlaygroundConfig('1.1.0'),
       ),
     ).toEqual([]);
+    expect(
+      assertPlaygroundConfigMatchesPublishedApi(
+        createDefaultPlaygroundConfig('1.2.0'),
+      ),
+    ).toEqual([]);
   });
 
   it('flags locale on 1.0.0 configs', () => {
@@ -26,8 +31,9 @@ describe('playground historical API compatibility', () => {
     );
   });
 
-  it('validates generated snippets against W4.1 evidence for both versions', () => {
+  it('validates generated snippets against evidence for every snippet version', () => {
     expect(assertGeneratedCodeMatchesPublishedApi('1.0.0')).toEqual([]);
     expect(assertGeneratedCodeMatchesPublishedApi('1.1.0')).toEqual([]);
+    expect(assertGeneratedCodeMatchesPublishedApi('1.2.0')).toEqual([]);
   });
 });

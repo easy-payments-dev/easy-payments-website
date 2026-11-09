@@ -30,6 +30,10 @@ const requiredFiles = [
   'docs/angular/1.0.0/getting-started/index.html',
   'docs/angular/1.1.0/getting-started/index.html',
   'docs/angular/1.1.0/localization/index.html',
+  'docs/angular/1.2.0/getting-started/index.html',
+  'docs/angular/1.2.0/full-checkout/index.html',
+  'docs/angular/1.2.0/buttons-only/index.html',
+  'docs/angular/1.2.0/headless/index.html',
 ];
 
 for (const relative of requiredFiles) {
@@ -41,37 +45,41 @@ assert(
   'Playground must remain client-rendered (no prerendered playground/index.html)',
 );
 assert(
-  !existsSync(join(browser, 'docs', 'angular', '1.2.0')),
-  'Unpublished Angular 1.2.0 docs must not appear in static output',
+  !existsSync(join(browser, 'contact', 'index.html')),
+  'Contact must remain client-rendered (Turnstile needs the browser; no prerendered contact/index.html)',
 );
 
 const sitemap = readFileSync(join(browser, 'sitemap.xml'), 'utf8');
+assert(sitemap.includes('/docs/angular/1.2.0/getting-started'), 'Sitemap missing 1.2.0 getting-started');
+assert(sitemap.includes('/docs/angular/1.2.0/full-checkout'), 'Sitemap missing 1.2.0 full-checkout');
 assert(sitemap.includes('/docs/angular/1.1.0/getting-started'), 'Sitemap missing 1.1.0 getting-started');
 assert(sitemap.includes('/docs/angular/1.0.0/getting-started'), 'Sitemap missing 1.0.0 getting-started');
 assert(sitemap.includes('/playground'), 'Sitemap missing playground');
-assert(!sitemap.includes('1.2.0'), 'Sitemap must not include Angular 1.2.0');
 assert(!sitemap.includes('/docs/react'), 'Sitemap must not include React docs');
 assert(!/<\/url>\s*<url>/g.test(sitemap) || sitemap.includes('<url>'), 'Sitemap malformed');
 
 const robots = readFileSync(join(browser, 'robots.txt'), 'utf8');
 assert(robots.includes('Sitemap:'), 'robots.txt missing Sitemap');
-assert(robots.includes('Disallow: /docs/angular/1.2.0'), 'robots.txt missing 1.2.0 disallow');
+assert(!robots.includes('Disallow: /docs/angular/1.2.0'), 'robots.txt must allow Angular 1.2.0 docs');
+assert(robots.includes('Disallow: /docs/react/'), 'robots.txt missing React disallow');
 
 const frameworksHtml = readFileSync(join(browser, 'frameworks', 'index.html'), 'utf8');
 assert(frameworksHtml.includes('<title>Frameworks | easy payments</title>'), 'Frameworks title missing');
 assert(
   !frameworksHtml.includes('localhost') &&
     frameworksHtml.includes('rel="canonical"') &&
-    frameworksHtml.includes('https://easypayments.dev/frameworks'),
-  'Frameworks canonical missing or incorrect (expected production https://easypayments.dev)',
+    frameworksHtml.includes('https://www.easy-payments.dev/frameworks'),
+  'Frameworks canonical missing or incorrect (expected production https://www.easy-payments.dev)',
 );
 assert(
-  frameworksHtml.includes('property="og:url" content="https://easypayments.dev/frameworks"'),
+  frameworksHtml.includes(
+    'property="og:url" content="https://www.easy-payments.dev/frameworks"',
+  ),
   'Frameworks og:url missing or not production canonical',
 );
 
 const docsHtml = readFileSync(
-  join(browser, 'docs', 'angular', '1.1.0', 'getting-started', 'index.html'),
+  join(browser, 'docs', 'angular', '1.2.0', 'getting-started', 'index.html'),
   'utf8',
 );
 assert(docsHtml.includes('Getting started'), 'Docs content title missing from prerender');
@@ -79,14 +87,19 @@ assert(
   docsHtml.includes('property="og:type" content="article"'),
   'Docs og:type should be article',
 );
-assert(!docsHtml.includes('/docs/angular/1.2.0'), 'Docs prerender must not advertise 1.2.0 paths');
 
 const headers = readFileSync(join(browser, '_headers'), 'utf8');
 assert(headers.includes('Content-Security-Policy'), '_headers missing CSP');
 assert(headers.includes('X-Frame-Options: DENY'), '_headers missing frame deny');
+assert(
+  /script-src[^;]*https:\/\/challenges\.cloudflare\.com/.test(headers) &&
+    /frame-src[^;]*https:\/\/challenges\.cloudflare\.com/.test(headers),
+  '_headers CSP must allow Cloudflare Turnstile (script-src + frame-src) for /contact',
+);
 
 const redirects = readFileSync(join(browser, '_redirects'), 'utf8');
-assert(redirects.includes('/docs/angular/1.1.0/getting-started'), '_redirects missing docs redirect');
+assert(redirects.includes('/docs/angular/1.2.0/getting-started'), '_redirects missing docs redirect');
+assert(/^\/contact\s+\/index\.html\s+200/m.test(redirects), '_redirects missing /contact SPA fallback');
 
 function countHtmlFiles(dir) {
   let count = 0;

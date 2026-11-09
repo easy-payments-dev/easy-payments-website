@@ -7,23 +7,24 @@ import {
 } from './docs.manifest';
 
 describe('docs manifest', () => {
-  it('publishes immutable Angular 1.0.0 and 1.1.0 snapshots only', () => {
+  it('lists Angular 1.0.0, 1.1.0, and 1.2.0 snapshots', () => {
     expect(DOCS_VERSIONS.map((entry) => entry.version).sort()).toEqual([
       '1.0.0',
       '1.1.0',
+      '1.2.0',
     ]);
     expect(DOCS_VERSIONS.every((entry) => entry.status === 'published')).toBe(
       true,
     );
-    expect(DOCS_VERSIONS.some((entry) => entry.version === '1.2.0')).toBe(
-      false,
-    );
   });
 
-  it('marks 1.1.0 as the latest published Angular docs version', () => {
-    expect(getLatestPublishedDocsVersion('angular')).toBe('1.1.0');
-    expect(getDocsVersionManifest('angular', '1.1.0')?.latestPublished).toBe(
+  it('marks 1.2.0 as the latest published Angular docs version', () => {
+    expect(getLatestPublishedDocsVersion('angular')).toBe('1.2.0');
+    expect(getDocsVersionManifest('angular', '1.2.0')?.latestPublished).toBe(
       true,
+    );
+    expect(getDocsVersionManifest('angular', '1.1.0')?.latestPublished).toBe(
+      false,
     );
     expect(getDocsVersionManifest('angular', '1.0.0')?.latestPublished).toBe(
       false,
@@ -43,6 +44,61 @@ describe('docs manifest', () => {
     );
     expect(getDocsPage('angular', '1.0.0', 'localization')).toBeUndefined();
     expect(getDocsPage('angular', '1.1.0', 'localization')).toBeTruthy();
+    expect(getDocsPage('angular', '1.1.0', 'checkout-modes')?.markdown).toContain(
+      'Unpublished',
+    );
+    expect(getDocsPage('angular', '1.1.0', 'quick-start')?.markdown).toContain(
+      'enableMockMode',
+    );
+  });
+
+  it('keeps 1.1.0 Buttons Only and Headless pages as historical Unpublished snapshots', () => {
+    for (const slug of ['buttons-only', 'headless'] as const) {
+      const page = getDocsPage('angular', '1.1.0', slug);
+      if (page) {
+        expect(page.markdown).toContain('Unpublished');
+      }
+    }
+    expect(getDocsPage('angular', '1.1.0', 'checkout-modes')?.markdown).toContain(
+      'Unpublished',
+    );
+  });
+
+  it('exposes the 1.2.0 launch pages without Unpublished messaging on modes/quick-start', () => {
+    for (const slug of [
+      'full-checkout',
+      'buttons-only',
+      'headless',
+      'checkout-modes',
+      'quick-start',
+      'api-reference',
+    ]) {
+      expect(getDocsPage('angular', '1.2.0', slug)).toBeTruthy();
+    }
+    expect(
+      getDocsPage('angular', '1.2.0', 'checkout-modes')?.markdown,
+    ).not.toContain('Unpublished');
+    expect(
+      getDocsPage('angular', '1.2.0', 'quick-start')?.markdown,
+    ).not.toContain('Unpublished');
+  });
+
+  it('presents 1.2.0 checkout modes as three comparison cards instead of a table', () => {
+    const markdown = getDocsPage('angular', '1.2.0', 'checkout-modes')!.markdown;
+    expect(markdown).not.toMatch(/^\|/m);
+    expect(markdown.match(/^::: mode-card$/gm)).toHaveLength(3);
+    for (const heading of ['## Full Checkout', '## Buttons Only', '## Headless']) {
+      expect(markdown).toContain(heading);
+    }
+    for (const demo of ['full', 'buttons', 'headless']) {
+      expect(markdown).toContain(`[Try demo](/playground?demo=${demo})`);
+    }
+    for (const guide of ['full-checkout', 'buttons-only', 'headless']) {
+      expect(markdown).toContain(`[View guide](./${guide})`);
+    }
+    expect(markdown.match(/\*\*When to use:\*\*/g)).toHaveLength(3);
+    expect(markdown.match(/\*\*Who owns the UI:\*\*/g)).toHaveLength(3);
+    expect(markdown.match(/\*\*Public API:\*\*/g)).toHaveLength(3);
   });
 
   it('exposes navigation groups for each published version', () => {

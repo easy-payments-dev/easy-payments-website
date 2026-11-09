@@ -137,3 +137,44 @@
   height: auto;
   border-radius: var(--ep-radius-md);
 }
+
+/*
+ * Checkout-modes comparison cards (`::: mode-cards` Markdown container).
+ * Cards stack on narrow widths and wrap by available width so the docs sidebars
+ * never force horizontal overflow. innerHTML nodes are unscoped, hence ::ng-deep.
+ */
+:host ::ng-deep .docs-mode-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--ep-space-4);
+  margin: 0 0 var(--ep-space-6);
+  min-width: 0;
+}
+
+:host ::ng-deep .docs-mode-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--ep-space-4);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-radius-md);
+  background: var(--ep-bg-elevated, var(--ep-bg-muted));
+  overflow-wrap: anywhere;
+}
+
+:host ::ng-deep .docs-mode-card h2 {
+  margin: 0 0 var(--ep-space-3);
+  font-size: var(--ep-text-xl);
+}
+
+:host ::ng-deep .docs-mode-card ul {
+  margin: 0 0 var(--ep-space-4);
+  padding-left: 1.1rem;
+}
+
+:host ::ng-deep .docs-mode-card p:last-child {
+  margin: auto 0 0;
+  padding-top: var(--ep-space-3);
+  border-top: 1px solid var(--ep-border);
+  font-weight: var(--ep-font-semibold);
+}

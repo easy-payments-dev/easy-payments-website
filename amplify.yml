@@ -1,0 +1,31 @@
+version: 1
+# AWS Amplify Hosting build spec for the static Angular site (frontend only).
+# Hosting the site does NOT host the contact backend — see infra/contact/README.md.
+# Not deployed from this repo state; see docs/amplify-hosting.md for the manual connect steps.
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # Angular 22 requires Node >= 22. Amplify's build image manages Node via nvm.
+        - nvm install 22
+        - nvm use 22
+        # The repo pins npm@11 (package.json "packageManager"); match it for a faithful lockfile install.
+        - npm install -g npm@11.19.0
+        - node --version
+        - npm --version
+        # Reproducible install from package-lock.json. @easy-payments/angular@1.2.0
+        # resolves from the public npm registry.
+        - npm ci
+    build:
+      commands:
+        - npm run build:prod
+        - npm run verify:static
+  artifacts:
+    # Serve ONLY the browser output. dist/easy-payments-website/server is a build-time artifact.
+    baseDirectory: dist/easy-payments-website/browser
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .angular/cache/**/*

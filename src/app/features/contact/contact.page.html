@@ -1,0 +1,186 @@
+<section class="ep-page contact">
+  <ep-container width="narrow">
+    <ep-section-heading [title]="t('contact.title')" [description]="t('contact.lede')" />
+
+    @if (!config.operational) {
+      <ep-alert variant="warning" [title]="t('contact.notConfiguredTitle')">
+        {{ t('contact.notConfigured') }}
+      </ep-alert>
+      <div class="contact__fallback">
+        <ep-button variant="outline" [href]="githubUrl" [external]="true">
+          GitHub
+          <span class="sr-only">{{ t('newTab') }}</span>
+        </ep-button>
+      </div>
+    } @else if (status() === 'success') {
+      <div class="contact__success" role="status">
+        <h2 class="contact__success-title" #successHeading tabindex="-1">
+          {{ t('contact.successTitle') }}
+        </h2>
+        <p>{{ t('contact.success') }}</p>
+        <ep-button variant="outline" (click)="sendAnother()">
+          {{ t('contact.sendAnother') }}
+        </ep-button>
+      </div>
+    } @else {
+      <div class="contact__notes">
+        <p>{{ t('contact.notice') }}</p>
+        <p>{{ t('contact.privacy') }}</p>
+      </div>
+      <ep-alert variant="security">{{ t('contact.noSensitive') }}</ep-alert>
+
+      <form
+        class="contact__form"
+        novalidate
+        [attr.aria-label]="t('contact.formLabel')"
+        [attr.aria-busy]="submitting() ? 'true' : null"
+        (submit)="onSubmit($event)"
+      >
+        <fieldset class="contact__fieldset" [disabled]="submitting()">
+          <div class="field">
+            <label class="field__label" [for]="ids.name">{{ t('contact.fields.name') }}</label>
+            <input
+              [id]="ids.name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              required
+              aria-required="true"
+              [value]="name()"
+              [attr.aria-invalid]="fieldError('name') ? 'true' : null"
+              [attr.aria-describedby]="fieldError('name') ? ids.name + '-error' : null"
+              (input)="setText('name', $any($event.target).value)"
+              (blur)="markTouched('name')"
+            />
+            @if (fieldError('name'); as error) {
+              <p class="field__error" [id]="ids.name + '-error'">{{ error }}</p>
+            }
+          </div>
+
+          <div class="field">
+            <label class="field__label" [for]="ids.replyEmail">{{
+              t('contact.fields.email')
+            }}</label>
+            <input
+              [id]="ids.replyEmail"
+              name="replyEmail"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              required
+              aria-required="true"
+              [value]="replyEmail()"
+              [attr.aria-invalid]="fieldError('replyEmail') ? 'true' : null"
+              [attr.aria-describedby]="fieldError('replyEmail') ? ids.replyEmail + '-error' : null"
+              (input)="setText('replyEmail', $any($event.target).value)"
+              (blur)="markTouched('replyEmail')"
+            />
+            @if (fieldError('replyEmail'); as error) {
+              <p class="field__error" [id]="ids.replyEmail + '-error'">{{ error }}</p>
+            }
+          </div>
+
+          <div class="field">
+            <label class="field__label" [for]="ids.type">{{ t('contact.fields.type') }}</label>
+            <select
+              [id]="ids.type"
+              name="type"
+              required
+              aria-required="true"
+              (change)="setType($any($event.target).value)"
+            >
+              @for (option of types; track option) {
+                <option [value]="option" [selected]="option === type()">
+                  {{ typeLabel(option) }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" [for]="ids.message">{{
+              t('contact.fields.message')
+            }}</label>
+            <textarea
+              [id]="ids.message"
+              name="message"
+              rows="7"
+              required
+              aria-required="true"
+              [value]="message()"
+              [attr.aria-invalid]="fieldError('message') ? 'true' : null"
+              [attr.aria-describedby]="
+                ids.message + '-count' + (fieldError('message') ? ' ' + ids.message + '-error' : '')
+              "
+              (input)="setText('message', $any($event.target).value)"
+              (blur)="markTouched('message')"
+            ></textarea>
+            <p
+              class="field__count"
+              [class.field__count--over]="messageLength() > limits.messageMax"
+              [id]="ids.message + '-count'"
+            >
+              {{ messageLength() }} / {{ limits.messageMax }}
+            </p>
+            @if (fieldError('message'); as error) {
+              <p class="field__error" [id]="ids.message + '-error'">{{ error }}</p>
+            }
+          </div>
+
+          <!--
+            Honeypot: invisible to people and assistive tech, skipped by keyboard navigation.
+            Positioned off-screen (not display:none) so naive bots still fill it.
+          -->
+          <div class="contact__trap" aria-hidden="true">
+            <input
+              type="text"
+              name="website"
+              tabindex="-1"
+              autocomplete="off"
+              [value]="website()"
+              (input)="setText('website', $any($event.target).value)"
+            />
+          </div>
+
+          <div class="contact__verify">
+            <p class="field__label" id="contact-verify-label">{{ t('contact.verification') }}</p>
+            <div
+              #turnstileHost
+              class="contact__turnstile"
+              role="group"
+              aria-labelledby="contact-verify-label"
+            ></div>
+            @if (verifyState() === 'loading') {
+              <p class="field__hint">{{ t('contact.verifyLoading') }}</p>
+            }
+            @if (verifyErrorText(); as verifyMessage) {
+              <p class="field__error" role="alert">{{ verifyMessage }}</p>
+            }
+          </div>
+        </fieldset>
+
+        @if (status() === 'error') {
+          <ep-alert variant="error" [title]="t('contact.errorTitle')">
+            {{ t('contact.error') }}
+          </ep-alert>
+        }
+        @if (status() === 'rate-limited') {
+          <ep-alert variant="warning" [title]="t('contact.rateLimitedTitle')">
+            {{ t('contact.rateLimited') }}
+          </ep-alert>
+        }
+
+        <div class="contact__actions">
+          <ep-button type="submit" [loading]="submitting()">
+            {{ submitting() ? t('contact.submitting') : t('contact.submit') }}
+          </ep-button>
+        </div>
+        <p class="sr-only" role="status" aria-live="polite">
+          @if (submitting()) {
+            {{ t('contact.submitting') }}
+          }
+        </p>
+      </form>
+    }
+  </ep-container>
+</section>

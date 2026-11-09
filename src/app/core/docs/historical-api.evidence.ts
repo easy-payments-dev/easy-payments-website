@@ -3,16 +3,19 @@
  * Artifacts inspected:
  * - @easy-payments/angular@1.0.0 (shasum f0b0f4e8e22d254dc00c9a13cecbd1959dbf15ba)
  * - @easy-payments/angular@1.1.0 (shasum 011f04e6901fdd05c841171381c14df747697a8c)
+ * - @easy-payments/angular@1.2.0 — local vendor build (npm publication pending; no shasum yet)
  *
  * Source of truth: package.json + types/easy-payments-angular.d.ts inside each tarball.
  * Temporary extraction lived outside the app dependency tree.
  */
-export type HistoricalAngularVersion = '1.0.0' | '1.1.0';
+export type HistoricalAngularVersion = '1.0.0' | '1.1.0' | '1.2.0';
 
 export interface HistoricalPackageEvidence {
   version: HistoricalAngularVersion;
   packageName: '@easy-payments/angular';
-  npmShasum: string;
+  /**
+ull while the version is only available from the local vendor build. */
+  npmShasum: string | null;
   peerDependencies: {
     '@angular/common': string;
     '@angular/core': string;
@@ -22,8 +25,8 @@ export interface HistoricalPackageEvidence {
   componentSelector: 'easy-payments';
   componentClass: 'EasyPaymentsComponent';
   providerFn: 'provideEasyPayments';
-  hasButtonsOnly: false;
-  hasHeadless: false;
+  hasButtonsOnly: boolean;
+  hasHeadless: boolean;
   componentInputs: readonly string[];
   componentOutputs: readonly string[];
   paymentMethods: readonly string[];
@@ -111,6 +114,66 @@ export const HISTORICAL_ANGULAR_API: Record<
       'translations',
     ],
     componentOutputs: ['success', 'cancel', 'error', 'successContinue'],
+    paymentMethods: [
+      'card',
+      'paypal',
+      'apple-pay',
+      'google-pay',
+      'klarna',
+      'affirm',
+    ],
+    themes: ['light', 'dark', 'system'],
+    appearances: ['default', 'transparent'],
+    successBehaviors: ['confirmation', 'event-only'],
+    backendConfigKeys: [
+      'createPaymentUrl',
+      'paypalCreateOrderUrl',
+      'paypalCaptureOrderUrl',
+      'klarnaCreatePaymentUrl',
+      'affirmCreatePaymentUrl',
+      'confirmPaymentUrl',
+    ],
+    localization: true,
+  },
+  '1.2.0': {
+    version: '1.2.0',
+    packageName: '@easy-payments/angular',
+    // Local vendor build; npm publication is pending so no tarball shasum exists yet.
+    npmShasum: null,
+    peerDependencies: {
+      '@angular/common': '>=20.3.0 <23.0.0',
+      '@angular/core': '>=20.3.0 <23.0.0',
+      '@stripe/stripe-js': '^8.0.0',
+    },
+    exportEntry: '.',
+    componentSelector: 'easy-payments',
+    componentClass: 'EasyPaymentsComponent',
+    providerFn: 'provideEasyPayments',
+    hasButtonsOnly: true,
+    hasHeadless: true,
+    componentInputs: [
+      'product',
+      'methods',
+      'checkout',
+      'checkoutInstanceId',
+      'theme',
+      'appearance',
+      'visualStyle',
+      'cardButtonAppearance',
+      'maxWidth',
+      'successBehavior',
+      'locale',
+      'translations',
+    ],
+    componentOutputs: [
+      'success',
+      'cancel',
+      'error',
+      'pending',
+      'successContinue',
+      'started',
+      'methodChange',
+    ],
     paymentMethods: [
       'card',
       'paypal',
