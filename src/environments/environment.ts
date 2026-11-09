@@ -31,9 +31,9 @@ export const environment = {
   turnstileSiteKey: '1x00000000000000000000AA' as string | null,
   contactEnabled: true as boolean,
   /**
-   * Optional external PayPal.Me / donation URL for “Support with PayPal”.
-   * Leave null until the maintainer provides a valid https link — the UI then
-   * shows GitHub support options only (no PayPal SDK).
+   * Optional external PayPal.Me support URL for “Support with PayPal”.
+   * Production sets the live link in `environment.production.ts`. Leave null in
+   * local/dev to hide the PayPal button and keep GitHub options only (no SDK).
    */
   paypalSupportUrl: null as string | null,
 } as const;

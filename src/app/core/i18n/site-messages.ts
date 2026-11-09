@@ -142,7 +142,6 @@ export type SiteMessageKey =
   | 'support.body'
   | 'support.community'
   | 'support.paypal'
-  | 'support.paypalPending'
   | 'support.github'
   | 'support.issues';
 
@@ -273,8 +272,6 @@ const en: Catalog = {
   'support.community':
     'You can also help by sharing the project, reporting issues, or contributing on GitHub.',
   'support.paypal': 'Support with PayPal',
-  'support.paypalPending':
-    'PayPal contributions will appear here once the maintainer publishes a support link. GitHub options are available now.',
   'support.github': 'View on GitHub',
   'support.issues': 'Report an issue',
   'contact.title': 'Contact',
@@ -444,8 +441,6 @@ const es: Catalog = {
   'support.community':
     'También puedes ayudar compartiendo el proyecto, reportando problemas o contribuyendo en GitHub.',
   'support.paypal': 'Apoyar con PayPal',
-  'support.paypalPending':
-    'Las contribuciones con PayPal aparecerán aquí cuando el mantenedor publique un enlace. Las opciones de GitHub ya están disponibles.',
   'support.github': 'Ver en GitHub',
   'support.issues': 'Reportar un problema',
   'contact.title': 'Contacto',
@@ -615,8 +610,6 @@ const pt: Catalog = {
   'support.community':
     'Também pode ajudar partilhando o projeto, reportando problemas ou contribuindo no GitHub.',
   'support.paypal': 'Apoiar com PayPal',
-  'support.paypalPending':
-    'Contribuições PayPal aparecerão aqui quando o maintainer publicar um link. As opções GitHub já estão disponíveis.',
   'support.github': 'Ver no GitHub',
   'support.issues': 'Reportar um problema',
   'contact.title': 'Contato',

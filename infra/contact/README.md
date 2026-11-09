@@ -1,8 +1,13 @@
 # Contact form backend (AWS CDK)
 
-Backend for the website `/contact` form. It is **separate from the static frontend** (Cloudflare Pages or Amplify
-Hosting) and is **defined here but not deployed**. Nothing in this folder creates cloud resources until you run
-`cdk deploy` yourself.
+Backend for the website `/contact` form. It is **separate from the static frontend** (Amplify
+Hosting today; Cloudflare Pages files remain for reference) and is **defined here but not deployed**.
+Nothing in this folder creates cloud resources until you run `cdk deploy` yourself.
+
+Live website origin: **`https://www.easy-payments.dev`** (AWS Amplify). Until this stack is deployed
+and the frontend is wired (see [Activate production contact](#activate-production-contact-manual)),
+`contactEnabled` stays **`false`** and `/contact` keeps the NOT OPERATIONAL notice with GitHub as
+the available contact path.
 
 ```
 Browser (/contact + Turnstile)
@@ -10,7 +15,7 @@ Browser (/contact + Turnstile)
    ▼
 API Gateway HTTP API  POST /contact  (CORS: configured website origins only, edge throttle 5 rps / burst 10)
    ▼
-Lambda (Node 20, arm64)  ── Cloudflare Turnstile siteverify
+Lambda (Node 20/22, arm64)  ── Cloudflare Turnstile siteverify
    ├─ DynamoDB  rate limits · daily cap · idempotency (TTL cleanup)
    └─ SES v2    SendEmail (plain text) → fixed recipient
 ```
@@ -119,44 +124,111 @@ npm test            # vitest
 npm run typecheck
 ```
 
-## Deploy (manual, later — NOT done by this repo state)
+## Production deploy (manual — NOT run by this repo state)
 
-Prerequisites: AWS account/credentials, CDK bootstrapped in the target account/region, a **verified SES identity**
-(address or domain) for the sender. A new SES account is in the **sandbox**: the recipient (`jantvb@gmail.com`) must
-also be verified, or request production access. Create a Cloudflare Turnstile widget with allowed domain(s) matching the
-website hostname(s) and action `contact`.
+### Prerequisites
 
-1. **Secrets** (SSM Parameter Store, `SecureString`; never in code or CDK):
-   ```powershell
-   aws ssm put-parameter --name /easy-payments/contact/prod/turnstile-secret --type SecureString --value "<Turnstile secret key>"
-   aws ssm put-parameter --name /easy-payments/contact/prod/ip-hash-secret   --type SecureString --value "<random >=32 chars>"
-   ```
-2. **Install and review**:
-   ```powershell
-   cd infra/contact
-   npm ci
-   npx cdk synth -c fromEmail=no-reply@easypayments.dev -c allowedOrigins=https://easypayments.dev
-   npx cdk diff  -c fromEmail=no-reply@easypayments.dev -c allowedOrigins=https://easypayments.dev
-   ```
-3. **Deploy** (when ready):
-   ```powershell
-   npx cdk deploy -c fromEmail=no-reply@easypayments.dev -c allowedOrigins=https://easypayments.dev
-   ```
-   Optional context: `stage` (default `prod`; `local`/`test` are refused), `toEmail` (default `jantvb@gmail.com`),
-   `sesIdentity` (default = `fromEmail`; use the domain if the domain is the verified identity), `dailySendCap` (50),
-   `turnstileSecretParam`, `ipHashSecretParam`, `lambdaRuntime` (`nodejs20.x` default; `nodejs22.x` supported).
-   > Node 20 is the requested runtime. AWS is deprecating `nodejs20.x` (deprecated 2026-04-30; create blocked
-   > 2027-02-01), so prefer `-c lambdaRuntime=nodejs22.x` for a new deployment.
-4. **Wire the website** (public values only) from the `ContactApiUrl` stack output and the Turnstile **site key**:
-   in `src/environments/environment.production.ts` set `contactApiUrl`, `turnstileSiteKey`, `contactEnabled: true`
-   (keep `contactTransport: 'api'`).
-5. **CSP**: replace `https://contact-api.example.invalid` in `public/_headers` (and `customHttp.yml` for Amplify) with the
-   API origin.
-6. Smoke test from the production origin: submit once (expect an email to `CONTACT_TO_EMAIL`), submit 4× quickly
-   (expect 429), confirm CloudWatch logs contain no message/email/token.
+| Item | Detail |
+| --- | --- |
+| AWS credentials | Account with permission to create API Gateway HTTP API, Lambda, DynamoDB, IAM, CloudWatch Logs, and read SSM |
+| Region | **`us-east-1`** (matches `.env.example` `SES_REGION`; SES sandbox identity verification and deliverability are simplest here). Set both: `$env:AWS_REGION='us-east-1'; $env:CDK_DEFAULT_REGION='us-east-1'` |
+| CDK bootstrap | Once per account/region: `npx cdk bootstrap aws://<ACCOUNT_ID>/us-east-1` |
+| SES sender | A **verified** SES identity for `fromEmail` (email address **or** domain). Example for this site: `no-reply@easy-payments.dev` once that identity (or the `easy-payments.dev` domain) is verified in SES |
+| SES recipient | Default **`jantvb@gmail.com`**. While the account is in the **SES sandbox**, verify this address in SES (or request production access) before real sends succeed |
+| Cloudflare Turnstile | Widget allowed for **`www.easy-payments.dev`** (and optionally `easy-payments.dev` if you ever serve apex), action name **`contact`**. Secret stays in AWS SSM; only the **site key** goes in the website |
 
-To change the recipient: redeploy with `-c toEmail=...` (or edit the Lambda env var `CONTACT_TO_EMAIL`). The website
-does not change.
+Preserved by design (do not weaken): honeypot field `website`, server-side validation limits, per-IP attempt/submission windows, daily send cap, idempotency, and Turnstile hostname/action/age checks.
+
+### CDK context parameter names
+
+Passed as `-c key=value` to `cdk synth|diff|deploy` (`bin/contact.ts`):
+
+| Context key | Required | Default | Production value for Easy Payments |
+| --- | --- | --- | --- |
+| `fromEmail` | **yes** | — | Your verified SES sender, e.g. `no-reply@easy-payments.dev` |
+| `allowedOrigins` | **yes** | — | `https://www.easy-payments.dev` (comma-separated if several; https, no path, no `*`) |
+| `stage` | no | `prod` | `prod` (stack id `EasyPaymentsContact-prod`; `local`/`test` refused) |
+| `toEmail` | no | `jantvb@gmail.com` | `jantvb@gmail.com` |
+| `sesIdentity` | no | same as `fromEmail` | Verified SES identity name (use the **domain** if the domain identity authorizes `fromEmail`) |
+| `dailySendCap` | no | `50` | `50` unless you intentionally raise it |
+| `turnstileSecretParam` | no | `/easy-payments/contact/<stage>/turnstile-secret` | `/easy-payments/contact/prod/turnstile-secret` |
+| `ipHashSecretParam` | no | `/easy-payments/contact/<stage>/ip-hash-secret` | `/easy-payments/contact/prod/ip-hash-secret` |
+| `lambdaRuntime` | no | `nodejs20.x` | Prefer **`nodejs22.x`** for new deploys (Node 20 create blocked after 2027-02-01) |
+
+Stack output used by the website: **`ContactApiUrl`** → full `https://…/contact` URL.
+
+### Cloudflare Turnstile (www.easy-payments.dev)
+
+1. Cloudflare Dashboard → Turnstile → **Add widget**.
+2. Domains / hostnames: **`www.easy-payments.dev`** (add apex only if you also serve it).
+3. Widget mode: managed (or non-interactive if you prefer); note the **Site key** (public) and **Secret key** (backend only).
+4. The website posts Turnstile with action **`contact`** — keep that action name; the Lambda expects
+   `TURNSTILE_EXPECTED_ACTION=contact` (default).
+5. Hostname allowlist on the API defaults to the hostnames of `allowedOrigins`
+   (`www.easy-payments.dev`). Override with Lambda env `TURNSTILE_ALLOWED_HOSTNAMES` only if needed.
+6. Put the **secret** in SSM (below). Put the **site key** only in `environment.production.ts`
+   (`turnstileSiteKey`) when activating — never commit the secret.
+
+### SES identities
+
+```powershell
+# Sender (required) — address OR verify the easy-payments.dev domain in SES instead
+aws sesv2 create-email-identity --email-identity no-reply@easy-payments.dev --region us-east-1
+# Complete the verification email / DNS as SES instructs.
+
+# Sandbox only: also verify the fixed recipient before real mail is accepted
+aws sesv2 create-email-identity --email-identity jantvb@gmail.com --region us-east-1
+# Confirm via the Gmail verification message from AWS.
+
+# When ready for arbitrary recipients, request SES production access in the console.
+```
+
+`Reply-To` is always the visitor’s validated email from the form body; it is never used as `From`.
+
+### Exact deploy commands
+
+```powershell
+# 0) Region + account (example)
+$env:AWS_REGION = 'us-east-1'
+$env:CDK_DEFAULT_REGION = 'us-east-1'
+# $env:CDK_DEFAULT_ACCOUNT = '<ACCOUNT_ID>'   # optional if already implied by credentials
+
+# 1) Secrets in SSM SecureString (never in git, Amplify env, or CDK context)
+aws ssm put-parameter --region us-east-1 `
+  --name /easy-payments/contact/prod/turnstile-secret `
+  --type SecureString --value "<Turnstile secret key>"
+aws ssm put-parameter --region us-east-1 `
+  --name /easy-payments/contact/prod/ip-hash-secret `
+  --type SecureString --value "<openssl rand -hex 32>"
+
+# 2) Install, synthesize, review
+cd infra/contact
+npm ci
+npx cdk synth `
+  -c fromEmail=no-reply@easy-payments.dev `
+  -c allowedOrigins=https://www.easy-payments.dev `
+  -c toEmail=jantvb@gmail.com `
+  -c lambdaRuntime=nodejs22.x
+npx cdk diff `
+  -c fromEmail=no-reply@easy-payments.dev `
+  -c allowedOrigins=https://www.easy-payments.dev `
+  -c toEmail=jantvb@gmail.com `
+  -c lambdaRuntime=nodejs22.x
+
+# 3) Deploy when you are ready (creates API Gateway + Lambda + DynamoDB + IAM)
+npx cdk deploy `
+  -c fromEmail=no-reply@easy-payments.dev `
+  -c allowedOrigins=https://www.easy-payments.dev `
+  -c toEmail=jantvb@gmail.com `
+  -c lambdaRuntime=nodejs22.x
+# Note the ContactApiUrl stack output (https://….execute-api.us-east-1.amazonaws.com/contact).
+```
+
+If the verified SES identity is the **domain** `easy-payments.dev` rather than the mailbox, add
+`-c sesIdentity=easy-payments.dev` while keeping `-c fromEmail=no-reply@easy-payments.dev`.
+
+To change only the recipient later: redeploy with `-c toEmail=...` (or edit Lambda env
+`CONTACT_TO_EMAIL`). The website does not change.
 
 ### IAM (least privilege)
 
@@ -170,3 +242,39 @@ wildcard resources, or `ses:SendRawEmail`.
 - Fixed-window rate limiting allows up to 2× the limit across a window boundary.
 - Shared NAT/office IPs share one bucket.
 - The API Gateway default execute-api URL stays enabled until a custom domain is attached (optionally disable it then).
+
+## Activate production contact (manual)
+
+Keep **`contactEnabled: false`** until every step below is done and smoke-tested. Do not enable the form against
+the CSP placeholder.
+
+### Where each production value is set
+
+| Concern | Where | What to set |
+| --- | --- | --- |
+| CORS / browser origin | CDK `-c allowedOrigins=` → Lambda `CONTACT_ALLOWED_ORIGINS` | `https://www.easy-payments.dev` |
+| Turnstile secret | SSM `/easy-payments/contact/prod/turnstile-secret` | Secret key only (backend) |
+| Turnstile public site key | `src/environments/environment.production.ts` → `turnstileSiteKey` | Site key string |
+| Contact API URL | same file → `contactApiUrl` | Exact `ContactApiUrl` output (must be `https://…/contact`) |
+| Enable form | same file → `contactEnabled` | Flip to `true` **last**, after API + Turnstile + CSP work |
+| Transport | same file → `contactTransport` | Keep `'api'` (local-mock is rejected in production builds) |
+| CSP `connect-src` | `customHttp.yml` **and** `public/_headers` | Replace `https://contact-api.example.invalid` with the API **origin only** (scheme + host, no `/contact` path) |
+| Amplify hosting | Amplify redeploy of the website branch after the frontend/CSP commit | Serves the updated env + headers |
+
+Frontend resolution logic: `src/app/features/contact/contact.config.ts` (`resolveContactConfig`). Security headers
+notes: `docs/amplify-hosting.md`, `customHttp.yml`, `public/_headers`.
+
+### Post-deploy browser checklist
+
+From **`https://www.easy-payments.dev/contact`** (not a preview URL unless that origin was also allowlisted):
+
+1. Page shows the live form (not NOT OPERATIONAL) once `contactEnabled` is true and Amplify has deployed.
+2. Turnstile widget loads from `challenges.cloudflare.com` and completes without console CSP errors.
+3. Submit a real message with your own reply email; expect HTTP **200** `{"status":"accepted"}` in Network.
+4. Confirm mail arrives in **`jantvb@gmail.com`** (check spam). Subject like `[Easy Payments] Inquiry`.
+5. Open the message: **To** is `jantvb@gmail.com`, **From** is the verified SES sender, **Reply-To** is the
+   visitor address you typed.
+6. Submit the same content again with the **same** Idempotency-Key (browser retries) → accepted without a second SES
+   send when applicable; submit **4** distinct successful attempts quickly → expect **429**.
+7. CloudWatch logs for the contact Lambda show outcome/status only — **no** message body, email, IP, or Turnstile token.
+8. Optional: fill the hidden honeypot → still 200 accepted, **no** email.
