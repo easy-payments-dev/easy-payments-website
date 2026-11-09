@@ -1,7 +1,7 @@
 /**
- * W6.2 — Prove mock Playground does not request payment provider SDKs or Turnstile.
+ * Prove mock Playground does not request payment provider SDKs or Turnstile.
  *
- * 1) Static: vendored local @easy-payments/angular@1.2.0 must import
+ * 1) Static: installed @easy-payments/angular@1.2.0 (npm) must import
  *    @stripe/stripe-js/pure (default entry auto-injects js.stripe.com on evaluate).
  * 2) Browser network: load /playground, run a mock pay, assert no SDK hosts
  *    and no Cloudflare Turnstile script.
@@ -56,18 +56,19 @@ function isSdkUrl(url) {
   return SDK_HOST_PATTERNS.some((pattern) => pattern.test(url));
 }
 
-function verifyVendoredPureImport() {
-  const vendorPkgPath = join(
+function verifyInstalledPureImport() {
+  const pkgPath = join(
     root,
-    'vendor',
-    'easy-payments-angular',
+    'node_modules',
+    '@easy-payments',
+    'angular',
     'package.json',
   );
-  assert(existsSync(vendorPkgPath), 'Missing vendor/easy-payments-angular/package.json');
-  const vendorPkg = JSON.parse(readFileSync(vendorPkgPath, 'utf8'));
+  assert(existsSync(pkgPath), 'Missing node_modules/@easy-payments/angular/package.json');
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
   assert(
-    vendorPkg.version === '1.2.0',
-    `Expected vendor package 1.2.0, found ${vendorPkg.version}`,
+    pkg.version === '1.2.0',
+    `Expected @easy-payments/angular@1.2.0, found ${pkg.version}`,
   );
 
   const fesmPath = join(
@@ -82,7 +83,7 @@ function verifyVendoredPureImport() {
   const fesm = readFileSync(fesmPath, 'utf8');
   assert(
     /from '@stripe\/stripe-js\/pure(\/index\.js)?'/.test(fesm),
-    'FESM must import loadStripe from @stripe/stripe-js/pure (vendored local 1.2.0)',
+    'FESM must import loadStripe from @stripe/stripe-js/pure (@easy-payments/angular@1.2.0)',
   );
   assert(
     !/from '@stripe\/stripe-js';/.test(fesm),
@@ -177,9 +178,9 @@ async function verifyBrowserNetwork() {
 }
 
 async function main() {
-  console.log('Verifying vendored @easy-payments/angular@1.2.0 pure Stripe import…');
-  verifyVendoredPureImport();
-  console.log('Vendor pure import OK (@stripe/stripe-js/pure).');
+  console.log('Verifying installed @easy-payments/angular@1.2.0 pure Stripe import…');
+  verifyInstalledPureImport();
+  console.log('Installed package pure import OK (@stripe/stripe-js/pure).');
 
   await verifyBrowserNetwork();
 

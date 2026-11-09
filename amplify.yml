@@ -13,13 +13,11 @@ frontend:
         - npm install -g npm@11.19.0
         - node --version
         - npm --version
-        # Reproducible install from package-lock.json. @easy-payments/angular resolves from the
-        # committed local package at vendor/easy-payments-angular (file: dependency) — no registry fetch.
+        # Reproducible install from package-lock.json. @easy-payments/angular@1.2.0
+        # resolves from the public npm registry.
         - npm ci
     build:
       commands:
-        # Fail fast if the vendored library is missing or is not the expected local build.
-        - node scripts/ensure-vendor-angular.mjs
         - npm run build:prod
         - npm run verify:static
   artifacts:

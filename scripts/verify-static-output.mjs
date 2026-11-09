@@ -68,11 +68,13 @@ assert(frameworksHtml.includes('<title>Frameworks | easy payments</title>'), 'Fr
 assert(
   !frameworksHtml.includes('localhost') &&
     frameworksHtml.includes('rel="canonical"') &&
-    frameworksHtml.includes('https://easypayments.dev/frameworks'),
-  'Frameworks canonical missing or incorrect (expected production https://easypayments.dev)',
+    frameworksHtml.includes('https://www.easy-payments.dev/frameworks'),
+  'Frameworks canonical missing or incorrect (expected production https://www.easy-payments.dev)',
 );
 assert(
-  frameworksHtml.includes('property="og:url" content="https://easypayments.dev/frameworks"'),
+  frameworksHtml.includes(
+    'property="og:url" content="https://www.easy-payments.dev/frameworks"',
+  ),
   'Frameworks og:url missing or not production canonical',
 );
 

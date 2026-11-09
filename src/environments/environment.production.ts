@@ -5,7 +5,7 @@
 export const environment = {
   production: true,
   /** Canonical public origin (no trailing slash). Update if the production hostname changes. */
-  siteUrl: 'https://easypayments.dev',
+  siteUrl: 'https://www.easy-payments.dev',
   siteName: 'Easy Payments',
   /** Official visual wordmark casing from the Easy Payments logo. */
   wordmark: 'easy payments',

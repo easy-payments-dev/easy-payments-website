@@ -22,10 +22,8 @@ the repository in the Amplify console.
 - **Node 22** (Angular 22). `amplify.yml` runs `nvm install 22 && nvm use 22`, then pins `npm@11.19.0` to match
   `package.json#packageManager`.
 - `npm ci` installs strictly from `package-lock.json`.
-- `@easy-payments/angular` is the **local, unpublished 1.2.0** package referenced as `file:vendor/easy-payments-angular`.
-  **The `vendor/easy-payments-angular` directory must be committed** (at the time of writing it is untracked) or
-  `npm ci` fails on Amplify. `scripts/ensure-vendor-angular.mjs` runs before the build to fail fast if it is missing.
-  (`npm run build:prod` also triggers it through the `prebuild:prod` hook.)
+- `@easy-payments/angular@1.2.0` resolves from the **public npm registry** (no neighboring library checkout
+  and no committed `vendor/` package).
 - Do not serve `dist/easy-payments-website/server`; only the `browser` folder is the artifact.
 
 ## Redirects / SPA fallback
@@ -80,13 +78,12 @@ rather than the SPA shell; if Amplify does not map directory URLs to `index.html
 - Custom domain: Hosting → **Custom domains → Add domain**; Amplify issues an ACM certificate and gives DNS
   records to add (CNAME/ALIAS). Do not change DNS until you are ready to cut over.
 - Keep `siteUrl` (`environment.production.ts`), `public/robots.txt`, and `EP_SITE_URL` aligned with the final hostname
-  (`https://easypayments.dev` today), and use that origin in the backend `allowedOrigins` and the Turnstile widget's
+  (`https://www.easy-payments.dev` today), and use that origin in the backend `allowedOrigins` and the Turnstile widget's
   allowed domains.
 
 ## Checklist
 
-1. Commit `vendor/easy-payments-angular`.
-2. Connect the repo + branch; confirm the build passes (`verify:static` is part of the build).
-3. Apply `amplify/redirects.json`.
-4. Check `/`, `/frameworks`, a docs URL, `/playground`, `/contact` (NOT OPERATIONAL until the backend is configured), `/sitemap.xml`.
-5. Deploy the contact backend separately (`infra/contact/README.md`), then set the production contact fields and replace the CSP placeholder.
+1. Connect the repo + branch; confirm the build passes (`verify:static` is part of the build).
+2. Apply `amplify/redirects.json`.
+3. Check `/`, `/frameworks`, a docs URL, `/playground`, `/contact` (NOT OPERATIONAL until the backend is configured), `/sitemap.xml`.
+4. Deploy the contact backend separately (`infra/contact/README.md`), then set the production contact fields and replace the CSP placeholder.

@@ -7,7 +7,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const siteUrl = process.env.EP_SITE_URL || 'https://easypayments.dev';
+const siteUrl = process.env.EP_SITE_URL || 'https://www.easy-payments.dev';
 
 function readDocsPages(version) {
   const dir = join(root, 'src', 'content', 'docs', 'angular', version);

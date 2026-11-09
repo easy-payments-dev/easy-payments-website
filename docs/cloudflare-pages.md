@@ -24,7 +24,7 @@ Production canonical origin is configured in:
 - `public/robots.txt` → `Sitemap:`
 - `scripts/generate-seo-assets.mjs` → `EP_SITE_URL` (optional override)
 
-Confirm `https://easypayments.dev` matches the live hostname before launch. If the hostname differs, update those three places and rebuild.
+Confirm `https://www.easy-payments.dev` matches the live hostname before launch. If the hostname differs, update those three places and rebuild.
 
 ## Routing
 
