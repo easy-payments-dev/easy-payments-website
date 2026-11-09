@@ -30,6 +30,9 @@ export const environment = {
   contactApiUrl: null as string | null,
   turnstileSiteKey: null as string | null,
   contactEnabled: false as boolean,
-  /** Set to a https PayPal.Me (or similar) URL to show the PayPal support button. */
-  paypalSupportUrl: null as string | null,
+  /**
+   * Voluntary PayPal.Me support link (plain external URL — no PayPal SDK).
+   * Same public profile as the locale/country variant; keep the clean URL in production.
+   */
+  paypalSupportUrl: 'https://paypal.me/JoseVicente07' as string | null,
 } as const;

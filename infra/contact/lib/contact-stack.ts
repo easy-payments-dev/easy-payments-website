@@ -18,7 +18,7 @@ export interface ContactStackProps extends cdk.StackProps {
   fromEmail: string;
   /** SES identity name that authorizes `fromEmail`: the address itself or its verified domain. */
   sesIdentity: string;
-  /** Browser origins allowed to call the API (https only), e.g. https://easypayments.dev. */
+  /** Browser origins allowed to call the API (https only), e.g. https://www.easy-payments.dev. */
   allowedOrigins: string[];
   /** SSM SecureString parameter names (created manually, never stored in code). */
   turnstileSecretParam: string;

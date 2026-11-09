@@ -86,4 +86,6 @@ rather than the SPA shell; if Amplify does not map directory URLs to `index.html
 1. Connect the repo + branch; confirm the build passes (`verify:static` is part of the build).
 2. Apply `amplify/redirects.json`.
 3. Check `/`, `/frameworks`, a docs URL, `/playground`, `/contact` (NOT OPERATIONAL until the backend is configured), `/sitemap.xml`.
-4. Deploy the contact backend separately (`infra/contact/README.md`), then set the production contact fields and replace the CSP placeholder.
+4. Deploy the contact backend separately (`infra/contact/README.md` — Production deploy + Activate production contact),
+   then set `contactApiUrl` / `turnstileSiteKey` / `contactEnabled`, and replace the CSP `connect-src` placeholder
+   in `customHttp.yml` and `public/_headers`. Keep `contactEnabled: false` until that checklist passes.
