@@ -21,15 +21,14 @@ export const environment = {
   angularPackageName: '@easy-payments/angular',
   /**
    * Contact form (public, non-secret values only).
-   * Production MUST use 'api'. While contactApiUrl / turnstileSiteKey are null the contact
-   * page shows a NOT OPERATIONAL notice and no submit form. Set the real values at build time
-   * (e.g. a deploy-time replacement of this file) once the backend is deployed — see
-   * infra/contact/README.md. Local mock transport is rejected in production builds.
+   * Production MUST use 'api'. Local mock transport is rejected in production builds.
+   * Turnstile secret stays in AWS SSM — only the public site key belongs here.
    */
   contactTransport: 'api' as 'local-mock' | 'api',
-  contactApiUrl: null as string | null,
-  turnstileSiteKey: null as string | null,
-  contactEnabled: false as boolean,
+  contactApiUrl:
+    'https://7ako2mwoa2.execute-api.us-east-1.amazonaws.com/contact' as string | null,
+  turnstileSiteKey: '0x4AAAAAAF6g-jRSkAYBnLoq' as string | null,
+  contactEnabled: true as boolean,
   /**
    * Voluntary PayPal.Me support link (plain external URL — no PayPal SDK).
    * Same public profile as the locale/country variant; keep the clean URL in production.

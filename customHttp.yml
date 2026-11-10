@@ -5,9 +5,8 @@
 # - script-src and frame-src allow https://challenges.cloudflare.com (Cloudflare Turnstile). The script is
 #   only requested by the /contact page; Amplify applies matching header rules together, so the single
 #   allowance is kept global rather than a /contact-only CSP.
-# - connect-src lists the contact API origin. https://contact-api.example.invalid is a PLACEHOLDER (reserved
-#   .invalid TLD, matches nothing). Replace it with the deployed API origin (scheme + host only) before
-#   enabling the contact form. See docs/amplify-hosting.md and infra/contact/README.md.
+# - connect-src lists the deployed contact API origin (scheme + host only).
+#   See docs/amplify-hosting.md and infra/contact/README.md.
 customHeaders:
   - pattern: '**'
     headers:
@@ -24,7 +23,7 @@ customHeaders:
       - key: Cross-Origin-Opener-Policy
         value: same-origin
       - key: Content-Security-Policy
-        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://contact-api.example.invalid; upgrade-insecure-requests"
+        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://7ako2mwoa2.execute-api.us-east-1.amazonaws.com; upgrade-insecure-requests"
   - pattern: '*.html'
     headers:
       - key: Cache-Control
