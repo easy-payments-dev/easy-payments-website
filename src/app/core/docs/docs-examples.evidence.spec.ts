@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 
 describe('documentation examples and navigation after W4.1', () => {
   it('uses version-pinned install commands and real package name', () => {
-    for (const version of ['1.0.0', '1.1.0'] as const) {
+    for (const version of ['1.0.0', '1.1.0', '1.2.0', '1.2.1'] as const) {
       const install = getDocsPage('angular', version, 'installation')!;
       expect(install.markdown).toContain(
         `npm install @easy-payments/angular@${version} @stripe/stripe-js`,
@@ -27,9 +27,11 @@ describe('documentation examples and navigation after W4.1', () => {
     const search = TestBed.configureTestingModule({}).inject(DocsSearchService);
     const hits = search.search('confirmPaymentUrl', { scope: 'all' });
     expect(hits.some((hit) => hit.version === '1.0.0')).toBe(true);
-    // 1.2.0 examples are allowed (launch-review version).
+    // Published docs versions only (including 1.2.1 remapped guides).
     expect(
-      hits.every((hit) => ['1.0.0', '1.1.0', '1.2.0'].includes(hit.version)),
+      hits.every((hit) =>
+        ['1.0.0', '1.1.0', '1.2.0', '1.2.1'].includes(hit.version),
+      ),
     ).toBe(true);
 
     const localization = search.search('Localization', {

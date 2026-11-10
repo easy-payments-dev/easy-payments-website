@@ -1,7 +1,7 @@
 import { renderDocsMarkdown } from './markdown.renderer';
 
 describe('renderDocsMarkdown', () => {
-  it('renders headings with stable anchors and strips raw HTML', () => {
+  it('keeps heading anchors in toc metadata without emitting id attrs (sanitizer-safe)', () => {
     const result = renderDocsMarkdown(`
 # Title
 
@@ -12,7 +12,10 @@ describe('renderDocsMarkdown', () => {
 Paragraph with \`code\`.
 `);
 
-    expect(result.html).toContain('id="section-one"');
+    // Angular DomSanitizer strips `id` from [innerHTML]; emit plain headings
+    // and let EpDocsMarkdown apply toc ids after sanitize.
+    expect(result.html).toContain('<h2>Section One</h2>');
+    expect(result.html).not.toContain('id="');
     expect(result.html).not.toContain('<script>');
     expect(result.toc.some((item) => item.id === 'section-one')).toBe(true);
   });
@@ -42,7 +45,8 @@ Paragraph with \`code\`.
 
     expect(result.html).toContain('<div class="docs-mode-cards">');
     expect(result.html.match(/<section class="docs-mode-card">/g)).toHaveLength(2);
-    expect(result.html).toContain('id="alpha"');
+    expect(result.html).toContain('<h2>Alpha</h2>');
+    expect(result.html).not.toContain('id="');
     expect(result.html).toContain('href="/playground?demo=full"');
     expect(result.html).toContain('href="/docs/angular/1.2.0/full-checkout"');
     expect(result.toc.map((item) => item.id)).toEqual([

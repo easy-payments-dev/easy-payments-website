@@ -5,17 +5,18 @@ import {
 } from './frameworks';
 
 describe('framework version metadata', () => {
-  it('presents Angular 1.2.0 as the latest (launch) version', () => {
-    expect(getLatestPublishedAngularVersion()).toBe('1.2.0');
-    expect(getFramework('angular')?.latestPublished).toBe('1.2.0');
+  it('presents Angular 1.2.1 as the latest published version', () => {
+    expect(getLatestPublishedAngularVersion()).toBe('1.2.1');
+    expect(getFramework('angular')?.latestPublished).toBe('1.2.1');
   });
 
-  it('lists Angular 1.0.0, 1.1.0, and 1.2.0 as published versions', () => {
+  it('lists Angular 1.0.0, 1.1.0, 1.2.0, and 1.2.1 as published versions', () => {
     const angular = getFramework('angular');
     expect(angular?.versions.map((version) => version.version)).toEqual([
       '1.0.0',
       '1.1.0',
       '1.2.0',
+      '1.2.1',
     ]);
     expect(angular?.versions.every((version) => version.status === 'published')).toBe(
       true,

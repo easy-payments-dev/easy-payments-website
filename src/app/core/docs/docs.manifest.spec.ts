@@ -7,21 +7,25 @@ import {
 } from './docs.manifest';
 
 describe('docs manifest', () => {
-  it('lists Angular 1.0.0, 1.1.0, and 1.2.0 snapshots', () => {
+  it('lists Angular 1.0.0, 1.1.0, 1.2.0, and 1.2.1 snapshots', () => {
     expect(DOCS_VERSIONS.map((entry) => entry.version).sort()).toEqual([
       '1.0.0',
       '1.1.0',
       '1.2.0',
+      '1.2.1',
     ]);
     expect(DOCS_VERSIONS.every((entry) => entry.status === 'published')).toBe(
       true,
     );
   });
 
-  it('marks 1.2.0 as the latest published Angular docs version', () => {
-    expect(getLatestPublishedDocsVersion('angular')).toBe('1.2.0');
-    expect(getDocsVersionManifest('angular', '1.2.0')?.latestPublished).toBe(
+  it('marks 1.2.1 as the latest published Angular docs version', () => {
+    expect(getLatestPublishedDocsVersion('angular')).toBe('1.2.1');
+    expect(getDocsVersionManifest('angular', '1.2.1')?.latestPublished).toBe(
       true,
+    );
+    expect(getDocsVersionManifest('angular', '1.2.0')?.latestPublished).toBe(
+      false,
     );
     expect(getDocsVersionManifest('angular', '1.1.0')?.latestPublished).toBe(
       false,
@@ -29,6 +33,19 @@ describe('docs manifest', () => {
     expect(getDocsVersionManifest('angular', '1.0.0')?.latestPublished).toBe(
       false,
     );
+  });
+
+  it('reuses 1.2.0 guides for 1.2.1 with version-pinned install commands', () => {
+    const page = getDocsPage('angular', '1.2.1', 'getting-started');
+    expect(page?.markdown).toContain('@easy-payments/angular` **1.2.1**');
+    expect(page?.markdown).toContain('website links and package metadata');
+    expect(page?.markdown).toContain('same checkout guides');
+    expect(
+      getDocsPage('angular', '1.2.1', 'installation')?.markdown,
+    ).toContain('npm install @easy-payments/angular@1.2.1 @stripe/stripe-js');
+    expect(getDocsPage('angular', '1.2.1', 'full-checkout')).toBeTruthy();
+    expect(getDocsPage('angular', '1.2.1', 'buttons-only')).toBeTruthy();
+    expect(getDocsPage('angular', '1.2.1', 'headless')).toBeTruthy();
   });
 
   it('keeps independent page snapshots per version', () => {

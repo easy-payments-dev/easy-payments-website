@@ -2,7 +2,7 @@
   @if (resolved(); as page) {
     <div class="docs-viewer">
       <ep-docs-toolbar
-        [frameworks]="frameworkOptions"
+        [frameworks]="frameworkOptions()"
         [versions]="versionOptions()"
         [selectedFramework]="page.framework"
         [selectedVersion]="page.version"
@@ -19,13 +19,13 @@
           aria-controls="docs-mobile-nav"
           (click)="toggleMobileNav()"
         >
-          {{ mobileNavOpen() ? 'Hide' : 'Show' }} documentation menu
+          {{ mobileNavOpen() ? t('docs.mobile.hideMenu') : t('docs.mobile.showMenu') }}
         </button>
         @if (mobileNavOpen()) {
           <div id="docs-mobile-nav">
             <ep-docs-sidebar
               [groups]="navGroups()"
-              ariaLabel="Documentation sections"
+              [ariaLabel]="t('docs.sidebar.aria')"
             />
           </div>
         }
@@ -36,7 +36,7 @@
           docsSidebar
           class="docs-viewer__desktop-sidebar"
           [groups]="navGroups()"
-          ariaLabel="Documentation sections"
+          [ariaLabel]="t('docs.sidebar.aria')"
         />
 
         <article docsMain class="docs-viewer__article">
@@ -48,12 +48,13 @@
             @if (page.latestPublished) {
               <ep-badge variant="available">{{ page.version }}</ep-badge>
             } @else {
-              <ep-badge variant="info">Published</ep-badge>
+              <ep-badge variant="info">{{ t('status.published') }}</ep-badge>
             }
           </ep-docs-page-header>
 
           <ep-docs-markdown
             [markdown]="page.page.markdown"
+            [anchorToc]="page.toc"
             [docsBasePath]="'/docs/' + page.framework + '/' + page.version"
             (tocChange)="onTocChange($event)"
           />
@@ -94,25 +95,25 @@
   } @else {
     <section class="docs-missing" aria-labelledby="docs-missing-title">
       <ep-docs-page-header
-        eyebrow="Documentation"
+        [eyebrow]="t('docs.missing.eyebrow')"
         [title]="
           missingReason() === 'coming-soon'
-            ? 'Framework documentation coming soon'
-            : 'Documentation page not found'
+            ? t('docs.missing.comingSoonTitle')
+            : t('docs.missing.notFoundTitle')
         "
         [description]="
           missingReason() === 'coming-soon'
-            ? 'React, Vue, and Svelte adapters are not released yet. Angular documentation is available now.'
-            : 'This framework, version, or page is not part of the documentation set.'
+            ? t('docs.missing.comingSoonBody')
+            : t('docs.missing.notFoundBody')
         "
       />
 
       <div class="docs-missing__actions">
         <a class="docs-missing__link" [routerLink]="latestHref()">
-          Open latest Angular docs
+          {{ t('docs.missing.openLatest') }}
         </a>
         <a class="docs-missing__link" routerLink="/frameworks">
-          View framework status
+          {{ t('docs.missing.viewFrameworks') }}
         </a>
       </div>
     </section>

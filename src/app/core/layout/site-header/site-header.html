@@ -1,6 +1,6 @@
 <header class="site-header">
   <div class="site-header__bar ep-container">
-    <a class="brand" routerLink="/" (click)="closeMobile()" aria-label="easy payments home">
+    <a class="brand" routerLink="/" (click)="closeMobile()" [attr.aria-label]="t('a11y.home')">
       <img
         class="brand__lockup"
         [src]="lockupSrc()"

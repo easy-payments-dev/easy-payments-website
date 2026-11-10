@@ -15,6 +15,8 @@ describe('site-routes SEO catalog', () => {
     expect(paths).toContain('/docs/angular/1.1.0/checkout-modes');
     expect(paths).toContain('/docs/angular/1.2.0/getting-started');
     expect(paths).toContain('/docs/angular/1.2.0/checkout-modes');
+    expect(paths).toContain('/docs/angular/1.2.1/getting-started');
+    expect(paths).toContain('/docs/angular/1.2.1/checkout-modes');
     expect(paths.some((path) => path.includes('/docs/react'))).toBe(false);
     expect(new Set(paths).size).toBe(paths.length);
   });
@@ -24,12 +26,12 @@ describe('site-routes SEO catalog', () => {
     expect(pages.length).toBeGreaterThan(20);
     const titles = pages.map((page) => page.title);
     expect(new Set(titles).size).toBe(titles.length);
-    const title120 = pages.find((page) =>
-      page.path.includes('/1.2.0/getting-started'),
+    const title121 = pages.find((page) =>
+      page.path.includes('/1.2.1/getting-started'),
     )?.title;
-    expect(title120).toContain('Angular 1.2.0');
-    expect(title120).not.toMatch(/latest published/i);
-    for (const version of ['1.1.0', '1.0.0']) {
+    expect(title121).toContain('Angular 1.2.1');
+    expect(title121).not.toMatch(/latest published/i);
+    for (const version of ['1.2.0', '1.1.0', '1.0.0']) {
       expect(
         pages.find((page) => page.path.includes(`/${version}/getting-started`))
           ?.title,

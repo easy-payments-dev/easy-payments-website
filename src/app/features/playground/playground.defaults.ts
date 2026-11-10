@@ -53,12 +53,13 @@ export const PLAYGROUND_BUTTONS_APPEARANCE: EasyPaymentButtonsAppearance = {
 
 export function createDefaultPlaygroundConfig(
   version: PlaygroundVersion = PLAYGROUND_DEFAULT_SNIPPET_VERSION,
+  product?: { name?: string; description?: string },
 ): PlaygroundConfig {
   return {
     version,
     product: {
-      name: 'Premium Plan',
-      description: 'One year subscription',
+      name: product?.name ?? 'Premium Plan',
+      description: product?.description ?? 'One year subscription',
       amount: 99,
       currency: 'USD',
       quantity: 1,

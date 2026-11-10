@@ -9,8 +9,18 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const siteUrl = process.env.EP_SITE_URL || 'https://www.easy-payments.dev';
 
+/** Versions that reuse another version's .page.ts guide set. */
+const DOCS_PAGE_SOURCE = {
+  '1.0.0': '1.0.0',
+  '1.1.0': '1.1.0',
+  '1.2.0': '1.2.0',
+  // 1.2.1 remaps 1.2.0 guides in src/content/docs/angular/1.2.1/index.ts
+  '1.2.1': '1.2.0',
+};
+
 function readDocsPages(version) {
-  const dir = join(root, 'src', 'content', 'docs', 'angular', version);
+  const sourceVersion = DOCS_PAGE_SOURCE[version] || version;
+  const dir = join(root, 'src', 'content', 'docs', 'angular', sourceVersion);
   return readdirSync(dir)
     .filter((name) => name.endsWith('.page.ts') && name !== 'index.ts')
     .map((name) => {
@@ -24,7 +34,7 @@ function readDocsPages(version) {
     .sort();
 }
 
-const versions = ['1.0.0', '1.1.0', '1.2.0'];
+const versions = Object.keys(DOCS_PAGE_SOURCE);
 const staticPaths = [
   '/',
   '/frameworks',

@@ -17,7 +17,7 @@ export const environment = {
   angularSecurityDocsUrl:
     'https://github.com/easy-payments-dev/easy-payments-angular/blob/master/docs/security.md',
   license: 'MIT',
-  docsLatestAngularVersion: '1.2.0',
+  docsLatestAngularVersion: '1.2.1',
   angularPackageName: '@easy-payments/angular',
   /**
    * Contact form (public, non-secret values only).

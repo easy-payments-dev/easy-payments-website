@@ -1,18 +1,17 @@
 <section class="ep-page security">
   <ep-container width="narrow">
     <ep-section-heading
-      eyebrow="Trust"
-      title="Security"
-      description="An honest overview of how this website fits into the Easy Payments security posture. Detailed library guidance lives in the existing repository documentation."
+      [eyebrow]="t('security.eyebrow')"
+      [title]="t('security.title')"
+      [description]="t('security.description')"
     />
 
-    <ep-alert variant="security" title="Security notice">
-      Easy Payments libraries help applications integrate with payment providers. This website itself never accepts card
-      data or performs live payment operations.
+    <ep-alert variant="security" [title]="t('security.alertTitle')">
+      {{ t('security.alertBody') }}
     </ep-alert>
 
     <ul class="security-list">
-      @for (item of principles; track item.title) {
+      @for (item of principles(); track item.title) {
         <li>
           <ep-card variant="feature">
             <h2>{{ item.title }}</h2>
@@ -23,13 +22,10 @@
     </ul>
 
     <div class="security-links">
-      <h2>Repository documentation</h2>
-      <p>
-        Prefer the security and contribution docs in the Easy Payments repositories for implementation-level guidance
-        and reporting expectations.
-      </p>
+      <h2>{{ t('security.repoDocs.title') }}</h2>
+      <p>{{ t('security.repoDocs.body') }}</p>
       <ep-button variant="outline" [href]="githubUrl" [external]="true">
-        Easy Payments on GitHub
+        {{ t('security.githubCta') }}
       </ep-button>
     </div>
   </ep-container>

@@ -18,7 +18,7 @@ const en: readonly FaqItem[] = [
       'It is not a payment processor and does not move or hold funds.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/getting-started', label: 'Getting started' },
+      { href: '/docs/angular/1.2.1/getting-started', label: 'Getting started' },
     ],
   },
   {
@@ -29,7 +29,7 @@ const en: readonly FaqItem[] = [
       'Buttons Only and Headless are also available in 1.2.0: use Buttons Only for a compact strip, Headless when you own the entire layout.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/checkout-modes', label: 'Checkout modes' },
+      { href: '/docs/angular/1.2.1/checkout-modes', label: 'Checkout modes' },
       { href: '/playground', label: 'Playground' },
     ],
   },
@@ -41,8 +41,8 @@ const en: readonly FaqItem[] = [
       'Mock mode can demo UI without provider charges, but it is never a substitute for production backends.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/configuration', label: 'Configuration' },
-      { href: '/docs/angular/1.2.0/security', label: 'Security' },
+      { href: '/docs/angular/1.2.1/configuration', label: 'Configuration' },
+      { href: '/docs/angular/1.2.1/security', label: 'Security' },
     ],
   },
   {
@@ -53,7 +53,7 @@ const en: readonly FaqItem[] = [
       'Klarna’s simulated Playground flow is labeled DEMO — it is not an official Klarna checkout window.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/payment-methods', label: 'Payment methods' },
+      { href: '/docs/angular/1.2.1/payment-methods', label: 'Payment methods' },
     ],
   },
   {
@@ -62,7 +62,7 @@ const en: readonly FaqItem[] = [
     answer: [
       'No. The website Playground and enableMockMode adapters do not process real charges.',
     ],
-    links: [{ href: '/docs/angular/1.2.0/mock-mode', label: 'Mock mode' }],
+    links: [{ href: '/docs/angular/1.2.1/mock-mode', label: 'Mock mode' }],
   },
   {
     id: 'price-order',
@@ -71,7 +71,7 @@ const en: readonly FaqItem[] = [
       'You do. Pass product amount (major units), currency, and the methods array in the order you want them shown.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/configuration', label: 'Configuration' },
+      { href: '/docs/angular/1.2.1/configuration', label: 'Configuration' },
     ],
   },
   {
@@ -82,8 +82,8 @@ const en: readonly FaqItem[] = [
       'This website chrome uses the same three theme preferences and en / es / pt site languages.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/theming', label: 'Theming' },
-      { href: '/docs/angular/1.2.0/localization', label: 'Localization' },
+      { href: '/docs/angular/1.2.1/theming', label: 'Theming' },
+      { href: '/docs/angular/1.2.1/localization', label: 'Localization' },
     ],
   },
   {
@@ -93,9 +93,9 @@ const en: readonly FaqItem[] = [
       'They depend on device, browser, HTTPS, provider environment, and merchant/domain onboarding. Configured methods can still stay hidden when the wallet is unavailable.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/troubleshooting', label: 'Troubleshooting' },
-      { href: '/docs/angular/1.2.0/apple-pay', label: 'Apple Pay' },
-      { href: '/docs/angular/1.2.0/google-pay', label: 'Google Pay' },
+      { href: '/docs/angular/1.2.1/troubleshooting', label: 'Troubleshooting' },
+      { href: '/docs/angular/1.2.1/apple-pay', label: 'Apple Pay' },
+      { href: '/docs/angular/1.2.1/google-pay', label: 'Google Pay' },
     ],
   },
   {
@@ -105,8 +105,8 @@ const en: readonly FaqItem[] = [
       'Public values only in Angular (Stripe publishable key, PayPal Client ID). Secret keys, client secrets, and webhook secrets stay on your server — never in the frontend bundle.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/installation', label: 'Installation' },
-      { href: '/docs/angular/1.2.0/security', label: 'Security' },
+      { href: '/docs/angular/1.2.1/installation', label: 'Installation' },
+      { href: '/docs/angular/1.2.1/security', label: 'Security' },
     ],
   },
   {
@@ -116,7 +116,7 @@ const en: readonly FaqItem[] = [
       'Listen to success, cancel, and error outputs for UX. Fulfill orders only after server-side verification or provider webhooks — browser success alone is not proof of payment.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/error-handling', label: 'Error handling' },
+      { href: '/docs/angular/1.2.1/error-handling', label: 'Error handling' },
     ],
   },
   {
@@ -126,7 +126,7 @@ const en: readonly FaqItem[] = [
       'The published package peer range is >=20.3.0 <23.0.0. Consumer mock-mode smoke tests cover Angular 20, 21, and 22.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/getting-started', label: 'Getting started' },
+      { href: '/docs/angular/1.2.1/getting-started', label: 'Getting started' },
     ],
   },
   {
@@ -163,7 +163,7 @@ const es: readonly FaqItem[] = [
       'No es un procesador de pagos y no mueve ni custodia fondos.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/getting-started', label: 'Primeros pasos' },
+      { href: '/docs/angular/1.2.1/getting-started', label: 'Primeros pasos' },
     ],
   },
   {
@@ -174,7 +174,7 @@ const es: readonly FaqItem[] = [
       'Buttons Only y Headless también están disponibles en 1.2.0: strip compacto vs layout totalmente tuyo.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/checkout-modes', label: 'Modos de checkout' },
+      { href: '/docs/angular/1.2.1/checkout-modes', label: 'Modos de checkout' },
       { href: '/playground', label: 'Playground' },
     ],
   },
@@ -186,8 +186,8 @@ const es: readonly FaqItem[] = [
       'El modo mock demuestra la UI sin cargos, pero no sustituye backends de producción.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/configuration', label: 'Configuración' },
-      { href: '/docs/angular/1.2.0/security', label: 'Seguridad' },
+      { href: '/docs/angular/1.2.1/configuration', label: 'Configuración' },
+      { href: '/docs/angular/1.2.1/security', label: 'Seguridad' },
     ],
   },
   {
@@ -198,7 +198,7 @@ const es: readonly FaqItem[] = [
       'El flujo simulado de Klarna en el Playground está etiquetado DEMO — no es el checkout oficial de Klarna.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/payment-methods', label: 'Métodos de pago' },
+      { href: '/docs/angular/1.2.1/payment-methods', label: 'Métodos de pago' },
     ],
   },
   {
@@ -207,7 +207,7 @@ const es: readonly FaqItem[] = [
     answer: [
       'No. El Playground y enableMockMode no procesan cargos reales.',
     ],
-    links: [{ href: '/docs/angular/1.2.0/mock-mode', label: 'Modo mock' }],
+    links: [{ href: '/docs/angular/1.2.1/mock-mode', label: 'Modo mock' }],
   },
   {
     id: 'price-order',
@@ -216,7 +216,7 @@ const es: readonly FaqItem[] = [
       'Tú. Pasas el producto (importe en unidades mayores), la moneda y el array methods en el orden deseado.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/configuration', label: 'Configuración' },
+      { href: '/docs/angular/1.2.1/configuration', label: 'Configuración' },
     ],
   },
   {
@@ -227,8 +227,8 @@ const es: readonly FaqItem[] = [
       'Este sitio usa las mismas tres preferencias de tema e idiomas en / es / pt.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/theming', label: 'Temas' },
-      { href: '/docs/angular/1.2.0/localization', label: 'Localización' },
+      { href: '/docs/angular/1.2.1/theming', label: 'Temas' },
+      { href: '/docs/angular/1.2.1/localization', label: 'Localización' },
     ],
   },
   {
@@ -238,7 +238,7 @@ const es: readonly FaqItem[] = [
       'Dependen del dispositivo, navegador, HTTPS, entorno del proveedor y onboarding. Un método configurado puede ocultarse si el wallet no está disponible.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/troubleshooting', label: 'Solución de problemas' },
+      { href: '/docs/angular/1.2.1/troubleshooting', label: 'Solución de problemas' },
     ],
   },
   {
@@ -248,7 +248,7 @@ const es: readonly FaqItem[] = [
       'Solo valores públicos en Angular (clave publicable de Stripe, Client ID de PayPal). Los secretos viven en tu servidor.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/security', label: 'Seguridad' },
+      { href: '/docs/angular/1.2.1/security', label: 'Seguridad' },
     ],
   },
   {
@@ -258,7 +258,7 @@ const es: readonly FaqItem[] = [
       'Usa los outputs success, cancel y error para UX. Cumple pedidos solo tras verificación en servidor o webhooks.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/error-handling', label: 'Errores' },
+      { href: '/docs/angular/1.2.1/error-handling', label: 'Errores' },
     ],
   },
   {
@@ -302,7 +302,7 @@ const pt: readonly FaqItem[] = [
       'Não é um processador de pagamentos e não move nem guarda fundos.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/getting-started', label: 'Primeiros passos' },
+      { href: '/docs/angular/1.2.1/getting-started', label: 'Primeiros passos' },
     ],
   },
   {
@@ -313,7 +313,7 @@ const pt: readonly FaqItem[] = [
       'Buttons Only e Headless também estão disponíveis na 1.2.0: faixa compacta vs layout totalmente seu.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/checkout-modes', label: 'Modos de checkout' },
+      { href: '/docs/angular/1.2.1/checkout-modes', label: 'Modos de checkout' },
       { href: '/playground', label: 'Playground' },
     ],
   },
@@ -325,8 +325,8 @@ const pt: readonly FaqItem[] = [
       'O modo mock demonstra a UI sem cobranças, mas não substitui backends de produção.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/configuration', label: 'Configuração' },
-      { href: '/docs/angular/1.2.0/security', label: 'Segurança' },
+      { href: '/docs/angular/1.2.1/configuration', label: 'Configuração' },
+      { href: '/docs/angular/1.2.1/security', label: 'Segurança' },
     ],
   },
   {
@@ -337,7 +337,7 @@ const pt: readonly FaqItem[] = [
       'O fluxo simulado da Klarna no Playground é marcado DEMO — não é o checkout oficial da Klarna.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/payment-methods', label: 'Métodos de pagamento' },
+      { href: '/docs/angular/1.2.1/payment-methods', label: 'Métodos de pagamento' },
     ],
   },
   {
@@ -346,7 +346,7 @@ const pt: readonly FaqItem[] = [
     answer: [
       'Não. O Playground e o enableMockMode não processam cobranças reais.',
     ],
-    links: [{ href: '/docs/angular/1.2.0/mock-mode', label: 'Modo mock' }],
+    links: [{ href: '/docs/angular/1.2.1/mock-mode', label: 'Modo mock' }],
   },
   {
     id: 'price-order',
@@ -355,7 +355,7 @@ const pt: readonly FaqItem[] = [
       'Você. Passe o produto (valor em unidades principais), a moeda e o array methods na ordem desejada.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/configuration', label: 'Configuração' },
+      { href: '/docs/angular/1.2.1/configuration', label: 'Configuração' },
     ],
   },
   {
@@ -366,8 +366,8 @@ const pt: readonly FaqItem[] = [
       'Este site usa as mesmas três preferências de tema e idiomas en / es / pt.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/theming', label: 'Temas' },
-      { href: '/docs/angular/1.2.0/localization', label: 'Localização' },
+      { href: '/docs/angular/1.2.1/theming', label: 'Temas' },
+      { href: '/docs/angular/1.2.1/localization', label: 'Localização' },
     ],
   },
   {
@@ -377,7 +377,7 @@ const pt: readonly FaqItem[] = [
       'Dependem de dispositivo, navegador, HTTPS, ambiente do provedor e onboarding. Um método configurado pode ficar oculto se a carteira estiver indisponível.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/troubleshooting', label: 'Solução de problemas' },
+      { href: '/docs/angular/1.2.1/troubleshooting', label: 'Solução de problemas' },
     ],
   },
   {
@@ -386,7 +386,7 @@ const pt: readonly FaqItem[] = [
     answer: [
       'Só valores públicos no Angular (chave publicável Stripe, Client ID PayPal). Segredos ficam no servidor.',
     ],
-    links: [{ href: '/docs/angular/1.2.0/security', label: 'Segurança' }],
+    links: [{ href: '/docs/angular/1.2.1/security', label: 'Segurança' }],
   },
   {
     id: 'events',
@@ -395,7 +395,7 @@ const pt: readonly FaqItem[] = [
       'Use os outputs success, cancel e error para UX. Cumpra pedidos só após verificação no servidor ou webhooks.',
     ],
     links: [
-      { href: '/docs/angular/1.2.0/error-handling', label: 'Erros' },
+      { href: '/docs/angular/1.2.1/error-handling', label: 'Erros' },
     ],
   },
   {

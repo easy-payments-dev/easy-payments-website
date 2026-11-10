@@ -1,13 +1,16 @@
 <div class="ep-docs-toolbar">
   <label class="ep-docs-toolbar__field">
-    <span class="ep-docs-toolbar__label">Framework</span>
+    <span class="ep-docs-toolbar__label">{{ frameworkLabel() }}</span>
     <select
-      [value]="selectedFramework()"
       (change)="onFrameworkChange($event)"
-      aria-label="Framework selector"
+      [attr.aria-label]="frameworkAria()"
     >
       @for (option of frameworks(); track option.value) {
-        <option [value]="option.value" [disabled]="option.disabled === true">
+        <option
+          [value]="option.value"
+          [attr.selected]="option.value === selectedFramework() ? '' : null"
+          [disabled]="option.disabled === true"
+        >
           {{ option.label }}
         </option>
       }
@@ -15,14 +18,17 @@
   </label>
 
   <label class="ep-docs-toolbar__field">
-    <span class="ep-docs-toolbar__label">Version</span>
+    <span class="ep-docs-toolbar__label">{{ versionLabel() }}</span>
     <select
-      [value]="selectedVersion()"
       (change)="onVersionChange($event)"
-      aria-label="Version selector"
+      [attr.aria-label]="versionAria()"
     >
       @for (option of versions(); track option.value) {
-        <option [value]="option.value" [disabled]="option.disabled === true">
+        <option
+          [value]="option.value"
+          [attr.selected]="option.value === selectedVersion() ? '' : null"
+          [disabled]="option.disabled === true"
+        >
           {{ option.label }}
         </option>
       }
@@ -33,9 +39,9 @@
     type="button"
     class="ep-docs-toolbar__search"
     (click)="searchClick.emit()"
-    [attr.aria-label]="searchLabel()"
+    [attr.aria-label]="resolvedSearchLabel()"
   >
-    <span class="ep-docs-toolbar__search-text">{{ searchLabel() }}</span>
+    <span class="ep-docs-toolbar__search-text">{{ resolvedSearchLabel() }}</span>
     <kbd>Ctrl K</kbd>
   </button>
 </div>

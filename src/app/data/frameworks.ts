@@ -2,9 +2,8 @@ import { FrameworkMeta } from './version.types';
 
 /**
  * Framework and version catalog for the marketing site.
- * Local launch-review preview presents 1.2.0 as the latest release.
- * npm publication remains a separate step after this review (site still
- * mounts the vendor/@easy-payments/angular@1.2.0 package).
+ * Latest published docs default to 1.2.1 (website/package metadata bump;
+ * checkout guides reuse the 1.2.0 set).
  */
 export const FRAMEWORKS: readonly FrameworkMeta[] = [
   {
@@ -12,7 +11,7 @@ export const FRAMEWORKS: readonly FrameworkMeta[] = [
     name: 'Angular',
     status: 'published',
     packageName: '@easy-payments/angular',
-    latestPublished: '1.2.0',
+    latestPublished: '1.2.1',
     docsPath: '/docs/angular',
     versions: [
       {
@@ -29,6 +28,11 @@ export const FRAMEWORKS: readonly FrameworkMeta[] = [
         version: '1.2.0',
         status: 'published',
         notes: 'Full Checkout, Buttons Only, and Headless',
+      },
+      {
+        version: '1.2.1',
+        status: 'published',
+        notes: 'Website links and package metadata; same checkout guides as 1.2.0',
       },
     ],
   },
