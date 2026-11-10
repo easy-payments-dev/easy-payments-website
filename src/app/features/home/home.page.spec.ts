@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
 import { HomePage } from './home.page';
 
 describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
+  let i18n: SiteI18nService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -12,6 +14,8 @@ describe('HomePage', () => {
       providers: [provideRouter([])],
     }).compileComponents();
 
+    i18n = TestBed.inject(SiteI18nService);
+    i18n.setLanguage('en');
     fixture = TestBed.createComponent(HomePage);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -40,8 +44,30 @@ describe('HomePage', () => {
       img.getAttribute('src'),
     );
     expect(el.querySelector('.hero__logo')).toBeNull();
-    expect(heroImages).toEqual(['screenshots/checkout-desktop.png']);
+    expect(heroImages).toEqual(['screenshots/checkout-desktop-en.png']);
     expect(heroImages).not.toContain('brand/logo-lockup-640.png');
+  });
+
+  it('swaps the hero checkout preview image, caption, and alt with site language', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const img = el.querySelector('.hero__media img') as HTMLImageElement;
+    const caption = el.querySelector('.hero__media figcaption');
+
+    expect(img.getAttribute('src')).toBe('screenshots/checkout-desktop-en.png');
+    expect(img.getAttribute('alt')).toContain('Easy Payments Angular checkout');
+    expect(caption?.textContent).toContain('demo mode, no live charges');
+
+    i18n.setLanguage('es');
+    fixture.detectChanges();
+    expect(img.getAttribute('src')).toBe('screenshots/checkout-desktop-es.png');
+    expect(img.getAttribute('alt')).toContain('Tarjeta');
+    expect(caption?.textContent).toContain('modo demo, sin cargos reales');
+
+    i18n.setLanguage('pt');
+    fixture.detectChanges();
+    expect(img.getAttribute('src')).toBe('screenshots/checkout-desktop-pt.png');
+    expect(img.getAttribute('alt')).toContain('Cartão');
+    expect(caption?.textContent).toContain('modo demo, sem cobranças reais');
   });
 
   it('presents Angular as available and other frameworks as coming soon', () => {
@@ -91,6 +117,75 @@ describe('HomePage', () => {
     expect(el.querySelector('.shot-card--featured')).toBeTruthy();
     expect(el.querySelectorAll('.shot-gallery__thumbs .shot-card').length).toBe(
       4,
+    );
+    expect(el.textContent).toContain('Real checkout screenshots');
+    expect(el.textContent).toContain('Desktop');
+    expect(el.textContent).toContain('Mobile');
+  });
+
+  it('localizes gallery images, labels, and open lightbox content with site language', async () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const galleryImgs = () =>
+      Array.from(el.querySelectorAll('.shot-gallery img')).map((img) =>
+        img.getAttribute('src'),
+      );
+
+    expect(galleryImgs()).toEqual([
+      'screenshots/checkout-desktop-en.png',
+      'screenshots/checkout-mobile-en.png',
+      'screenshots/checkout-dark-en.png',
+      'screenshots/checkout-light-en.png',
+      'screenshots/checkout-methods-en.png',
+    ]);
+
+    const featured = el.querySelector(
+      '.shot-card--featured',
+    ) as HTMLButtonElement;
+    featured.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const dialogImg = () =>
+      el.querySelector('.ep-lightbox__image') as HTMLImageElement | null;
+    expect(dialogImg()?.getAttribute('src')).toBe(
+      'screenshots/checkout-desktop-en.png',
+    );
+    expect(el.querySelector('.ep-lightbox__caption')?.textContent).toContain(
+      'Desktop',
+    );
+    expect(el.querySelector('.ep-lightbox__close')?.textContent?.trim()).toBe(
+      'Close',
+    );
+
+    i18n.setLanguage('es');
+    fixture.detectChanges();
+    expect(galleryImgs()).toEqual([
+      'screenshots/checkout-desktop-es.png',
+      'screenshots/checkout-mobile-es.png',
+      'screenshots/checkout-dark-es.png',
+      'screenshots/checkout-light-es.png',
+      'screenshots/checkout-methods-es.png',
+    ]);
+    expect(el.textContent).toContain('Capturas reales del checkout');
+    expect(el.textContent).toContain('Escritorio');
+    expect(dialogImg()?.getAttribute('src')).toBe(
+      'screenshots/checkout-desktop-es.png',
+    );
+    expect(el.querySelector('.ep-lightbox__caption')?.textContent).toContain(
+      'Escritorio',
+    );
+    expect(el.querySelector('.ep-lightbox__close')?.textContent?.trim()).toBe(
+      'Cerrar',
+    );
+
+    i18n.setLanguage('pt');
+    fixture.detectChanges();
+    expect(dialogImg()?.getAttribute('src')).toBe(
+      'screenshots/checkout-desktop-pt.png',
+    );
+    expect(el.querySelector('.ep-lightbox__close')?.textContent?.trim()).toBe(
+      'Fechar',
     );
   });
 

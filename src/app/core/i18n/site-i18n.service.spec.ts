@@ -45,4 +45,16 @@ describe('SiteI18nService', () => {
     expect(JSON.stringify(service.languages)).not.toContain('fr');
     expect(JSON.stringify(service.languages)).not.toContain('Français');
   });
+
+  it('interpolates message params', () => {
+    const service = TestBed.inject(SiteI18nService);
+    service.init();
+    expect(service.t('home.gallery.enlarge', { label: 'Desktop' })).toBe(
+      'Enlarge screenshot: Desktop',
+    );
+    service.setLanguage('es');
+    expect(service.t('home.gallery.enlarge', { label: 'Escritorio' })).toBe(
+      'Ampliar captura: Escritorio',
+    );
+  });
 });

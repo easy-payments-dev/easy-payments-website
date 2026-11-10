@@ -16,9 +16,9 @@
           type="button"
           class="ep-lightbox__close"
           (click)="close()"
-          aria-label="Close image preview"
+          [attr.aria-label]="closeAria()"
         >
-          Close
+          {{ closeLabel() }}
         </button>
       </div>
       <img class="ep-lightbox__image" [src]="shot.src" [alt]="shot.alt" />

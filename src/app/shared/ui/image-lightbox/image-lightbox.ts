@@ -4,12 +4,14 @@ import {
   ElementRef,
   HostListener,
   PLATFORM_ID,
+  computed,
   effect,
   inject,
   input,
   output,
   viewChild,
 } from '@angular/core';
+import { SiteI18nService } from '../../../core/i18n/site-i18n.service';
 
 export interface LightboxImage {
   src: string;
@@ -24,6 +26,7 @@ export interface LightboxImage {
 })
 export class EpImageLightbox {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly i18n = inject(SiteI18nService);
   private readonly closeButton =
     viewChild<ElementRef<HTMLButtonElement>>('closeButton');
   private previousOverflow = '';
@@ -34,6 +37,10 @@ export class EpImageLightbox {
   readonly closed = output<void>();
 
   protected readonly dialogId = 'ep-image-lightbox-title';
+  protected readonly closeLabel = computed(() => this.i18n.t('lightbox.close'));
+  protected readonly closeAria = computed(() =>
+    this.i18n.t('lightbox.closeAria'),
+  );
 
   constructor() {
     effect(() => {

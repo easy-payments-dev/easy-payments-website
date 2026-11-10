@@ -29,8 +29,14 @@ export class SiteI18nService {
     this.applyLanguage(initial, false);
   }
 
-  t(key: SiteMessageKey): string {
-    return this.catalog()[key] ?? SITE_MESSAGE_CATALOGS.en[key] ?? key;
+  t(key: SiteMessageKey, params?: Record<string, string>): string {
+    let value = this.catalog()[key] ?? SITE_MESSAGE_CATALOGS.en[key] ?? key;
+    if (params) {
+      for (const [name, replacement] of Object.entries(params)) {
+        value = value.replaceAll(`{{${name}}}`, replacement);
+      }
+    }
+    return value;
   }
 
   setLanguage(language: SiteLanguage): void {
