@@ -12,6 +12,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DocsSearchHit } from '../../core/docs/docs.types';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
+import { SiteMessageKey } from '../../core/i18n/site-messages';
 
 @Component({
   selector: 'app-docs-search-dialog',
@@ -21,6 +23,7 @@ import { DocsSearchHit } from '../../core/docs/docs.types';
 })
 export class DocsSearchDialog {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly i18n = inject(SiteI18nService);
   private readonly inputRef =
     viewChild<ElementRef<HTMLInputElement>>('searchInput');
   private previouslyFocused: HTMLElement | null = null;
@@ -71,6 +74,21 @@ export class DocsSearchDialog {
   protected onBackdrop(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
       this.close();
+    }
+  }
+
+  protected t(key: SiteMessageKey, params?: Record<string, string>): string {
+    return this.i18n.t(key, params);
+  }
+
+  protected matchLabel(kind: DocsSearchHit['matchKind']): string {
+    switch (kind) {
+      case 'title':
+        return this.i18n.t('docs.search.matchTitle');
+      case 'heading':
+        return this.i18n.t('docs.search.matchHeading');
+      default:
+        return this.i18n.t('docs.search.matchContent');
     }
   }
 

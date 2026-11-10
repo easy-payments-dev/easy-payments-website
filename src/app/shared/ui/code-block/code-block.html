@@ -5,11 +5,11 @@
       type="button"
       class="ep-code-block__copy"
       (click)="copy()"
-      [attr.aria-label]="copied() ? 'Copied to clipboard' : 'Copy code to clipboard'"
+      [attr.aria-label]="copied() ? t('copy.ariaCopied') : t('copy.aria')"
     >
-      {{ copied() ? 'Copied' : 'Copy' }}
+      {{ copied() ? t('copy.copied') : t('copy.label') }}
     </button>
   </div>
   <pre class="ep-code-block__pre" tabindex="0"><code [attr.data-language]="language()">{{ code() }}</code></pre>
-  <span class="sr-only" aria-live="polite">{{ copied() ? 'Code copied to clipboard' : '' }}</span>
+  <span class="sr-only" aria-live="polite">{{ copied() ? t('copy.live') : '' }}</span>
 </div>

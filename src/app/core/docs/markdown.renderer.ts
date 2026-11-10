@@ -108,6 +108,8 @@ export interface MarkdownRenderOptions {
 /**
  * Controlled Markdown → HTML pipeline.
  * Output is intended for Angular [innerHTML] sanitization (no bypassSecurityTrustHtml).
+ * Heading `id` attributes are omitted on purpose — DomSanitizer strips them; the
+ * docs-markdown component applies toc ids after sanitize.
  */
 export function renderDocsMarkdown(
   markdown: string,
@@ -151,7 +153,10 @@ export function renderDocsMarkdown(
     if (depth === 2 || depth === 3) {
       toc.push({ id, text: plain, level: depth });
     }
-    return `<h${depth} id="${id}">${text}</h${depth}>`;
+    // Do not emit id= here. Angular's DomSanitizer strips `id` from [innerHTML]
+    // (not in VALID_ATTRS), which logs a sanitization warning and breaks TOC
+    // anchors. EpDocsMarkdown assigns ids after sanitize from `toc`.
+    return `<h${depth}>${text}</h${depth}>`;
   };
 
   renderer.link = ({ href, title, text }: Tokens.Link): string => {

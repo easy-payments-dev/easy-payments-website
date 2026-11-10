@@ -2,445 +2,595 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.easy-payments.dev/</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/frameworks</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/security</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/playground</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/contact</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/faq</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/support</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/affirm</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/api-reference</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/apple-pay</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/checkout-modes</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/configuration</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/error-handling</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/examples</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/getting-started</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/google-pay</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/installation</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/klarna</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/mock-mode</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/payment-methods</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/paypal</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/quick-start</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/security</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/stripe</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/testing</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/theming</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.0.0/troubleshooting</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/affirm</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/api-reference</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/apple-pay</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/checkout-modes</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/configuration</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/error-handling</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/examples</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/getting-started</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/google-pay</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/installation</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/klarna</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/localization</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/migration</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/mock-mode</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/payment-methods</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/paypal</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/quick-start</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/security</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/stripe</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/testing</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/theming</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.1.0/troubleshooting</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/affirm</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/api-reference</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/apple-pay</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/buttons-only</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/checkout-modes</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/configuration</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/error-handling</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/examples</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/full-checkout</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/getting-started</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/google-pay</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/headless</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/installation</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/klarna</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/localization</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/migration</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/mock-mode</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/payment-methods</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/paypal</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/quick-start</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/security</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/stripe</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/testing</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/theming</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.easy-payments.dev/docs/angular/1.2.0/troubleshooting</loc>
-    <lastmod>2026-11-09T18:11:44.831Z</lastmod>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/affirm</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/api-reference</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/apple-pay</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/buttons-only</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/checkout-modes</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/configuration</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/error-handling</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/examples</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/full-checkout</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/getting-started</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/google-pay</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/headless</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/installation</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/klarna</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/localization</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/migration</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/mock-mode</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/payment-methods</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/paypal</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/quick-start</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/security</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/stripe</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/testing</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/theming</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easy-payments.dev/docs/angular/1.2.1/troubleshooting</loc>
+    <lastmod>2026-11-10T14:07:08.460Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

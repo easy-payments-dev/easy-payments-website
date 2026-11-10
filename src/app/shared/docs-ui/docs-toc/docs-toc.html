@@ -1,5 +1,5 @@
-<nav class="ep-docs-toc" [attr.aria-label]="title()">
-  <p class="ep-docs-toc__title">{{ title() }}</p>
+<nav class="ep-docs-toc" [attr.aria-label]="resolvedTitle()">
+  <p class="ep-docs-toc__title">{{ resolvedTitle() }}</p>
   <ol class="ep-docs-toc__list">
     @for (item of items(); track item.id) {
       <li>

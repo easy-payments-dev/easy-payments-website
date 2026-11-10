@@ -1,6 +1,7 @@
 import { pages as angular100 } from '../../../content/docs/angular/1.0.0';
 import { pages as angular110 } from '../../../content/docs/angular/1.1.0';
 import { pages as angular120 } from '../../../content/docs/angular/1.2.0';
+import { pages as angular121 } from '../../../content/docs/angular/1.2.1';
 import { getFramework, getLatestPublishedAngularVersion } from '../../data/frameworks';
 import { docsPagePath } from './docs-url';
 import {
@@ -98,6 +99,14 @@ export const DOCS_VERSIONS: readonly DocsVersionManifest[] = [
     '1.2.0',
     angular120,
     latest === '1.2.0',
+  ),
+  buildVersionManifest(
+    'angular',
+    'Angular',
+    angular?.packageName ?? '@easy-payments/angular',
+    '1.2.1',
+    angular121,
+    latest === '1.2.1',
   ),
 ];
 

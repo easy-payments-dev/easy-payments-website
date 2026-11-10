@@ -14,6 +14,7 @@ import {
   PaymentResult,
 } from '@easy-payments/angular';
 import { HISTORICAL_ANGULAR_API } from '../../core/docs/historical-api.evidence';
+import { getLatestPublishedAngularVersion } from '../../data/frameworks';
 import { SiteI18nService } from '../../core/i18n/site-i18n.service';
 import { SiteMessageKey } from '../../core/i18n/site-messages';
 import { EpAlert } from '../../shared/ui/alert/alert';
@@ -25,6 +26,7 @@ import { PlaygroundHeadlessDemo } from './playground-headless-demo';
 import { generatePlaygroundCode } from './playground-code.generator';
 import {
   PLAYGROUND_BUTTONS_APPEARANCE,
+  PLAYGROUND_DEFAULT_SNIPPET_VERSION,
   PLAYGROUND_VERSIONS_BY_MODE,
   createDefaultPlaygroundConfig,
   playgroundSupportsVersion,
@@ -88,7 +90,10 @@ export class PlaygroundPage {
   ];
 
   protected readonly config = signal<PlaygroundConfig>(
-    createDefaultPlaygroundConfig(),
+    createDefaultPlaygroundConfig(PLAYGROUND_DEFAULT_SNIPPET_VERSION, {
+      name: this.i18n.t('playground.product.name'),
+      description: this.i18n.t('playground.product.description'),
+    }),
   );
   protected readonly demoMode = signal<PlaygroundDemoMode>('full');
   protected readonly buttonsLayout = signal<PlaygroundButtonsLayout>('horizontal');
@@ -156,6 +161,15 @@ export class PlaygroundPage {
       this.mockController.setOutcome(this.mockOutcome());
     });
 
+    effect(() => {
+      const name = this.i18n.t('playground.product.name');
+      const description = this.i18n.t('playground.product.description');
+      this.config.update((current) => ({
+        ...current,
+        product: { ...current.product, name, description },
+      }));
+    });
+
     this.route.queryParamMap
       .pipe(
         map((params) => params.get('demo')),
@@ -168,14 +182,22 @@ export class PlaygroundPage {
       });
   }
 
+  private localizedProductDefaults(): { name: string; description: string } {
+    return {
+      name: this.i18n.t('playground.product.name'),
+      description: this.i18n.t('playground.product.description'),
+    };
+  }
+
   protected guideHref(): string {
+    const latest = getLatestPublishedAngularVersion();
     switch (this.demoMode()) {
       case 'full':
-        return '/docs/angular/1.2.0/full-checkout';
+        return `/docs/angular/${latest}/full-checkout`;
       case 'buttons':
-        return '/docs/angular/1.2.0/buttons-only';
+        return `/docs/angular/${latest}/buttons-only`;
       case 'headless':
-        return '/docs/angular/1.2.0/headless';
+        return `/docs/angular/${latest}/headless`;
     }
   }
 
@@ -305,7 +327,7 @@ export class PlaygroundPage {
   protected resetDefaults(): void {
     const version = this.config().version;
     this.config.set({
-      ...createDefaultPlaygroundConfig(version),
+      ...createDefaultPlaygroundConfig(version, this.localizedProductDefaults()),
       locale: HISTORICAL_ANGULAR_API[version].localization
         ? this.i18n.checkoutLocale()
         : 'auto',

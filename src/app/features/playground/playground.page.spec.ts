@@ -79,14 +79,14 @@ describe('PlaygroundPage', () => {
     expect(text()).toContain('Real API · mock');
   });
 
-  it('links to the 1.2.0 integration guide', () => {
+  it('links to the latest Angular integration guide', () => {
     const link = (fixture.nativeElement as HTMLElement).querySelector(
-      'a[href*="/docs/angular/1.2.0/"]',
+      'a[href*="/docs/angular/1.2.1/"]',
     ) as HTMLAnchorElement | null;
     expect(link).toBeTruthy();
     expect(link?.textContent).toContain('View integration guide');
     expect(link?.getAttribute('href')).toMatch(
-      /\/docs\/angular\/1\.2\.0\/(full-checkout|buttons-only|headless)$/,
+      /\/docs\/angular\/1\.2\.1\/(full-checkout|buttons-only|headless)$/,
     );
   });
 

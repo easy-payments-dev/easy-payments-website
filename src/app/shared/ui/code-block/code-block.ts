@@ -6,6 +6,8 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { SiteI18nService } from '../../../core/i18n/site-i18n.service';
+import { SiteMessageKey } from '../../../core/i18n/site-messages';
 
 @Component({
   selector: 'ep-code-block',
@@ -14,6 +16,7 @@ import {
 })
 export class EpCodeBlock {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly i18n = inject(SiteI18nService);
   private copyResetHandle: ReturnType<typeof setTimeout> | null = null;
 
   readonly code = input.required<string>();
@@ -21,6 +24,10 @@ export class EpCodeBlock {
   readonly label = input<string | undefined>(undefined);
 
   protected readonly copied = signal(false);
+
+  protected t(key: SiteMessageKey): string {
+    return this.i18n.t(key);
+  }
 
   protected async copy(): Promise<void> {
     if (!isPlatformBrowser(this.platformId)) {

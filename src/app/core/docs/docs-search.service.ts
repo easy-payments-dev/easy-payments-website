@@ -1,5 +1,8 @@
 import { Injectable, inject } from '@angular/core';
+import { SiteI18nService } from '../i18n/site-i18n.service';
+import { SiteLanguage } from '../i18n/site-locale';
 import { DocsCatalog } from './docs.catalog';
+import { docsPagePath } from './docs-url';
 import { renderDocsMarkdown } from './markdown.renderer';
 import {
   DocsFrameworkId,
@@ -22,12 +25,20 @@ interface SearchRecord {
 @Injectable({ providedIn: 'root' })
 export class DocsSearchService {
   private readonly catalog = inject(DocsCatalog);
-  private readonly records: readonly SearchRecord[];
+  private readonly i18n = inject(SiteI18nService);
+  private records: readonly SearchRecord[] = [];
+  private recordsLanguage: SiteLanguage | null = null;
 
-  constructor() {
-    this.records = this.catalog.allPublishedVersions().flatMap((version) =>
-      this.indexVersion(version),
-    );
+  /** Rebuilds the localized index lazily when the site language changes. */
+  private ensureRecords(): readonly SearchRecord[] {
+    const language = this.i18n.language();
+    if (this.recordsLanguage !== language) {
+      this.records = this.catalog
+        .allPublishedVersions()
+        .flatMap((version) => this.indexVersion(version));
+      this.recordsLanguage = language;
+    }
+    return this.records;
   }
 
   search(
@@ -44,7 +55,7 @@ export class DocsSearchService {
     }
 
     const scope = options?.scope ?? 'current';
-    const candidates = this.records.filter((record) => {
+    const candidates = this.ensureRecords().filter((record) => {
       if (scope === 'all') {
         return true;
       }
@@ -85,7 +96,8 @@ export class DocsSearchService {
   }
 
   private indexVersion(version: DocsVersionManifest): SearchRecord[] {
-    return version.pages.map((page) => {
+    // Localized titles/headings/body; slugs and hrefs stay English.
+    return this.catalog.localizedPages(version).map((page) => {
       const rendered = renderDocsMarkdown(page.markdown);
       return {
         framework: version.framework,
@@ -94,9 +106,7 @@ export class DocsSearchService {
         pageId: page.id,
         slug: page.slug,
         title: page.title,
-        href: version.navGroups
-          .flatMap((group) => group.items)
-          .find((item) => item.id === page.id)!.href,
+        href: docsPagePath(version.framework, version.version, page.slug),
         headings: rendered.headings,
         body: rendered.plainText,
       };

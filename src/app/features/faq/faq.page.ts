@@ -1,4 +1,11 @@
-import { Component, DestroyRef, computed, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  DestroyRef,
+  PLATFORM_ID,
+  computed,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SiteI18nService } from '../../core/i18n/site-i18n.service';
@@ -17,17 +24,26 @@ export class FaqPage {
   private readonly i18n = inject(SiteI18nService);
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly platformId = inject(PLATFORM_ID);
 
   protected readonly language = this.i18n.language;
   protected readonly items = computed(() => FAQ_CONTENT[this.language()]);
 
   constructor() {
-    this.route.fragment.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((fragment) => {
-      // Defer until details nodes exist (fresh navigation / SSR hydrate).
-      queueMicrotask(() => this.expandFragment(fragment));
-      // Second pass covers slower client hydration without binding [open] (keeps native toggle).
-      requestAnimationFrame(() => this.expandFragment(fragment));
-    });
+    this.route.fragment
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((fragment) => {
+        // Fragment expand/scroll is browser-only; /faq is prerendered and
+        // requestAnimationFrame is undefined in Node.
+        if (!isPlatformBrowser(this.platformId)) {
+          return;
+        }
+        // Defer until details nodes exist (fresh navigation / SSR hydrate).
+        queueMicrotask(() => this.expandFragment(fragment));
+        // Second pass covers slower client hydration without binding [open]
+        // (keeps native toggle).
+        requestAnimationFrame(() => this.expandFragment(fragment));
+      });
   }
 
   protected t(key: SiteMessageKey): string {

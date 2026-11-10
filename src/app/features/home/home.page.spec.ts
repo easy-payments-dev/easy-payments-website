@@ -27,7 +27,7 @@ describe('HomePage', () => {
     expect(el.querySelector('#hero-title')?.textContent).toContain(
       'Multi-provider checkout',
     );
-    expect(el.textContent).toContain('PAYMENTS MADE SIMPLE');
+    expect(el.textContent).toContain('Payments Made Simple');
     expect(el.textContent).toContain('Get Started');
     expect(el.textContent).toContain('GitHub');
 
@@ -78,11 +78,40 @@ describe('HomePage', () => {
     expect(el.textContent).toContain('Vue');
     expect(el.textContent).toContain('Svelte');
     expect(el.textContent).toContain('Coming soon');
-    expect(el.textContent).toContain('v1.2.0');
-    expect(el.textContent).toMatch(/Angular docs \(v1\.2\.0\)/);
+    expect(el.textContent).toContain('v1.2.1');
+    expect(el.textContent).toMatch(/Angular docs \(v1\.2\.1\)/);
   });
 
-  it('shows the install command and presents all three modes as available in 1.2.0', () => {
+  it('switches hero, status labels, and section chrome when language changes', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('#hero-title')?.textContent).toContain(
+      'Multi-provider checkout',
+    );
+    expect(el.textContent).toContain('Get Started');
+    expect(el.textContent).toContain('Coming soon');
+    expect(el.textContent).toContain('Available with config');
+
+    i18n.setLanguage('es');
+    fixture.detectChanges();
+    expect(el.querySelector('#hero-title')?.textContent).toContain(
+      'Checkout multiproveedor',
+    );
+    expect(el.textContent).toContain('Empezar');
+    expect(el.textContent).toContain('Próximamente');
+    expect(el.textContent).toContain('Disponible con configuración');
+    expect(el.textContent).toContain('Capturas reales del checkout');
+
+    i18n.setLanguage('pt');
+    fixture.detectChanges();
+    expect(el.querySelector('#hero-title')?.textContent).toContain(
+      'Checkout multiprovedor',
+    );
+    expect(el.textContent).toContain('Começar');
+    expect(el.textContent).toContain('Em breve');
+    expect(el.textContent).toContain('Disponível com configuração');
+  });
+
+  it('shows the install command and presents all three modes as available', () => {
     const el = fixture.nativeElement as HTMLElement;
     expect(el.textContent).toContain(
       'npm install @easy-payments/angular @stripe/stripe-js',
@@ -90,6 +119,7 @@ describe('HomePage', () => {
     expect(el.textContent).toContain('Full Checkout');
     expect(el.textContent).toContain('Buttons Only');
     expect(el.textContent).toContain('Headless');
+    expect(el.textContent).toContain('Available in Angular 1.2.1');
     expect(el.textContent).not.toContain('Coming in Angular v1.2.0');
     expect(el.textContent).not.toContain('Unpublished');
     expect(el.querySelectorAll('.experience-grid ep-badge').length).toBe(3);

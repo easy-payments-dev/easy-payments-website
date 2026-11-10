@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { SiteI18nService } from '../../core/i18n/site-i18n.service';
+import { SiteMessageKey } from '../../core/i18n/site-messages';
 import { FRAMEWORKS, getLatestPublishedAngularVersion } from '../../data/frameworks';
 import {
   PAYMENT_METHODS,
@@ -46,7 +47,7 @@ interface GalleryShot {
 export class HomePage {
   private readonly i18n = inject(SiteI18nService);
 
-  protected readonly tagline = environment.tagline;
+  protected readonly tagline = computed(() => this.i18n.t('brand.tagline'));
   protected readonly githubUrl = environment.githubUrl;
   protected readonly playgroundTitle = computed(() =>
     this.i18n.t('home.playgroundTitle'),
@@ -82,63 +83,91 @@ export class HomePage {
   protected readonly packageName = environment.angularPackageName;
   protected readonly latestAngular = getLatestPublishedAngularVersion();
   protected readonly frameworks = FRAMEWORKS;
-  protected readonly paymentMethods = PAYMENT_METHODS;
+  protected readonly paymentMethods = computed(() => {
+    void this.i18n.language();
+    const summaryKeys = {
+      card: 'payment.card.summary',
+      paypal: 'payment.paypal.summary',
+      'apple-pay': 'payment.applePay.summary',
+      'google-pay': 'payment.googlePay.summary',
+      klarna: 'payment.klarna.summary',
+      affirm: 'payment.affirm.summary',
+    } as const;
+    return PAYMENT_METHODS.map((method) => ({
+      ...method,
+      summary: this.i18n.t(summaryKeys[method.id as keyof typeof summaryKeys]),
+      markAlt:
+        method.id === 'card'
+          ? this.i18n.t('payment.card.markAlt')
+          : method.markAlt,
+    }));
+  });
   protected readonly unsupportedMethods = UNSUPPORTED_METHODS;
 
   protected readonly installCommand =
     `npm install ${environment.angularPackageName} @stripe/stripe-js`;
 
-  protected readonly benefits = [
-    {
-      title: 'Reusable payment integrations',
-      body: 'One Angular API for card, wallets, PayPal, Klarna, and Affirm instead of stitching every provider SDK yourself.',
-    },
-    {
-      title: 'Flexible checkout experiences',
-      body: 'Full Checkout, Buttons Only, and Headless are all available in Angular 1.2.0.',
-    },
-    {
-      title: 'TypeScript-friendly APIs',
-      body: 'Strongly typed configuration and events designed for Angular applications on modern TypeScript.',
-    },
-    {
-      title: 'Theme customization',
-      body: 'Light and dark checkout surfaces with appearance controls that fit your product UI.',
-    },
-    {
-      title: 'Localization',
-      body: 'Built-in UI localization for English, Spanish, and Portuguese, including auto locale detection.',
-    },
-    {
-      title: 'Provider integrations',
-      body: 'Works with your Stripe, PayPal, and related merchant accounts — Easy Payments is not a processor.',
-    },
-    {
-      title: 'Open-source MIT licensing',
-      body: 'Inspect the code, contribute improvements, and ship under the MIT license.',
-    },
-  ] as const;
+  protected readonly benefits = computed(() => {
+    void this.i18n.language();
+    const version = this.latestAngular;
+    return [
+      {
+        title: this.i18n.t('home.benefits.reusable.title'),
+        body: this.i18n.t('home.benefits.reusable.body'),
+      },
+      {
+        title: this.i18n.t('home.benefits.flexible.title'),
+        body: this.i18n.t('home.benefits.flexible.body', { version }),
+      },
+      {
+        title: this.i18n.t('home.benefits.typescript.title'),
+        body: this.i18n.t('home.benefits.typescript.body'),
+      },
+      {
+        title: this.i18n.t('home.benefits.theme.title'),
+        body: this.i18n.t('home.benefits.theme.body'),
+      },
+      {
+        title: this.i18n.t('home.benefits.localization.title'),
+        body: this.i18n.t('home.benefits.localization.body'),
+      },
+      {
+        title: this.i18n.t('home.benefits.providers.title'),
+        body: this.i18n.t('home.benefits.providers.body'),
+      },
+      {
+        title: this.i18n.t('home.benefits.opensource.title'),
+        body: this.i18n.t('home.benefits.opensource.body'),
+      },
+    ] as const;
+  });
 
-  protected readonly experiences = [
-    {
-      name: 'Full Checkout',
-      status: 'available' as const,
-      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
-      body: 'Complete checkout UI with order summary, payment method selection, and confirm actions.',
-    },
-    {
-      name: 'Buttons Only',
-      status: 'available' as const,
-      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
-      body: 'Render provider buttons and card expansion without the full checkout shell.',
-    },
-    {
-      name: 'Headless',
-      status: 'available' as const,
-      versionNote: `Available in Angular ${getLatestPublishedAngularVersion()}`,
-      body: 'Programmatic checkout control for custom UI shells.',
-    },
-  ] as const;
+  protected readonly experiences = computed(() => {
+    void this.i18n.language();
+    const versionNote = this.i18n.t('status.availableInAngular', {
+      version: this.latestAngular,
+    });
+    return [
+      {
+        name: this.i18n.t('home.experiences.full.name'),
+        status: 'available' as const,
+        versionNote,
+        body: this.i18n.t('home.experiences.full.body'),
+      },
+      {
+        name: this.i18n.t('home.experiences.buttons.name'),
+        status: 'available' as const,
+        versionNote,
+        body: this.i18n.t('home.experiences.buttons.body'),
+      },
+      {
+        name: this.i18n.t('home.experiences.headless.name'),
+        status: 'available' as const,
+        versionNote,
+        body: this.i18n.t('home.experiences.headless.body'),
+      },
+    ] as const;
+  });
 
   /** All five gallery shots — src/labels follow the active site locale. */
   protected readonly galleryShots = computed<GalleryShot[]>(() => {
@@ -199,6 +228,10 @@ export class HomePage {
   });
   private lightboxTrigger: HTMLElement | null = null;
 
+  protected t(key: SiteMessageKey, params?: Record<string, string>): string {
+    return this.i18n.t(key, params);
+  }
+
   protected enlargeLabel(caption: string): string {
     return this.i18n.t('home.gallery.enlarge', { label: caption });
   }
@@ -230,11 +263,11 @@ export class HomePage {
   protected statusLabel(status: ReleaseStatus): string {
     switch (status) {
       case 'published':
-        return 'Available';
+        return this.i18n.t('status.available');
       case 'release-candidate':
-        return 'Release candidate';
+        return this.i18n.t('status.releaseCandidate');
       case 'coming-soon':
-        return 'Coming soon';
+        return this.i18n.t('status.comingSoon');
     }
   }
 
@@ -243,11 +276,11 @@ export class HomePage {
   ): string {
     switch (availability) {
       case 'available-with-config':
-        return 'Available with config';
+        return this.i18n.t('status.availableWithConfig');
       case 'provider-dependent':
-        return 'Provider setup required';
+        return this.i18n.t('status.providerSetupRequired');
       case 'not-supported':
-        return 'Not supported';
+        return this.i18n.t('status.notSupported');
     }
   }
 }

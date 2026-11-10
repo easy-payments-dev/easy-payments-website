@@ -4,21 +4,19 @@
     <ep-container>
       <div class="hero__grid">
         <div class="hero__copy">
-          <p class="hero__tagline">{{ tagline }}</p>
-          <h1 id="hero-title">Multi-provider checkout for modern web apps</h1>
-          <p class="hero__lede">
-            Easy Payments is an open-source integration library ecosystem. Start with Angular today — React, Vue, and
-            Svelte are on the roadmap — and connect your own Stripe, PayPal, and wallet merchant accounts with one
-            consistent developer experience.
-          </p>
+          <p class="hero__tagline">{{ tagline() }}</p>
+          <h1 id="hero-title">{{ t('home.hero.title') }}</h1>
+          <p class="hero__lede">{{ t('home.hero.lede') }}</p>
           <div class="hero__actions">
-            <ep-button variant="primary" size="lg" routerLink="/docs/angular">Get Started</ep-button>
+            <ep-button variant="primary" size="lg" routerLink="/docs/angular">
+              {{ t('home.hero.getStarted') }}
+            </ep-button>
             <ep-button variant="outline" size="lg" [href]="githubUrl" [external]="true">GitHub</ep-button>
           </div>
           <p class="hero__meta">
-            Angular library:
+            {{ t('home.hero.angularLibrary') }}
             <strong>{{ latestAngular }}</strong>
-            · Package
+            · {{ t('home.hero.package') }}
             <code>{{ packageName }}</code>
           </p>
         </div>
@@ -43,9 +41,9 @@
     <ep-container>
       <ep-section-heading
         titleId="frameworks-title"
-        eyebrow="Ecosystem"
-        title="Choose your framework"
-        description="Easy Payments is framework-aware. Angular is available now. React, Vue, and Svelte adapters are Coming Soon."
+        [eyebrow]="t('home.frameworks.eyebrow')"
+        [title]="t('home.frameworks.title')"
+        [description]="t('home.frameworks.description')"
         [headingLevel]="2"
       />
 
@@ -62,14 +60,18 @@
 
               @if (framework.status === 'published') {
                 <p>
-                  Version <strong>{{ framework.latestPublished }}</strong>.
-                  Package <code>{{ framework.packageName }}</code>.
+                  {{
+                    t('home.frameworks.versionPackage', {
+                      version: framework.latestPublished ?? '',
+                      package: framework.packageName ?? '',
+                    })
+                  }}
                 </p>
                 <ep-button variant="primary" size="sm" routerLink="/docs/angular">
-                  Angular docs (v{{ latestAngular }})
+                  {{ t('home.frameworks.docsCta', { version: latestAngular }) }}
                 </ep-button>
               } @else {
-                <p>Not released yet. No package install and no documentation route until a published release exists.</p>
+                <p>{{ t('home.frameworks.notReleased') }}</p>
               }
             </ep-card>
           </li>
@@ -83,14 +85,14 @@
     <ep-container>
       <ep-section-heading
         titleId="benefits-title"
-        eyebrow="Why Easy Payments"
-        title="Built for developers who own the checkout"
-        description="Claims below reflect capabilities of the current published Angular library. Preview-only features are labeled elsewhere."
+        [eyebrow]="t('home.benefits.eyebrow')"
+        [title]="t('home.benefits.title')"
+        [description]="t('home.benefits.description')"
         [headingLevel]="2"
       />
 
       <ul class="benefit-list">
-        @for (benefit of benefits; track benefit.title) {
+        @for (benefit of benefits(); track benefit.title) {
           <li class="benefit-item">
             <h3>{{ benefit.title }}</h3>
             <p>{{ benefit.body }}</p>
@@ -105,26 +107,24 @@
     <ep-container>
       <ep-section-heading
         titleId="methods-title"
-        eyebrow="Providers"
-        title="Supported payment methods"
-        description="Marks identify supported options. Availability depends on your merchant accounts, provider configuration, and TEST/Sandbox environments."
+        [eyebrow]="t('home.methods.eyebrow')"
+        [title]="t('home.methods.title')"
+        [description]="t('home.methods.description')"
         [headingLevel]="2"
       />
 
-      <ep-alert variant="warning" title="Configuration and sandbox limitations">
-        These methods are not universally production-ready out of the box. Each provider needs credentials, domain
-        verification where required, and a secure backend. Demo screenshots show DEMO labels — no real payment is
-        processed on this website.
+      <ep-alert variant="warning" [title]="t('home.methods.alertTitle')">
+        {{ t('home.methods.alertBody') }}
       </ep-alert>
 
       <ul class="method-grid">
-        @for (method of paymentMethods; track method.id) {
+        @for (method of paymentMethods(); track method.id) {
           <li class="method-card">
             <div class="method-card__mark" aria-hidden="true">
               @if (method.markSrc) {
                 <img [src]="method.markSrc" [alt]="" loading="lazy" decoding="async" />
               } @else {
-                <span class="method-card__generic">Card</span>
+                <span class="method-card__generic">{{ t('home.methods.cardFallback') }}</span>
               }
             </div>
             <div class="method-card__body">
@@ -132,7 +132,9 @@
                 <h3>{{ method.name }}</h3>
                 <ep-badge variant="info">{{ availabilityLabel(method.availability) }}</ep-badge>
               </div>
-              <p class="method-card__provider">via {{ method.provider }}</p>
+              <p class="method-card__provider">
+                {{ t('home.methods.via', { provider: method.provider }) }}
+              </p>
               <p>{{ method.summary }}</p>
             </div>
           </li>
@@ -140,12 +142,11 @@
       </ul>
 
       <p class="method-footnote">
-        Not supported:
+        {{ t('home.methods.notSupported') }}
         @for (name of unsupportedMethods; track name) {
           <strong>{{ name }}</strong>
         }
-        . Third-party logos remain the property of their respective owners — see
-        <code>payment-marks/SOURCES.md</code>.
+        . {{ t('home.methods.marksNote') }}
       </p>
     </ep-container>
   </section>
@@ -218,19 +219,19 @@
     <ep-container>
       <ep-section-heading
         titleId="experiences-title"
-        eyebrow="Integration modes"
-        title="Checkout experiences"
-        description="Full Checkout, Buttons Only, and Headless are all available in Angular 1.2.0."
+        [eyebrow]="t('home.experiences.eyebrow')"
+        [title]="t('home.experiences.title')"
+        [description]="t('home.experiences.description', { version: latestAngular })"
         [headingLevel]="2"
       />
 
       <ul class="experience-grid">
-        @for (experience of experiences; track experience.name) {
+        @for (experience of experiences(); track experience.name) {
           <li>
             <ep-card variant="feature">
               <div class="experience-card__head">
                 <h3>{{ experience.name }}</h3>
-                <ep-badge variant="available">Available</ep-badge>
+                <ep-badge variant="available">{{ t('status.available') }}</ep-badge>
               </div>
               <p class="experience-card__note">{{ experience.versionNote }}</p>
               <p>{{ experience.body }}</p>
@@ -239,9 +240,8 @@
         }
       </ul>
 
-      <ep-alert variant="info" title="Launch version">
-        Angular {{ latestAngular }} is the launch version. Live demos mount the local vendor package; npm publish is
-        a separate launch step.
+      <ep-alert variant="info" [title]="t('home.experiences.docsAlertTitle')">
+        {{ t('home.experiences.docsAlertBody', { version: latestAngular }) }}
       </ep-alert>
     </ep-container>
   </section>
@@ -251,17 +251,21 @@
     <ep-container width="narrow">
       <ep-section-heading
         titleId="install-title"
-        eyebrow="Get started"
-        title="Install the published Angular library"
-        description="Use the current npm package. This example does not reference unreleased APIs."
+        [eyebrow]="t('home.install.eyebrow')"
+        [title]="t('home.install.title')"
+        [description]="t('home.install.description')"
         [headingLevel]="2"
       />
 
       <ep-code-block language="bash" label="npm" [code]="installCommand" />
 
       <div class="install-actions">
-        <ep-button variant="primary" routerLink="/docs/angular">Read Angular docs (v{{ latestAngular }})</ep-button>
-        <ep-button variant="ghost" [href]="npmAngularUrl" [external]="true">View on npm</ep-button>
+        <ep-button variant="primary" routerLink="/docs/angular">
+          {{ t('home.install.readDocs', { version: latestAngular }) }}
+        </ep-button>
+        <ep-button variant="ghost" [href]="npmAngularUrl" [external]="true">
+          {{ t('home.install.viewNpm') }}
+        </ep-button>
       </div>
     </ep-container>
   </section>
@@ -273,20 +277,24 @@
         <div>
           <ep-section-heading
             titleId="docs-title"
-            eyebrow="Documentation"
-            title="Find the right guide"
-            description="Documentation currently tracks Angular 1.2.0. Framework and version selectors in the docs UI show Coming Soon frameworks as disabled."
+            [eyebrow]="t('home.docs.eyebrow')"
+            [title]="t('home.docs.title')"
+            [description]="t('home.docs.description', { version: latestAngular })"
             [headingLevel]="2"
           />
           <ul class="link-list">
-            <li><a routerLink="/docs/angular">Angular documentation (v{{ latestAngular }})</a></li>
-            <li><a routerLink="/frameworks">Framework availability</a></li>
-            <li><a routerLink="/security">Security overview</a></li>
+            <li>
+              <a routerLink="/docs/angular">
+                {{ t('home.docs.angularLink', { version: latestAngular }) }}
+              </a>
+            </li>
+            <li><a routerLink="/frameworks">{{ t('home.docs.frameworksLink') }}</a></li>
+            <li><a routerLink="/security">{{ t('home.docs.securityLink') }}</a></li>
           </ul>
         </div>
 
         <div class="playground-panel">
-          <ep-badge variant="available">Available</ep-badge>
+          <ep-badge variant="available">{{ t('status.available') }}</ep-badge>
           <h3>{{ playgroundTitle() }}</h3>
           <p>{{ playgroundBody() }}</p>
           <ep-button variant="outline" routerLink="/playground">{{ playgroundCta() }}</ep-button>
@@ -300,31 +308,31 @@
     <ep-container>
       <ep-section-heading
         titleId="opensource-title"
-        eyebrow="Open source"
-        title="Built in the open"
-        description="Easy Payments is an MIT-licensed ecosystem. Inspect the libraries, follow the organization, and contribute."
+        [eyebrow]="t('home.oss.eyebrow')"
+        [title]="t('home.oss.title')"
+        [description]="t('home.oss.description')"
         [headingLevel]="2"
       />
 
       <ul class="oss-grid">
         <li>
-          <h3>GitHub organization</h3>
-          <p>Source of truth for framework libraries and ecosystem planning.</p>
+          <h3>{{ t('home.oss.org.title') }}</h3>
+          <p>{{ t('home.oss.org.body') }}</p>
           <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">easy-payments-dev</a>
         </li>
         <li>
-          <h3>Angular library</h3>
-          <p>Published package repository for <code>{{ packageName }}</code>.</p>
+          <h3>{{ t('home.oss.angular.title') }}</h3>
+          <p>{{ t('home.oss.angular.body', { package: packageName }) }}</p>
           <a [href]="githubAngularUrl" target="_blank" rel="noopener noreferrer">easy-payments-angular</a>
         </li>
         <li>
-          <h3>Website repository</h3>
-          <p>This marketing and documentation site.</p>
+          <h3>{{ t('home.oss.website.title') }}</h3>
+          <p>{{ t('home.oss.website.body') }}</p>
           <a [href]="githubWebsiteUrl" target="_blank" rel="noopener noreferrer">easy-payments-website</a>
         </li>
         <li>
-          <h3>{{ license }} license</h3>
-          <p>Use, modify, and distribute under the MIT license terms published with each package.</p>
+          <h3>{{ license }} {{ t('footer.license') }}</h3>
+          <p>{{ t('home.oss.license.body') }}</p>
         </li>
       </ul>
     </ep-container>
@@ -335,21 +343,22 @@
     <ep-container width="narrow">
       <ep-section-heading
         titleId="trust-title"
-        eyebrow="Production trust"
-        title="Integration library — not a payment processor"
-        description="Easy Payments helps your application talk to your provider accounts. It does not move money, hold funds, or replace Stripe, PayPal, or wallet providers."
+        [eyebrow]="t('home.trust.eyebrow')"
+        [title]="t('home.trust.title')"
+        [description]="t('home.trust.description')"
         [headingLevel]="2"
       />
 
-      <ep-alert variant="security" title="Backend verification required">
-        Payment completion and fulfillment require secure backend verification, server-side pricing, webhook handling,
-        and provider credentials that never belong in the browser or on this website.
+      <ep-alert variant="security" [title]="t('home.trust.alertTitle')">
+        {{ t('home.trust.alertBody') }}
       </ep-alert>
 
       <div class="trust-actions">
-        <ep-button variant="outline" routerLink="/security">Security overview</ep-button>
+        <ep-button variant="outline" routerLink="/security">
+          {{ t('home.trust.securityCta') }}
+        </ep-button>
         <ep-button variant="ghost" [href]="securityDocsUrl" [external]="true">
-          Angular security docs
+          {{ t('home.trust.angularSecurityCta') }}
         </ep-button>
       </div>
     </ep-container>
@@ -358,16 +367,15 @@
   <!-- 12. Final CTA -->
   <section class="final-cta" aria-labelledby="final-cta-title">
     <ep-container width="narrow">
-      <p class="final-cta__eyebrow">Ready when you are</p>
-      <h2 id="final-cta-title">Start with Angular {{ latestAngular }}</h2>
-      <p>
-        Install the package, read the docs, and keep provider secrets on your backend. Full Checkout, Buttons Only,
-        and Headless are all available in Angular {{ latestAngular }}.
-      </p>
+      <p class="final-cta__eyebrow">{{ t('home.final.eyebrow') }}</p>
+      <h2 id="final-cta-title">{{ t('home.final.title', { version: latestAngular }) }}</h2>
+      <p>{{ t('home.final.body', { version: latestAngular }) }}</p>
       <div class="final-cta__actions">
-        <ep-button variant="primary" size="lg" routerLink="/docs/angular">Get Started</ep-button>
+        <ep-button variant="primary" size="lg" routerLink="/docs/angular">
+          {{ t('home.final.getStarted') }}
+        </ep-button>
         <ep-button variant="secondary" size="lg" [href]="githubAngularUrl" [external]="true">
-          Angular on GitHub
+          {{ t('home.final.githubCta') }}
         </ep-button>
       </div>
     </ep-container>

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
+import { SiteMessageKey } from '../../core/i18n/site-messages';
 import { EpAlert } from '../../shared/ui/alert/alert';
 import { EpButton } from '../../shared/ui/button/button';
 import { EpCard } from '../../shared/ui/card/card';
@@ -13,20 +15,29 @@ import { EpSectionHeading } from '../../shared/ui/section-heading/section-headin
   styleUrl: './security.page.scss',
 })
 export class SecurityPage {
+  private readonly i18n = inject(SiteI18nService);
+
   protected readonly githubUrl = environment.githubUrl;
 
-  protected readonly principles = [
-    {
-      title: 'No secrets on this site',
-      body: 'This website is a static marketing and documentation surface. It does not embed payment credentials, provider secret keys, or private environment values.',
-    },
-    {
-      title: 'No payment processing here',
-      body: 'Checkout, tokenization, and provider calls belong in consumer applications that integrate the Easy Payments libraries — not on this public website.',
-    },
-    {
-      title: 'Honest versioning',
-      body: 'Only published package versions are presented as current. Release candidates are labeled clearly and are not treated as production releases.',
-    },
-  ] as const;
+  protected readonly principles = computed(() => {
+    void this.i18n.language();
+    return [
+      {
+        title: this.i18n.t('security.principle.noSecrets.title'),
+        body: this.i18n.t('security.principle.noSecrets.body'),
+      },
+      {
+        title: this.i18n.t('security.principle.noProcessing.title'),
+        body: this.i18n.t('security.principle.noProcessing.body'),
+      },
+      {
+        title: this.i18n.t('security.principle.versioning.title'),
+        body: this.i18n.t('security.principle.versioning.body'),
+      },
+    ] as const;
+  });
+
+  protected t(key: SiteMessageKey): string {
+    return this.i18n.t(key);
+  }
 }

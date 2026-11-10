@@ -34,6 +34,10 @@ const requiredFiles = [
   'docs/angular/1.2.0/full-checkout/index.html',
   'docs/angular/1.2.0/buttons-only/index.html',
   'docs/angular/1.2.0/headless/index.html',
+  'docs/angular/1.2.1/getting-started/index.html',
+  'docs/angular/1.2.1/full-checkout/index.html',
+  'docs/angular/1.2.1/buttons-only/index.html',
+  'docs/angular/1.2.1/headless/index.html',
 ];
 
 for (const relative of requiredFiles) {
@@ -50,6 +54,8 @@ assert(
 );
 
 const sitemap = readFileSync(join(browser, 'sitemap.xml'), 'utf8');
+assert(sitemap.includes('/docs/angular/1.2.1/getting-started'), 'Sitemap missing 1.2.1 getting-started');
+assert(sitemap.includes('/docs/angular/1.2.1/full-checkout'), 'Sitemap missing 1.2.1 full-checkout');
 assert(sitemap.includes('/docs/angular/1.2.0/getting-started'), 'Sitemap missing 1.2.0 getting-started');
 assert(sitemap.includes('/docs/angular/1.2.0/full-checkout'), 'Sitemap missing 1.2.0 full-checkout');
 assert(sitemap.includes('/docs/angular/1.1.0/getting-started'), 'Sitemap missing 1.1.0 getting-started');
@@ -60,6 +66,7 @@ assert(!/<\/url>\s*<url>/g.test(sitemap) || sitemap.includes('<url>'), 'Sitemap 
 
 const robots = readFileSync(join(browser, 'robots.txt'), 'utf8');
 assert(robots.includes('Sitemap:'), 'robots.txt missing Sitemap');
+assert(!robots.includes('Disallow: /docs/angular/1.2.1'), 'robots.txt must allow Angular 1.2.1 docs');
 assert(!robots.includes('Disallow: /docs/angular/1.2.0'), 'robots.txt must allow Angular 1.2.0 docs');
 assert(robots.includes('Disallow: /docs/react/'), 'robots.txt missing React disallow');
 
@@ -79,10 +86,11 @@ assert(
 );
 
 const docsHtml = readFileSync(
-  join(browser, 'docs', 'angular', '1.2.0', 'getting-started', 'index.html'),
+  join(browser, 'docs', 'angular', '1.2.1', 'getting-started', 'index.html'),
   'utf8',
 );
 assert(docsHtml.includes('Getting started'), 'Docs content title missing from prerender');
+assert(docsHtml.includes('1.2.1'), 'Latest docs prerender missing 1.2.1 badge/copy');
 assert(
   docsHtml.includes('property="og:type" content="article"'),
   'Docs og:type should be article',
@@ -125,7 +133,7 @@ assert(
 );
 
 const redirects = readFileSync(join(browser, '_redirects'), 'utf8');
-assert(redirects.includes('/docs/angular/1.2.0/getting-started'), '_redirects missing docs redirect');
+assert(redirects.includes('/docs/angular/1.2.1/getting-started'), '_redirects missing docs redirect');
 assert(/^\/contact\s+\/index\.html\s+200/m.test(redirects), '_redirects missing /contact SPA fallback');
 
 function countHtmlFiles(dir) {

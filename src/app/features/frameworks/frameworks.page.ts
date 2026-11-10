@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
+import { SiteMessageKey } from '../../core/i18n/site-messages';
 import { FRAMEWORKS } from '../../data/frameworks';
 import { ReleaseStatus } from '../../data/version.types';
 import { EpBadge, EpBadgeVariant } from '../../shared/ui/badge/badge';
@@ -14,7 +16,13 @@ import { EpSectionHeading } from '../../shared/ui/section-heading/section-headin
   styleUrl: './frameworks.page.scss',
 })
 export class FrameworksPage {
+  private readonly i18n = inject(SiteI18nService);
+
   protected readonly frameworks = FRAMEWORKS;
+
+  protected t(key: SiteMessageKey, params?: Record<string, string>): string {
+    return this.i18n.t(key, params);
+  }
 
   protected badgeVariant(status: ReleaseStatus): EpBadgeVariant {
     switch (status) {
@@ -30,11 +38,11 @@ export class FrameworksPage {
   protected statusLabel(status: ReleaseStatus): string {
     switch (status) {
       case 'published':
-        return 'Available';
+        return this.i18n.t('status.available');
       case 'release-candidate':
-        return 'Release candidate';
+        return this.i18n.t('status.releaseCandidate');
       case 'coming-soon':
-        return 'Coming soon';
+        return this.i18n.t('status.comingSoon');
     }
   }
 }

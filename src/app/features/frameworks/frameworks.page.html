@@ -1,9 +1,9 @@
 <section class="ep-page frameworks">
   <ep-container>
     <ep-section-heading
-      eyebrow="Integrations"
-      title="Frameworks"
-      description="Easy Payments starts with Angular. React, Vue, and Svelte adapters are planned and listed here as Coming Soon."
+      [eyebrow]="t('frameworks.eyebrow')"
+      [title]="t('frameworks.title')"
+      [description]="t('frameworks.description')"
     />
 
     <ul class="framework-list">
@@ -19,19 +19,20 @@
 
             @if (framework.status === 'published') {
               <p>
-                Version
-                <strong>{{ framework.latestPublished }}</strong>.
-                @if (framework.packageName) {
-                  Package: <code>{{ framework.packageName }}</code>.
-                }
+                {{
+                  t('frameworks.versionPackage', {
+                    version: framework.latestPublished ?? '',
+                    package: framework.packageName ?? '',
+                  })
+                }}
               </p>
               @if (framework.docsPath) {
                 <ep-button variant="outline" size="sm" [routerLink]="framework.docsPath">
-                  View documentation
+                  {{ t('frameworks.viewDocs') }}
                 </ep-button>
               }
             } @else {
-              <p>Not available yet. This framework will appear here when a published release is ready.</p>
+              <p>{{ t('frameworks.notAvailable') }}</p>
             }
           </ep-card>
         </li>

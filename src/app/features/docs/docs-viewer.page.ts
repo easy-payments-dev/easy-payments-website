@@ -8,6 +8,7 @@ import {
   inject,
   input,
   signal,
+  untracked,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -77,9 +78,10 @@ export class DocsViewerPage {
   protected readonly searchQuery = signal('');
   protected readonly searchScope = signal<'current' | 'all'>('current');
   protected readonly activeTocId = signal<string | null>(null);
-  protected readonly toc = signal<readonly DocsTocHeading[]>([]);
 
   protected readonly resolved = computed(() => {
+    // Re-resolve (localized titles, markdown, nav, toc) on language switch.
+    void this.i18n.language();
     const framework = this.framework();
     const version = this.version();
     const slug = this.slug();
@@ -107,9 +109,13 @@ export class DocsViewerPage {
     return null;
   });
 
-  protected readonly frameworkOptions = this.catalog.frameworkOptions();
+  protected readonly frameworkOptions = computed(() => {
+    void this.i18n.language();
+    return this.catalog.frameworkOptions();
+  });
 
   protected readonly versionOptions = computed(() => {
+    void this.i18n.language();
     const framework = this.framework();
     if (!isDocsFrameworkId(framework)) {
       return [];
@@ -133,8 +139,9 @@ export class DocsViewerPage {
     }));
   });
 
+  /** TOC comes from the catalog so ids stay English-derived across languages. */
   protected readonly tocItems = computed<readonly DocsTocItem[]>(() =>
-    this.toc().map((item) => ({
+    (this.resolved()?.toc ?? []).map((item) => ({
       id: item.id,
       label: item.text,
       active: this.activeTocId() === item.id,
@@ -152,12 +159,22 @@ export class DocsViewerPage {
 
   constructor() {
     effect(() => {
+      // Reset the active heading whenever the resolved page (or language) changes.
       const page = this.resolved();
+      untracked(() => this.activeTocId.set(page?.toc[0]?.id ?? null));
+    });
+
+    effect(() => {
+      const page = this.resolved();
+      void this.i18n.language();
       if (!page) {
         return;
       }
       this.title.setTitle(
-        `${page.page.title} · Angular ${page.version} | easy payments`,
+        this.i18n.t('meta.title.docsPage', {
+          page: page.page.title,
+          version: page.version,
+        }),
       );
     });
 
@@ -170,9 +187,21 @@ export class DocsViewerPage {
     });
   }
 
-  protected onTocChange(items: readonly DocsTocHeading[]): void {
-    this.toc.set(items);
-    this.activeTocId.set(items[0]?.id ?? null);
+  /**
+   * Markdown emits its own toc, but its ids/text may not match the catalog toc
+   * (localized text, English-derived ids). Items always come from `resolved().toc`;
+   * this only keeps the active id valid.
+   */
+  protected onTocChange(_items: readonly DocsTocHeading[]): void {
+    this.syncActiveTocId();
+  }
+
+  private syncActiveTocId(): void {
+    const toc = this.resolved()?.toc ?? [];
+    const active = this.activeTocId();
+    if (!active || !toc.some((item) => item.id === active)) {
+      this.activeTocId.set(toc[0]?.id ?? null);
+    }
   }
 
   protected onFrameworkChange(value: string): void {
