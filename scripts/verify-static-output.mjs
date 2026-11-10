@@ -113,6 +113,16 @@ assert(
     /frame-src[^;]*https:\/\/challenges\.cloudflare\.com/.test(headers),
   '_headers CSP must allow Cloudflare Turnstile (script-src + frame-src) for /contact',
 );
+assert(
+  headers.includes(
+    "connect-src 'self' https://7ako2mwoa2.execute-api.us-east-1.amazonaws.com",
+  ),
+  '_headers CSP connect-src must allow the production contact API origin',
+);
+assert(
+  !headers.includes('contact-api.example.invalid'),
+  '_headers must not keep the contact API CSP placeholder',
+);
 
 const redirects = readFileSync(join(browser, '_redirects'), 'utf8');
 assert(redirects.includes('/docs/angular/1.2.0/getting-started'), '_redirects missing docs redirect');
