@@ -100,6 +100,22 @@ export type SiteMessageKey =
   | 'home.playgroundCta'
   | 'home.previewCaption'
   | 'home.previewAlt'
+  | 'home.gallery.eyebrow'
+  | 'home.gallery.title'
+  | 'home.gallery.description'
+  | 'home.gallery.enlarge'
+  | 'home.gallery.desktop'
+  | 'home.gallery.mobile'
+  | 'home.gallery.dark'
+  | 'home.gallery.light'
+  | 'home.gallery.methods'
+  | 'home.gallery.desktopAlt'
+  | 'home.gallery.mobileAlt'
+  | 'home.gallery.darkAlt'
+  | 'home.gallery.lightAlt'
+  | 'home.gallery.methodsAlt'
+  | 'lightbox.close'
+  | 'lightbox.closeAria'
   | 'contact.title'
   | 'contact.lede'
   | 'contact.notice'
@@ -260,6 +276,27 @@ const en: Catalog = {
     'Real Easy Payments checkout screenshot · demo mode, no live charges',
   'home.previewAlt':
     'Easy Payments Angular checkout on desktop with Card, PayPal, Apple Pay, Google Pay, Klarna, and Affirm options labeled DEMO',
+  'home.gallery.eyebrow': 'Product',
+  'home.gallery.title': 'Real checkout screenshots',
+  'home.gallery.description':
+    'Captured from the Easy Payments Angular demo. Click any preview to enlarge.',
+  'home.gallery.enlarge': 'Enlarge screenshot: {{label}}',
+  'home.gallery.desktop': 'Desktop',
+  'home.gallery.mobile': 'Mobile',
+  'home.gallery.dark': 'Dark',
+  'home.gallery.light': 'Light',
+  'home.gallery.methods': 'Methods',
+  'home.gallery.desktopAlt':
+    'Easy Payments full checkout on desktop showing payment method selection in light mode',
+  'home.gallery.mobileAlt':
+    'Easy Payments full checkout on a mobile viewport with stacked payment methods',
+  'home.gallery.darkAlt':
+    'Easy Payments checkout in dark appearance with Card selected',
+  'home.gallery.lightAlt': 'Easy Payments checkout in light appearance',
+  'home.gallery.methodsAlt':
+    'Easy Payments checkout highlighting payment method order and DEMO labels',
+  'lightbox.close': 'Close',
+  'lightbox.closeAria': 'Close image preview',
   'nav.contact': 'Contact',
   'nav.faq': 'FAQ',
   'nav.support': 'Support',
@@ -433,6 +470,27 @@ const es: Catalog = {
     'Captura real del checkout de Easy Payments · modo demo, sin cargos reales',
   'home.previewAlt':
     'Checkout de Easy Payments para Angular en escritorio con Tarjeta, PayPal, Apple Pay, Google Pay, Klarna y Affirm etiquetados como DEMO',
+  'home.gallery.eyebrow': 'Producto',
+  'home.gallery.title': 'Capturas reales del checkout',
+  'home.gallery.description':
+    'Tomadas del demo Angular de Easy Payments. Haz clic en cualquier vista previa para ampliarla.',
+  'home.gallery.enlarge': 'Ampliar captura: {{label}}',
+  'home.gallery.desktop': 'Escritorio',
+  'home.gallery.mobile': 'Móvil',
+  'home.gallery.dark': 'Oscuro',
+  'home.gallery.light': 'Claro',
+  'home.gallery.methods': 'Métodos',
+  'home.gallery.desktopAlt':
+    'Checkout completo de Easy Payments en escritorio mostrando la selección de métodos de pago en modo claro',
+  'home.gallery.mobileAlt':
+    'Checkout completo de Easy Payments en un viewport móvil con métodos de pago apilados',
+  'home.gallery.darkAlt':
+    'Checkout de Easy Payments en apariencia oscura con Tarjeta seleccionada',
+  'home.gallery.lightAlt': 'Checkout de Easy Payments en apariencia clara',
+  'home.gallery.methodsAlt':
+    'Checkout de Easy Payments destacando el orden de métodos de pago y etiquetas DEMO',
+  'lightbox.close': 'Cerrar',
+  'lightbox.closeAria': 'Cerrar vista previa de la imagen',
   'nav.contact': 'Contacto',
   'nav.faq': 'FAQ',
   'nav.support': 'Apoyo',
@@ -606,6 +664,27 @@ const pt: Catalog = {
     'Captura real do checkout Easy Payments · modo demo, sem cobranças reais',
   'home.previewAlt':
     'Checkout Easy Payments para Angular no desktop com Cartão, PayPal, Apple Pay, Google Pay, Klarna e Affirm rotulados como DEMO',
+  'home.gallery.eyebrow': 'Produto',
+  'home.gallery.title': 'Capturas reais do checkout',
+  'home.gallery.description':
+    'Capturadas da demo Angular do Easy Payments. Clique em qualquer prévia para ampliar.',
+  'home.gallery.enlarge': 'Ampliar captura: {{label}}',
+  'home.gallery.desktop': 'Desktop',
+  'home.gallery.mobile': 'Mobile',
+  'home.gallery.dark': 'Escuro',
+  'home.gallery.light': 'Claro',
+  'home.gallery.methods': 'Métodos',
+  'home.gallery.desktopAlt':
+    'Checkout completo do Easy Payments no desktop mostrando a seleção de métodos de pagamento no modo claro',
+  'home.gallery.mobileAlt':
+    'Checkout completo do Easy Payments em um viewport mobile com métodos de pagamento empilhados',
+  'home.gallery.darkAlt':
+    'Checkout do Easy Payments na aparência escura com Cartão selecionado',
+  'home.gallery.lightAlt': 'Checkout do Easy Payments na aparência clara',
+  'home.gallery.methodsAlt':
+    'Checkout do Easy Payments destacando a ordem dos métodos de pagamento e rótulos DEMO',
+  'lightbox.close': 'Fechar',
+  'lightbox.closeAria': 'Fechar prévia da imagem',
   'nav.contact': 'Contato',
   'nav.faq': 'FAQ',
   'nav.support': 'Apoio',

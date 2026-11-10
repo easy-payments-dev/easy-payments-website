@@ -118,6 +118,75 @@ describe('HomePage', () => {
     expect(el.querySelectorAll('.shot-gallery__thumbs .shot-card').length).toBe(
       4,
     );
+    expect(el.textContent).toContain('Real checkout screenshots');
+    expect(el.textContent).toContain('Desktop');
+    expect(el.textContent).toContain('Mobile');
+  });
+
+  it('localizes gallery images, labels, and open lightbox content with site language', async () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const galleryImgs = () =>
+      Array.from(el.querySelectorAll('.shot-gallery img')).map((img) =>
+        img.getAttribute('src'),
+      );
+
+    expect(galleryImgs()).toEqual([
+      'screenshots/checkout-desktop-en.png',
+      'screenshots/checkout-mobile-en.png',
+      'screenshots/checkout-dark-en.png',
+      'screenshots/checkout-light-en.png',
+      'screenshots/checkout-methods-en.png',
+    ]);
+
+    const featured = el.querySelector(
+      '.shot-card--featured',
+    ) as HTMLButtonElement;
+    featured.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const dialogImg = () =>
+      el.querySelector('.ep-lightbox__image') as HTMLImageElement | null;
+    expect(dialogImg()?.getAttribute('src')).toBe(
+      'screenshots/checkout-desktop-en.png',
+    );
+    expect(el.querySelector('.ep-lightbox__caption')?.textContent).toContain(
+      'Desktop',
+    );
+    expect(el.querySelector('.ep-lightbox__close')?.textContent?.trim()).toBe(
+      'Close',
+    );
+
+    i18n.setLanguage('es');
+    fixture.detectChanges();
+    expect(galleryImgs()).toEqual([
+      'screenshots/checkout-desktop-es.png',
+      'screenshots/checkout-mobile-es.png',
+      'screenshots/checkout-dark-es.png',
+      'screenshots/checkout-light-es.png',
+      'screenshots/checkout-methods-es.png',
+    ]);
+    expect(el.textContent).toContain('Capturas reales del checkout');
+    expect(el.textContent).toContain('Escritorio');
+    expect(dialogImg()?.getAttribute('src')).toBe(
+      'screenshots/checkout-desktop-es.png',
+    );
+    expect(el.querySelector('.ep-lightbox__caption')?.textContent).toContain(
+      'Escritorio',
+    );
+    expect(el.querySelector('.ep-lightbox__close')?.textContent?.trim()).toBe(
+      'Cerrar',
+    );
+
+    i18n.setLanguage('pt');
+    fixture.detectChanges();
+    expect(dialogImg()?.getAttribute('src')).toBe(
+      'screenshots/checkout-desktop-pt.png',
+    );
+    expect(el.querySelector('.ep-lightbox__close')?.textContent?.trim()).toBe(
+      'Fechar',
+    );
   });
 
   it('opens and closes the screenshot lightbox', async () => {

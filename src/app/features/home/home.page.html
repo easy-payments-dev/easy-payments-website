@@ -155,39 +155,41 @@
     <ep-container>
       <ep-section-heading
         titleId="screenshots-title"
-        eyebrow="Product"
-        title="Real checkout screenshots"
-        description="Captured from the Easy Payments Angular demo. Click any preview to enlarge."
+        [eyebrow]="galleryEyebrow()"
+        [title]="galleryTitle()"
+        [description]="galleryDescription()"
         [headingLevel]="2"
       />
 
       <div class="shot-gallery">
-        <button
-          type="button"
-          class="shot-card shot-card--featured"
-          (click)="openLightbox($event, featuredShot)"
-          [attr.aria-label]="'Enlarge screenshot: ' + featuredShot.caption"
-        >
-          <span class="shot-card__frame shot-card__frame--landscape">
-            <img
-              [src]="featuredShot.src"
-              [alt]="featuredShot.alt"
-              loading="lazy"
-              decoding="async"
-            />
-          </span>
-          <span class="shot-card__label">{{ featuredShot.caption }}</span>
-        </button>
+        @if (featuredShot(); as featured) {
+          <button
+            type="button"
+            class="shot-card shot-card--featured"
+            (click)="openLightbox($event, featured)"
+            [attr.aria-label]="enlargeLabel(featured.caption)"
+          >
+            <span class="shot-card__frame shot-card__frame--landscape">
+              <img
+                [src]="featured.src"
+                [alt]="featured.alt"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+            <span class="shot-card__label">{{ featured.caption }}</span>
+          </button>
+        }
 
         <ul class="shot-gallery__thumbs">
-          @for (shot of galleryShots; track shot.src) {
+          @for (shot of galleryThumbs(); track shot.id) {
             <li>
               <button
                 type="button"
                 class="shot-card"
                 [class.shot-card--portrait]="shot.frame === 'portrait'"
                 (click)="openLightbox($event, shot)"
-                [attr.aria-label]="'Enlarge screenshot: ' + shot.caption"
+                [attr.aria-label]="enlargeLabel(shot.caption)"
               >
                 <span
                   class="shot-card__frame"

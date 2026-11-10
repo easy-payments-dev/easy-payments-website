@@ -14,11 +14,18 @@ import { EpButton } from '../../shared/ui/button/button';
 import { EpCard } from '../../shared/ui/card/card';
 import { EpCodeBlock } from '../../shared/ui/code-block/code-block';
 import { EpContainer } from '../../shared/ui/container/container';
-import {
-  EpImageLightbox,
-  LightboxImage,
-} from '../../shared/ui/image-lightbox/image-lightbox';
+import { EpImageLightbox } from '../../shared/ui/image-lightbox/image-lightbox';
 import { EpSectionHeading } from '../../shared/ui/section-heading/section-heading';
+
+type GalleryShotId = 'desktop' | 'mobile' | 'dark' | 'light' | 'methods';
+
+interface GalleryShot {
+  id: GalleryShotId;
+  src: string;
+  alt: string;
+  caption: string;
+  frame: 'landscape' | 'portrait';
+}
 
 @Component({
   selector: 'app-home-page',
@@ -57,6 +64,15 @@ export class HomePage {
   protected readonly previewAlt = computed(() => this.i18n.t('home.previewAlt'));
   protected readonly previewCaption = computed(() =>
     this.i18n.t('home.previewCaption'),
+  );
+  protected readonly galleryEyebrow = computed(() =>
+    this.i18n.t('home.gallery.eyebrow'),
+  );
+  protected readonly galleryTitle = computed(() =>
+    this.i18n.t('home.gallery.title'),
+  );
+  protected readonly galleryDescription = computed(() =>
+    this.i18n.t('home.gallery.description'),
   );
   protected readonly githubAngularUrl = environment.githubAngularUrl;
   protected readonly githubWebsiteUrl = environment.githubWebsiteUrl;
@@ -124,53 +140,78 @@ export class HomePage {
     },
   ] as const;
 
-  protected readonly featuredShot = {
-    src: 'screenshots/checkout-desktop.png',
-    alt: 'Easy Payments full checkout on desktop showing payment method selection in light mode',
-    caption: 'Desktop',
-    frame: 'landscape' as const,
-  };
+  /** All five gallery shots — src/labels follow the active site locale. */
+  protected readonly galleryShots = computed<GalleryShot[]>(() => {
+    const lang = this.i18n.language();
+    return [
+      {
+        id: 'desktop',
+        src: `screenshots/checkout-desktop-${lang}.png`,
+        alt: this.i18n.t('home.gallery.desktopAlt'),
+        caption: this.i18n.t('home.gallery.desktop'),
+        frame: 'landscape',
+      },
+      {
+        id: 'mobile',
+        src: `screenshots/checkout-mobile-${lang}.png`,
+        alt: this.i18n.t('home.gallery.mobileAlt'),
+        caption: this.i18n.t('home.gallery.mobile'),
+        frame: 'portrait',
+      },
+      {
+        id: 'dark',
+        src: `screenshots/checkout-dark-${lang}.png`,
+        alt: this.i18n.t('home.gallery.darkAlt'),
+        caption: this.i18n.t('home.gallery.dark'),
+        frame: 'landscape',
+      },
+      {
+        id: 'light',
+        src: `screenshots/checkout-light-${lang}.png`,
+        alt: this.i18n.t('home.gallery.lightAlt'),
+        caption: this.i18n.t('home.gallery.light'),
+        frame: 'landscape',
+      },
+      {
+        id: 'methods',
+        src: `screenshots/checkout-methods-${lang}.png`,
+        alt: this.i18n.t('home.gallery.methodsAlt'),
+        caption: this.i18n.t('home.gallery.methods'),
+        frame: 'landscape',
+      },
+    ];
+  });
 
-  protected readonly galleryShots = [
-    {
-      src: 'screenshots/checkout-mobile.png',
-      alt: 'Easy Payments full checkout on a mobile viewport with stacked payment methods',
-      caption: 'Mobile',
-      frame: 'portrait' as const,
-    },
-    {
-      src: 'screenshots/checkout-dark.png',
-      alt: 'Easy Payments checkout in dark appearance with Card selected',
-      caption: 'Dark',
-      frame: 'landscape' as const,
-    },
-    {
-      src: 'screenshots/checkout-light.png',
-      alt: 'Easy Payments checkout in light appearance',
-      caption: 'Light',
-      frame: 'landscape' as const,
-    },
-    {
-      src: 'screenshots/checkout-methods.png',
-      alt: 'Easy Payments checkout highlighting payment method order and DEMO labels',
-      caption: 'Methods',
-      frame: 'landscape' as const,
-    },
-  ] as const;
+  protected readonly featuredShot = computed(
+    () => this.galleryShots()[0] ?? null,
+  );
+  protected readonly galleryThumbs = computed(() => this.galleryShots().slice(1));
 
   protected readonly lightboxOpen = signal(false);
-  protected readonly lightboxImage = signal<LightboxImage | null>(null);
+  /** Shot id — keeps lightbox image/labels in sync if language changes while open. */
+  protected readonly lightboxShotId = signal<GalleryShotId | null>(null);
+  protected readonly lightboxImage = computed(() => {
+    const id = this.lightboxShotId();
+    if (!id) {
+      return null;
+    }
+    return this.galleryShots().find((shot) => shot.id === id) ?? null;
+  });
   private lightboxTrigger: HTMLElement | null = null;
 
-  protected openLightbox(event: Event, shot: LightboxImage): void {
+  protected enlargeLabel(caption: string): string {
+    return this.i18n.t('home.gallery.enlarge', { label: caption });
+  }
+
+  protected openLightbox(event: Event, shot: GalleryShot): void {
     this.lightboxTrigger = event.currentTarget as HTMLElement;
-    this.lightboxImage.set(shot);
+    this.lightboxShotId.set(shot.id);
     this.lightboxOpen.set(true);
   }
 
   protected closeLightbox(): void {
     this.lightboxOpen.set(false);
-    this.lightboxImage.set(null);
+    this.lightboxShotId.set(null);
     this.lightboxTrigger?.focus();
     this.lightboxTrigger = null;
   }
