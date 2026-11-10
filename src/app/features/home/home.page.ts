@@ -50,6 +50,14 @@ export class HomePage {
   protected readonly playgroundCta = computed(() =>
     this.i18n.t('home.playgroundCta'),
   );
+  /** Hero checkout preview — swaps with site language without a reload. */
+  protected readonly previewSrc = computed(
+    () => `screenshots/checkout-desktop-${this.i18n.language()}.png`,
+  );
+  protected readonly previewAlt = computed(() => this.i18n.t('home.previewAlt'));
+  protected readonly previewCaption = computed(() =>
+    this.i18n.t('home.previewCaption'),
+  );
   protected readonly githubAngularUrl = environment.githubAngularUrl;
   protected readonly githubWebsiteUrl = environment.githubWebsiteUrl;
   protected readonly npmAngularUrl = environment.npmAngularUrl;

@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { SiteI18nService } from '../../core/i18n/site-i18n.service';
 import { HomePage } from './home.page';
 
 describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
+  let i18n: SiteI18nService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -12,6 +14,8 @@ describe('HomePage', () => {
       providers: [provideRouter([])],
     }).compileComponents();
 
+    i18n = TestBed.inject(SiteI18nService);
+    i18n.setLanguage('en');
     fixture = TestBed.createComponent(HomePage);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -40,8 +44,30 @@ describe('HomePage', () => {
       img.getAttribute('src'),
     );
     expect(el.querySelector('.hero__logo')).toBeNull();
-    expect(heroImages).toEqual(['screenshots/checkout-desktop.png']);
+    expect(heroImages).toEqual(['screenshots/checkout-desktop-en.png']);
     expect(heroImages).not.toContain('brand/logo-lockup-640.png');
+  });
+
+  it('swaps the hero checkout preview image, caption, and alt with site language', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    const img = el.querySelector('.hero__media img') as HTMLImageElement;
+    const caption = el.querySelector('.hero__media figcaption');
+
+    expect(img.getAttribute('src')).toBe('screenshots/checkout-desktop-en.png');
+    expect(img.getAttribute('alt')).toContain('Easy Payments Angular checkout');
+    expect(caption?.textContent).toContain('demo mode, no live charges');
+
+    i18n.setLanguage('es');
+    fixture.detectChanges();
+    expect(img.getAttribute('src')).toBe('screenshots/checkout-desktop-es.png');
+    expect(img.getAttribute('alt')).toContain('Tarjeta');
+    expect(caption?.textContent).toContain('modo demo, sin cargos reales');
+
+    i18n.setLanguage('pt');
+    fixture.detectChanges();
+    expect(img.getAttribute('src')).toBe('screenshots/checkout-desktop-pt.png');
+    expect(img.getAttribute('alt')).toContain('Cartão');
+    expect(caption?.textContent).toContain('modo demo, sem cobranças reais');
   });
 
   it('presents Angular as available and other frameworks as coming soon', () => {

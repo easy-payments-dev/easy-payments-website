@@ -98,6 +98,8 @@ export type SiteMessageKey =
   | 'home.playgroundTitle'
   | 'home.playgroundBody'
   | 'home.playgroundCta'
+  | 'home.previewCaption'
+  | 'home.previewAlt'
   | 'contact.title'
   | 'contact.lede'
   | 'contact.notice'
@@ -254,6 +256,10 @@ const en: Catalog = {
   'home.playgroundBody':
     'Configure a checkout, preview real library demos in mock mode, and copy integration code. The playground never processes payments and never accepts real card data.',
   'home.playgroundCta': 'Open Playground',
+  'home.previewCaption':
+    'Real Easy Payments checkout screenshot · demo mode, no live charges',
+  'home.previewAlt':
+    'Easy Payments Angular checkout on desktop with Card, PayPal, Apple Pay, Google Pay, Klarna, and Affirm options labeled DEMO',
   'nav.contact': 'Contact',
   'nav.faq': 'FAQ',
   'nav.support': 'Support',
@@ -423,6 +429,10 @@ const es: Catalog = {
   'home.playgroundBody':
     'Configura un checkout, previsualiza demos reales en modo mock y copia el código. El playground nunca procesa pagos ni acepta datos reales de tarjeta.',
   'home.playgroundCta': 'Abrir Playground',
+  'home.previewCaption':
+    'Captura real del checkout de Easy Payments · modo demo, sin cargos reales',
+  'home.previewAlt':
+    'Checkout de Easy Payments para Angular en escritorio con Tarjeta, PayPal, Apple Pay, Google Pay, Klarna y Affirm etiquetados como DEMO',
   'nav.contact': 'Contacto',
   'nav.faq': 'FAQ',
   'nav.support': 'Apoyo',
@@ -592,6 +602,10 @@ const pt: Catalog = {
   'home.playgroundBody':
     'Configure um checkout, visualize demos reais em modo mock e copie o código. O playground nunca processa pagamentos nem aceita dados reais de cartão.',
   'home.playgroundCta': 'Abrir Playground',
+  'home.previewCaption':
+    'Captura real do checkout Easy Payments · modo demo, sem cobranças reais',
+  'home.previewAlt':
+    'Checkout Easy Payments para Angular no desktop com Cartão, PayPal, Apple Pay, Google Pay, Klarna e Affirm rotulados como DEMO',
   'nav.contact': 'Contato',
   'nav.faq': 'FAQ',
   'nav.support': 'Apoio',

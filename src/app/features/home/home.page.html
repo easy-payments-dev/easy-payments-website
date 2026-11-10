@@ -25,14 +25,14 @@
 
         <figure class="hero__media">
           <img
-            src="screenshots/checkout-desktop.png"
+            [src]="previewSrc()"
             width="960"
-            height="720"
-            alt="Easy Payments Angular checkout on desktop with Card, PayPal, Apple Pay, Google Pay, Klarna, and Affirm options labeled DEMO"
+            height="888"
+            [alt]="previewAlt()"
             decoding="async"
             fetchpriority="high"
           />
-          <figcaption>Real Easy Payments checkout screenshot · demo mode, no live charges</figcaption>
+          <figcaption>{{ previewCaption() }}</figcaption>
         </figure>
       </div>
     </ep-container>
