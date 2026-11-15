@@ -1,0 +1,12 @@
+[
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "dev.easypayments.ionic.smoke",
+        "sha256_cert_fingerprints": [
+          "70:7B:58:E3:72:49:1D:2C:C7:1A:0A:FD:D9:56:38:97:57:21:A7:D7:49:1E:87:19:A0:87:23:38:D3:CF:69:9C"
+        ]
+      }
+    }
+  ]
